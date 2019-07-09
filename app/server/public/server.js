@@ -12,9 +12,9 @@ const port = process.env.PORT || 8000;
 
 mongoose.connect('mongodb://127.0.0.1:27017/admin',  { useNewUrlParser: true });
 
-const Cat = mongoose.model('Cat', { name: String });
-const kitty = new Cat({ name: 'Zildjian' });
-kitty.save().then(() => console.log('meow'));
+// const Cat = mongoose.model('Cat', { name: String });
+// const kitty = new Cat({ name: 'Zildjian' });
+// kitty.save().then(() => console.log('meow'));
 app.use(cors());
 app.use(bodyParser.json());
 
