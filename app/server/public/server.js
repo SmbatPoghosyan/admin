@@ -18,7 +18,11 @@ app.use('/branches',  branches);
 
 const port = process.env.PORT;
 
+
 mongoose.connect(dbConfig.url,  { useNewUrlParser: true });
+app.get('/', (req, res) => {
+  res.send("Hiiii");
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../../../build', 'index.html'));
