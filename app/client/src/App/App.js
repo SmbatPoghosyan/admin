@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
-import './App.css';
 import Branches from '../components/Branches';
+
+import "./reset.css"
+import './App.css';
 
 //GET request to server from client
 axios.get('http://localhost:8000/api/', {

@@ -1,0 +1,75 @@
+.branchContainer {
+    background: #ffffff;
+    display: inline-block;
+    border-radius: 2px;
+    box-shadow: 0px 0px 2px 1px #969494;
+    color: #f5f5f5;
+    width: 225px;
+    margin: 10px;
+    padding: 0 5px 5px;
+    transition: all 0.3s;
+}
+
+.branchContainer:hover {
+    box-shadow: 0px 0px 5px 2px #969494;
+}
+
+.brancheName {
+    text-align: left;
+    font-size: 1.5rem;
+    margin-top: 5px;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width:155px;
+}
+.brancheId {
+    text-align: left;
+    color: #e0e0e0;
+    font-size: 0.7rem;
+    margin-top: 5px;
+    font-weight: normal;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width:155px;
+}
+
+.brancheId > span { 
+    font-weight: 200;
+    margin-right: 2px;
+}
+
+.brancheScreen {
+    text-align: right;
+    margin-top: 5px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #5c90bb;
+}
+.brancheScreen > span { 
+    font-weight: 200;
+    margin-right: 2px;
+}
+
+.nameidcont { 
+    background: #5c90bb;
+    border-radius: 2px;
+    padding: 3px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.iconsContainer { 
+    display: inline-block;
+}
+
+
+.iconsContainer>button {
+    padding: 6px;
+}
+.iconsContainer>button >span {
+    color:white
+}
