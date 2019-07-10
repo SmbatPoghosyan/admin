@@ -25,7 +25,7 @@ const Branch = ({branch}) => {
         <div className="nameidcont">
             <div style={{display:"inline-block",flex: "1"}}>
                 <p className="brancheName" title={branch.name}>{branch.name}</p>
-                <p className="brancheId" title={`id: ${branch.id}`}>{branch.id}</p>
+                <p className="brancheId" title={`id: ${branch._id}`}>{branch._id}</p>
             </div>
             
             <div className="iconsContainer">
@@ -42,7 +42,7 @@ const Branch = ({branch}) => {
 
             
         </div>
-        <p className="brancheScreen" title={"Screen"}>{branch.screen}</p>
+        <p className="brancheScreen" title={"Screen"}>{branch.screens}</p>
     </div>  
     );
 
