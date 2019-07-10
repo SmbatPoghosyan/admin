@@ -1,17 +1,17 @@
-function getAllPlaylists(self){
-    axios.get('http://localhost:8000/playlists/', {
+import axios from 'axios';
+
+export function getAllBranches(self, setBranches){
+    axios.get('http://localhost:8000/branches/', {
 
     })
         .then(response => {
-            self.setState({
-                playlists: response.data.playlists,
-            });
+            setBranches(response.data);
         })
         .catch(error => {
         });
 }
 
-function getPlaylistWithTwoScreens(self){
+export function getPlaylistWithTwoScreens(self){
     axios.get('http://localhost:8000/playlists/with2screens', {
     })
         .then(response => {
