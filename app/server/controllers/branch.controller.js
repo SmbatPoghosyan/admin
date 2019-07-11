@@ -17,7 +17,7 @@ exports.create = (req, res) => {
     // Save Branch in the database
     branch.save()
         .then(data => {
-            res.send(data);
+            res.send({data, message: "You successfully create new branch!"});
         }).catch(err => {
         res.status(500).send({
             message: err.message || "Some error occurred while creating the Note."
@@ -79,8 +79,9 @@ exports.update = (req, res) => {
                     message: "Branch not found with id " + req.params.branchId
                 });
             }
-            res.send(branch);
+            res.send({message: "You successfully update branch!"});
         }).catch(err => {
+            console.log(err)
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
                 message: "Branch not found with id " + req.params.branchId

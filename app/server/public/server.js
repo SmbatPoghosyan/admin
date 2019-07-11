@@ -18,8 +18,7 @@ app.use('/branches',  branches);
 
 const port = process.env.PORT;
 
-
-mongoose.connect(dbConfig.url,  { useNewUrlParser: true });
+mongoose.connect(dbConfig.url,  { useNewUrlParser: true, useFindAndModify: false });
 app.get('/', (req, res) => {
   res.send("Hiiii");
 });
