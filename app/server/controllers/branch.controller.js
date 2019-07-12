@@ -11,7 +11,8 @@ exports.create = (req, res) => {
     // Create a Branch
     const branch = new Branch({
         name: req.body.name,
-        screens: req.body.screens
+        screens: req.body.screens,
+        playlists: req.body.playlists
     });
 
     // Save Branch in the database

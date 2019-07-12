@@ -8,6 +8,7 @@ const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
 const dbConfig = require('../config/database.config');
 const branches = require('../routes/branch.routes');
+const plsylists = require('../routes/playlist.routes');
 let app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, '../../../build')));
 app.use('/branches',  branches);
+app.use('/playlists',  plsylists);
 
 const port = process.env.PORT;
 
