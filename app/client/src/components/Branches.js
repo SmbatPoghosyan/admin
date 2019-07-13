@@ -66,7 +66,7 @@ const Branches = () => {
 
     return branches.length > 0 && ( 
     <div className="allBranchesContainer">
-        <Button  variant="contained" color="primary" onClick={handleOpen}>
+        <Button variant="contained" color="primary" onClick={handleOpen}>
             Create
         </Button>
        {
@@ -79,13 +79,14 @@ const Branches = () => {
             onClose={handleClose}
         >
             <div style={modalStyle} className={classes.paper}>
-                <h2 id="modal-title">Create branche</h2>
+                <h2 id="modal-title">Create branch</h2>
                 <TextField
                     id="branch-name"
                     label="Name"
                     value={name}
                     onChange={handleChangeName}
                     margin="normal"
+                    className="mg-16"
                 />
                 <TextField
                     id="select-screens"
@@ -95,6 +96,7 @@ const Branches = () => {
                     onChange={handleChangeScreens}
                     helperText="Please select screens count"
                     margin="normal"
+                    className="mg-16"
                 >
                     {[1,2,3].map(option => (
                         <MenuItem key={option} value={option}>

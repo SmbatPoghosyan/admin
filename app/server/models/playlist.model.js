@@ -21,7 +21,8 @@ const PlaylistSchema = Schema({
     branch_id: {
         type: Schema.Types.ObjectId,
         ref: 'Branch'
-    }
+    },
+    files: [{ type: Schema.Types.ObjectId, ref: 'File' }],
 }, {
     timestamps: true
 });
