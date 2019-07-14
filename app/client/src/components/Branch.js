@@ -41,6 +41,10 @@ const Branch = ({branch, setBranches}) => {
         setEdit(true);
     };
 
+    const onCancel = () => {
+        setEdit(true);
+    };
+
     const handleChangeName = (event) => {
         setName(event.target.value);
     };
@@ -50,8 +54,8 @@ const Branch = ({branch, setBranches}) => {
     return ( 
     <div className="branchContainer">
         <div className="nameidcont">
-            <div style={{display:"inline-block",flex: "1"}}>
-                <Input className="brancheName" disabled={edit} value={name} onChange={handleChangeName}/>
+            <div className="branchName">
+                <Input disabled={edit} value={name} onChange={handleChangeName}/>
                 <p className="brancheId" title={`id: ${branch._id}`}>{branch._id}</p>
             </div>
             
@@ -66,14 +70,20 @@ const Branch = ({branch, setBranches}) => {
                 </IconButton>
             </div>
         </div>
-        <TextField className="brancheScreen" select disabled={edit} value={screens} onChange={handleChangeScreens}>
-            {[1,2,3].map(option => (
-                <MenuItem key={option} value={option}>
-                    {option}
-                </MenuItem>
-            ))}
-        </TextField>
-        {!edit && <Button variant="contained" color="primary" onClick={onEdit}>Save</Button>}
+            <div className="branchFooter">
+                <TextField className="brancheScreen" select disabled={edit} value={screens} onChange={handleChangeScreens}>
+                    {[1,2,3].map(option => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                {!edit && <span className="branchButtons">
+                <Button variant="contained" color="primary" onClick={onEdit}>Save</Button>
+                <Button variant="contained" color="primary" onClick={onCancel}>Cancel</Button>
+                </span>
+                }
+            </div>
     </div>  
     );
 
