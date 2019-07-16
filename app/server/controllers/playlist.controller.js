@@ -94,6 +94,21 @@ exports.findBranchePlaylists = (req, res) => {
     });
 };
 
+exports.findBranchePlaylists = (req, res) => {
+    Playlist.
+    find({}).
+    populate({
+        path: 'branches',
+        match: { branch_id: req.param.branchId},
+    }).then(playlists => {
+        res.send(playlists);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving playlists."
+        })
+    });
+};
+
 // Find a single playlist with a playlistId
 exports.findOne = (req, res) => {
     Playlist.findById(req.params.playlistId)
