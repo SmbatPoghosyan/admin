@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Playlists = require('./playlist.model')
+
+
 
 const BranchSchema = Schema({
     name: {
@@ -10,7 +13,6 @@ const BranchSchema = Schema({
         type: Number,
         required: true
     },
-    playlists: [{ type: Schema.Types.ObjectId, ref: 'Playlist' }]
 }, {
     timestamps: true
 });

@@ -25,8 +25,8 @@ app.get('/', (req, res) => {
   res.send("Hiiii");
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../../../build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, '../../../build', 'index.html'));
+// });
 
 app.listen(port, _=> console.log(`The server is listening on port ${port}`));

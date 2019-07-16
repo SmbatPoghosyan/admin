@@ -8,9 +8,9 @@ router.post('/', playlists.create);
 // Retrieve all Playlists
 router.get('/', playlists.findAll);
 
-// Retrieve Branch's playlists
-router.get('/', playlists.findBranchePlaylists);
-
+// // Retrieve Branch's playlists
+router.get('/:branchId', playlists.findBranchePlaylists);
+//
 // Retrieve a single Playlist with playlistId
 router.get('/:playlistId', playlists.findOne);
 

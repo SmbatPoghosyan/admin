@@ -1,35 +1,89 @@
 const Playlist = require('../models/playlist.model');
+const Branch = require('../models/branch.model');
 
 // Create and Save a new Playlist
 exports.create = (req, res) => {
-    if(!req.body.name) {
-        return res.status(400).send({
-            message: "Playlist name can not be empty"
-        });
-    }
 
-    // Create a Playlist
-    const playlist = new Playlist({
-        name: req.body.name,
-        endDate: req.body.endDate,
-        currency: req.body.currency,
-        ticker: req.body.ticker,
-        branch_id: req.body.branch_id,
-    });
-
-    // Save Playlist in the database
-    playlist.save()
-        .then(data => {
-            res.send({data, message: "You successfully create new playlist!"});
+    Branch.findById(req.body.branch_id)
+        .then(branch => {
+            if(!branch) {
+                return res.status(404).send({
+                    message: "Branch not found with id " + req.params.branchId
+                });
+            }
+            branch.playlists.push({
+                name: req.body.name,
+                endDate: req.body.endDate,
+                currency: req.body.currency,
+                ticker: req.body.ticker,
+            });
+            branch.save()
+                .then(data => {
+                    res.send({data, message: "You successfully create new playlist!"});
+                }).catch(err => {
+                res.status(500).send({
+                    message: err.message || "Some error occurred while creating the playlist."
+                });
+            });
         }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the playlist."
+        if(err.kind === 'ObjectId') {
+            return res.status(404).send({
+                message: "Branch not found with id " + req.params.branchId
+            });
+        }
+        return res.status(500).send({
+            message: "Error retrieving branch with id " + req.params.branchId
         });
     });
+
+
+    // if(!req.body.name) {
+    //     return res.status(400).send({
+    //         message: "Playlist name can not be empty"
+    //     });
+    // }
+    //
+    // // Create a Playlist
+    // const playlist = new Playlist({
+    //     name: req.body.name,
+    //     endDate: req.body.endDate,
+    //     currency: req.body.currency,
+    //     ticker: req.body.ticker,
+    //     branch_id: req.body.branch_id,
+    // });
+    //
+    // // Save Playlist in the database
+    // playlist.save()
+    //     .then(data => {
+    //         res.send({data, message: "You successfully create new playlist!"});
+    //     }).catch(err => {
+    //     res.status(500).send({
+    //         message: err.message || "Some error occurred while creating the playlist."
+    //     });
+    // });
 };
 
 // Retrieve and return all playlists from the database.
 exports.findAll = (req, res) => {
+    Playlist.find()
+        .then(playlists => {
+            res.send(playlists);
+        }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving playlists."
+        });
+    });
+};
+
+// Retrieve and return all playlists by branchId from the database.
+exports.findBranchePlaylists = (req, res) => {
+    Playlist.find({})
+        .populate({
+            path : 'teachers' ,
+            match : { _id :  req.params.branchId }
+        }).then(playlists => {
+        res.send(playlists);
+    });
     Playlist.find()
         .then(playlists => {
             res.send(playlists);

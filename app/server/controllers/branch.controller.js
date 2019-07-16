@@ -7,7 +7,7 @@ exports.create = (req, res) => {
             message: "Branch name can not be empty"
         });
     }
-
+    // const playlist = new
     // Create a Branch
     const branch = new Branch({
         name: req.body.name,
