@@ -1,0 +1,33 @@
+.allBranchesContainer { 
+    flex: 4;
+    text-align: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.allListLinkContainer {
+    flex: 1;
+    box-shadow: 0px 0px 5px 2px #969494;
+}
+.allListLinkContainer > .head{ 
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    line-height: normal;
+}
+.allListLinkContainer > .list{ 
+    height: calc(100vh - 9rem);
+    text-align: left;
+    padding: 0 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.allListLinkContainer > .list > li p{
+    display: flex;
+    justify-content: space-between;
+}
+.allListLinkContainer > .list > li a{
+    text-decoration: none;
+}
+
+.mg-16 {
+    margin:16px 8px !important;
+}

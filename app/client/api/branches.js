@@ -1,25 +1,30 @@
 import axios from 'axios';
 
 export function getAllBranches(setBranches){
-    axios.get('http://localhost:8000/branches/', {
-
+    axios.get('http://localhost:8000/branches/',{})
+    .then(response => {
+        setBranches(response.data);
     })
-        .then(response => {
-            setBranches(response.data);
-        })
-        .catch(error => {
-            alert(error.message);
-        });
-}
+    .catch(error => {
+        alert(error.message);
+    });
+};
+
+export function getBranchById(id,setBranch){
+    axios.get('http://localhost:8000/branches/' + id,{})
+    .then(response => {
+        setBranch(response.data);
+    })
+    .catch(error => {
+        alert(error.message);
+    });
+};
 
 export function createBranch(name, screens, setBranches, handleClose){
-    axios.post(
-        'http://localhost:8000/branches/',
-        {
+    axios.post('http://localhost:8000/branches/',{
             name,
             screens
-        }
-        )
+        })
         .then(response => {
             getAllBranches(setBranches);
             handleClose();
@@ -28,7 +33,7 @@ export function createBranch(name, screens, setBranches, handleClose){
         .catch(error => {
             alert(error.message);
         });
-}
+};
 
 export function deleteBranch(id, setBranches){
     axios.delete(
@@ -40,22 +45,19 @@ export function deleteBranch(id, setBranches){
         .catch(error => {
             alert(error.message);
         });
-}
+};
 
 export function updateBranch(id, name, screens, setBranches, ){
-    axios.put(
-        'http://localhost:8000/branches/' + id,
-        {
+    axios.put('http://localhost:8000/branches/' + id,{
             name,
             screens
         }
-    )
-        .then(response => {
-            getAllBranches(setBranches);
-            alert(response.data.message);
-        })
-        .catch(error => {
-            console.log(error);
-            alert(error.message);
-        });
-}
+    ).then(response => {
+        getAllBranches(setBranches);
+        alert(response.data.message);
+    })
+    .catch(error => {
+        console.log(error);
+        alert(error.message);
+    });
+};

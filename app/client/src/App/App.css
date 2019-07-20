@@ -18,3 +18,18 @@ body {
   font-size: 14px;
   color: black;
 }
+
+.app { 
+  display: flex;
+  overflow: hidden;
+  height: 100vh;
+}
+
+button {
+  background-color:  #236498 !important;
+}
+
+button:hover {
+  background-color: #1A4B73  !important;
+  color: #fff !important;
+}
