@@ -47,7 +47,6 @@ const Branches = props => {
     getAllBranches(setBranches);
   }, []);
 
-  
   const handleChangeName = event => {
     setName(event.target.value);
   };

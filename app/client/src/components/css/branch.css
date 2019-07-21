@@ -12,7 +12,7 @@
 
 .branchContainer:hover {
     box-shadow: 0px 0px 5px 2px #969494;
-    background: #cbe8fd;
+    background: #eaeaea;;
     transform: scale(1.01);
 }
 
@@ -30,9 +30,8 @@
 .branchName > div {
     text-align: left;
     font-size: 1.5rem;
-    color: white !important;
+    color: white;
     font-weight: bold;
-
 }
 .branchName input {
     overflow: hidden;
@@ -58,7 +57,7 @@
 
 
 .branchFooter {
-    margin-top:10px;
+    margin-top: 0.2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -81,7 +80,7 @@
 }
 
 .nameidcont { 
-    background: linear-gradient(90deg, rgba(35,100,152,1) 0%, rgba(68,113,142,0.8435749299719888) 100%, rgba(32,28,106,1) 100%);
+    background: linear-gradient(90deg, rgb(120, 166, 204) 0%, rgba(68,113,142,0.8435749299719888) 100%, rgba(32,28,106,1) 100%);
     border-radius: 2px;
     padding: 3px;
     display: flex;
@@ -91,9 +90,7 @@
 
 .iconsContainer { 
     display: inline-block;
-    
 }
-
 
 .iconsContainer>button {
     padding: 6px;
@@ -106,3 +103,12 @@
     color:white
 }
 
+.editMode { 
+    background: rgb(255, 255, 255);
+    color: black !important;
+    font-weight: normal !important;
+}
+
+.editModeCont {
+    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgba(107, 156, 187, 0.8435749299719888) 100%, rgba(32,28,106,1) 100%) !important;
+}
