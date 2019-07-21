@@ -2,11 +2,15 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+// Try the environment variable, otherwise use root
+const ASSET_PATH = process.env.ASSET_PATH || '/';
+
 const config = {
   entry: path.resolve(__dirname, 'app/client/public/index.js'),
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'app.bundled.js',
+    publicPath: ASSET_PATH,
   },
   module: {
     rules: [
@@ -34,9 +38,14 @@ const config = {
     new HtmlWebpackPlugin({
       template: './app/client/public/index.html',
       favicon: './app/client/public/favicon.ico'
+    }),
+    // This makes it possible for us to safely use env vars on our code
+    new webpack.DefinePlugin({
+      'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
     })
   ],
   devServer: {
+    historyApiFallback: true,
     publicPath: "/",
     contentBase: "/app",
     hot: true,
