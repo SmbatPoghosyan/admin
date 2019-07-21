@@ -1,0 +1,55 @@
+.branchPageContainer {
+  height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.branchPageContainer > .head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.5rem;
+  line-height: 1;
+}
+
+.branchPageContainer > .head > .hello {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #5a76ac;
+}
+
+.branchPageContainer > .head > .screen {
+  font-size: 1.5rem;
+  font-weight: lighter;
+  color: #576886;
+}
+.branchPageContainer > .playlistsContainer {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+  margin: 10px;
+}
+.branchPageContainer > .playlistsContainer > .list {
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+}
+.branchPageContainer > .playlistsContainer > .playlistLink {
+  text-align: left;
+  line-height: 2;
+}
+.branchPageContainer > .playlistsContainer > span {
+  line-height: 1;
+  font-size: 1.1rem;
+}
+.branchPageContainer > .body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.playlist { 
+  flex: 4;
+  height: 100%;
+  margin: 0 0.5rem;
+  box-shadow: 0px 0px 5px 2px #969494;
+}
