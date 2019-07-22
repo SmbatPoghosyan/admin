@@ -26,10 +26,11 @@ body {
 }
 
 button {
-  background-color:  #236498 !important;
+  background-color:  #6c96b5 !important;
+  color: #fff !important;
 }
 
 button:hover {
   background-color: #1A4B73  !important;
-  color: #fff !important;
+  
 }

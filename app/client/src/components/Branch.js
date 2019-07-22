@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -24,10 +24,9 @@ const useStyles = makeStyles(theme => ({
 const Branch = (props) => {
   const { branch, setBranches } = props;
   const classes = useStyles();
-  const [name, setName] = React.useState(branch.name);
-  const [edit, setEdit] = React.useState(true);
-  const [screens, setScreens] = React.useState(branch.screens);
-
+  const [name, setName] = useState(branch.name);
+  const [edit, setEdit] = useState(false);
+  const [screens, setScreens] = useState(branch.screens);
 
   useEffect(()=> {
     setName(props.branch.name);
@@ -38,14 +37,14 @@ const Branch = (props) => {
     deleteBranch(branch._id, setBranches);
   };
   const handleEdit = () => {
-    setEdit(false);
+    setEdit(true);
   };
   const onEdit = () => {
     updateBranch(branch._id, name, screens, setBranches);
-    setEdit(true);
+    setEdit(false);
   };
   const onCancel = () => {
-    setEdit(true);
+    setEdit(false);
   };
   const handleChangeName = event => {
     setName(event.target.value);
@@ -58,11 +57,12 @@ const Branch = (props) => {
   };
 
   return (
-   <div className="branchContainer" >  
+   <div className={`branchContainer ${edit? "editModeCont" : ""}`} style={{border: `1px solid ${edit? "#236498" : "#969494"}`}}>  
       <div className="nameidcont">
         <div className="branchName">
           <Input
-            disabled={edit}
+            className={`${edit ? "editMode" : ""}`}
+            disabled={!edit}
             value={name}
             title={name}
             onChange={handleChangeName}
@@ -88,7 +88,7 @@ const Branch = (props) => {
         </div>
       </div>
       <div className="branchFooter" >
-        {!edit ? (
+        {edit ? (
           <span className="branchButtons">
             <Button
               variant="contained"
@@ -104,9 +104,9 @@ const Branch = (props) => {
           ): <Button size="small" variant="contained" onClick={handleClickBranch}>Open</Button> 
         }
         <TextField
-          className="brancheScreen"
+          className={`brancheScreen ${edit ? "editMode" : ""}`} 
           select
-          disabled={edit}
+          disabled={!edit}
           title="Screen"
           value={screens}
           onChange={handleChangeScreens}
