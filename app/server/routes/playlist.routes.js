@@ -3,22 +3,23 @@ const router = express.Router();
 const playlists = require('../controllers/playlist.controller');
 
 // Create a new Playlist
-router.post('/', playlists.create);
+router.post('/:branchId', playlists.create);
 
-// Retrieve all Playlists
-router.get('/', playlists.findAll);
-
-// // Retrieve Branch's playlists
-router.get('/:branchId', playlists.findBranchePlaylists);
+// // Retrieve Branch's playlists with files
+router.get('/:branchId&:withFiles', playlists.findBranchePlaylists);
 //
-// Retrieve a single Playlist with playlistId
-router.get('/:playlistId', playlists.findOne);
 
-// Update a Playlist with playlistId
-router.put('/:playlistId', playlists.update);
+// // Retrieve Branch's playlists without files
+router.get('/:branchId', playlists.findBranchePlaylists);
+
+// Retrieve a single Playlist with playlistId
+router.get('/:branchId/:playlistId', playlists.findOne);
 
 // Delete a Playlist with playlistId
-router.delete('/:playlistId', playlists.delete);
+router.delete('/:branchId/:playlistId', playlists.delete);
+
+// Update a Playlist with playlistId
+router.delete('/:branchId/:playlistId', playlists.delete);
 
 
 module.exports = router;

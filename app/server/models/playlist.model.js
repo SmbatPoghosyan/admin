@@ -1,27 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const FileSchema = Schema({
-    url: {
-        type: String,
-        required: true
-    },
-    showTime: {
-        type: Date,
-        required: true
-    },
-    screen: {
-        type: Number,
-        required: true
-    },
-    order: {
-        type: Number,
-        required: true
-    },
-}, {
-    timestamps: true
-});
-
 const PlaylistSchema = Schema({
     name: {
         type: String,
@@ -48,7 +27,6 @@ const PlaylistSchema = Schema({
         required: true
     },
     branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' },
-    files: [{FileSchema}]
 }, {
     timestamps: true
 });

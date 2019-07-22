@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Route, Link, Switch,Redirect } from "react-router-dom";
 import Branch from "./Branch";
-
+import { withRouter } from 'react-router';
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -33,19 +33,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Branches = props => {
-
   const [branches, setBranches] = useState([]);
-  
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("Branch Name");
   const [screens, setScreens] = React.useState(1);
 
-
-  useEffect(() => {
-    getAllBranches(setBranches);
-  }, []);
+    useEffect(() => {
+        getAllBranches(setBranches);
+    }, []);
 
   const handleChangeName = event => {
     setName(event.target.value);
@@ -120,7 +117,7 @@ const Branches = props => {
         <div className="allListLinkContainer">
           <p className="head">Branches</p>
           <ul className="list">
-            {branches.map((el, i) => (
+            {branches && branches.map((el, i) => (
               <li key={i}>
                 <p>
                   <Link to={`/branches/${el._id}`} >{el.name}</Link>
@@ -132,8 +129,8 @@ const Branches = props => {
           </ul>
         </div>
       </>
-      
-      {branches.length > 0 && (
+
+      {branches && branches.length > 0 && (
         <div className="allBranchesContainer">
           {branches.map((el, i) => (
             <Branch branch={el} setBranches={setBranches} key={i} />
@@ -144,4 +141,4 @@ const Branches = props => {
   );
 };
 
-export default Branches;
+export default withRouter(Branches);

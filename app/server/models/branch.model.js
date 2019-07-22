@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Playlists = require('./playlist.model')
-
 
 
 const BranchSchema = Schema({

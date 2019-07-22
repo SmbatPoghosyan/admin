@@ -10,10 +10,12 @@ export function getAllBranches(setBranches){
     });
 };
 
-export function getBranchById(id,setBranch){
+export function getBranchById(id,setBranch, setPlaylists){
     axios.get('http://localhost:8000/branches/' + id,{})
     .then(response => {
-        setBranch(response.data);
+        console.log(response.data)
+        setBranch(response.data.branch);
+        setPlaylists(response.data.playlists);
     })
     .catch(error => {
         alert(error.message);

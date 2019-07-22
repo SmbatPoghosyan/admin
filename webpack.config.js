@@ -39,10 +39,6 @@ const config = {
       template: './app/client/public/index.html',
       favicon: './app/client/public/favicon.ico'
     }),
-    // This makes it possible for us to safely use env vars on our code
-    new webpack.DefinePlugin({
-      'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH)
-    })
   ],
   devServer: {
     historyApiFallback: true,

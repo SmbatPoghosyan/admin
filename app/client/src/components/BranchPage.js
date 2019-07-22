@@ -7,136 +7,19 @@ import Button from "@material-ui/core/Button";
 import "./css/branchPage.css";
 import "./css/branches.css";
 import CreatePlaylist from "./CreatePLaylist";
+import { withRouter } from 'react-router';
 
 const BranchPage = props => {
   const [branch, setBranch] = useState({});
+  const [playlists, setPlaylists] = useState([]);
   const { params } = props.match;
-
   useEffect(() => {
-    getBranchById(params.id, setBranch);
-    return()=> {
-      getBranchById(params.id, setBranch);
-    };
+    getBranchById(params.id, setBranch, setPlaylists);
   }, []);
 
-  let playlists = [];
-  // let playlists = [
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 111111111111111
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 2222222222222222
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 33333333333333333
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 44444444444444444
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 18888888888821321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 16666666666777721321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 666666666666621321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 1555555555555321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 300021321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 18
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 88801321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 321321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 111321321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 1321321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 1321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 21321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 3211321321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 1
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 453475321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 3211245213211321321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 17886938888881321321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 24147254524521321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 1747869611321321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 4144411321321
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 12221321132132
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 1222132113213
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 1222132
-  //   },
-  //   {
-  //     name: "Aaaaa",
-  //     _id: 12221321132
-  //   }
-  // ];
   const createHandleClick = () => {
     props.history.push(`/branches/${branch._id}/create playlist`); 
-  }
+  };
 
   return branch ? (
     <>
@@ -183,4 +66,4 @@ const BranchPage = props => {
   ) : null;
 };
 
-export default BranchPage;
+export default withRouter(BranchPage);

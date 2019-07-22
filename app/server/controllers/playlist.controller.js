@@ -1,30 +1,69 @@
 const Playlist = require('../models/playlist.model');
 const Branch = require('../models/branch.model');
+const File = require('../models/file.model');
 
 // Create and Save a new Playlist
 exports.create = (req, res) => {
-
-    Branch.findById(req.body.branch_id)
+    Branch.findById(req.params.branchId)
         .then(branch => {
             if(!branch) {
                 return res.status(404).send({
                     message: "Branch not found with id " + req.params.branchId
                 });
             }
-            branch.playlists.push({
-                name: req.body.name,
-                endDate: req.body.endDate,
-                currency: req.body.currency,
-                ticker: req.body.ticker,
-            });
-            branch.save()
+            console.log(req.body)
+            if(!req.body.name) {
+                return res.status(400).send({
+                    message: "Playlist name can not be empty"
+                });
+            }if(!req.body.startDate) {
+                return res.status(400).send({
+                    message: "Playlist start date can not be empty"
+                });
+            }if(!req.body.endDate) {
+                return res.status(400).send({
+                    message: "Playlist end date can not be empty"
+                });
+            }if(!req.body.totalTime) {
+                return res.status(400).send({
+                    message: "Playlist total time can not be empty"
+                });
+            }
+
+            const playlist = new Playlist({
+                    name: req.body.name,
+                    endDate: req.body.endDate,
+                    startDate: req.body.startDate,
+                    totalTime: req.body.totalTime,
+                    currency: req.body.currency,
+                    ticker: req.body.ticker,
+                    branch_id: req.params.branchId,
+                });
+            playlist.save()
                 .then(data => {
+                    console.log(data)
+                    JSON.parse(req.body.files).forEach((item) => {
+                        const file = new File({
+                            url: item.url,
+                            showTime: item.showTime,
+                            screen: item.screen,
+                            order: item.order,
+                            playlistId: data._id
+                        });
+
+                       file.save()
+                            .then()
+                            .catch(err => console.log(err))
+                    });
+
+
                     res.send({data, message: "You successfully create new playlist!"});
                 }).catch(err => {
                 res.status(500).send({
                     message: err.message || "Some error occurred while creating the playlist."
                 });
             });
+
         }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
@@ -35,100 +74,40 @@ exports.create = (req, res) => {
             message: "Error retrieving branch with id " + req.params.branchId
         });
     });
-
-
-    // if(!req.body.name) {
-    //     return res.status(400).send({
-    //         message: "Playlist name can not be empty"
-    //     });
-    // }
-    //
-    // // Create a Playlist
-    // const playlist = new Playlist({
-    //     name: req.body.name,
-    //     endDate: req.body.endDate,
-    //     currency: req.body.currency,
-    //     ticker: req.body.ticker,
-    //     branch_id: req.body.branch_id,
-    // });
-    //
-    // // Save Playlist in the database
-    // playlist.save()
-    //     .then(data => {
-    //         res.send({data, message: "You successfully create new playlist!"});
-    //     }).catch(err => {
-    //     res.status(500).send({
-    //         message: err.message || "Some error occurred while creating the playlist."
-    //     });
-    // });
-};
-
-// Retrieve and return all playlists from the database.
-exports.findAll = (req, res) => {
-    Playlist.find()
-        .then(playlists => {
-            res.send(playlists);
-        }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving playlists."
-        });
-    });
 };
 
 // Retrieve and return all playlists by branchId from the database.
-exports.findBranchePlaylists = (req, res) => {
-    Playlist.find({})
-        .populate({
-            path : 'teachers' ,
-            match : { _id :  req.params.branchId }
-        }).then(playlists => {
-        res.send(playlists);
-    });
-    Playlist.find()
-        .then(playlists => {
-            res.send(playlists);
-        }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving playlists."
-        });
-    });
+exports.findBranchePlaylists = async function(req, res) {
+    let data = [];
+    let playlists = await Playlist.find({branch_id: req.params.branchId});
+    if(req.params.withFiles){
+        for(let i=0; i < playlists.length; i++){
+            let files = await File.find({playlistId: playlists[i]._id });
+            await data.push({playlist: playlists[i], files});
+        }
+    }
+    data = req.params.withFiles ? data : playlists;
+    res.send(data);
 };
 
-exports.findBranchePlaylists = (req, res) => {
-    Playlist.
-    find({}).
-    populate({
-        path: 'branches',
-        match: { branch_id: req.param.branchId},
-    }).then(playlists => {
-        res.send(playlists);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving playlists."
-        })
-    });
-};
 
 // Find a single playlist with a playlistId
-exports.findOne = (req, res) => {
-    Playlist.findById(req.params.playlistId)
-        .then(playlist => {
-            if(!playlist) {
-                return res.status(404).send({
-                    message: "Playlist not found with id " + req.params.playlistId
-                });
-            }
-            res.send(playlist);
-        }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Playlist not found with id " + req.params.playlistId
-            });
-        }
-        return res.status(500).send({
-            message: "Error retrieving playlist with id " + req.params.playlistId
+exports.findOne =  async function(req, res) {
+    let data = [];
+    let branch = await Branch.findById(req.params.branchId);
+    if(!branch){
+        return res.status(404).send({
+            message: "Branch not found with id " + req.params.branchId
         });
-    });
+    }
+    let playlist = await Playlist.findById(req.params.playlistId);
+    if(!playlist){
+        return res.status(404).send({
+            message: "Playlist not found with id " + req.params.playlistId
+        });
+    }
+    let files = await File.find({playlistId: playlist._id });
+    res.send({playlist, files});
 };
 
 // Update a playlist identified by the playlistId in the request

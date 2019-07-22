@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "client": "webpack-dev-server --port 4000 --hot --inline --watch --progress",
-    "server": "start http://localhost:8000 && nodemon ./app/server/public/server.js localhost 8000",
+    "server": "open http://localhost:8000 && nodemon ./app/server/public/server.js localhost 8000",
     "build": "webpack -p",
     "deploy": "mern-scripts deploy",
     "start": "npm run client"
@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "minimatch": "^3.0.4",
     "mongodb": "^3.2.7",
-    "mongoose": "^5.6.5",
+    "mongoose": "^5.6.6",
     "npm-check-updates": "^3.1.20",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -37,15 +37,15 @@
     "url": "https://github.com/SmbatPoghosyan/admin.git"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.4",
-    "@babel/preset-env": "^7.5.4",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "css-loader": "^3.0.0",
-    "file-loader": "^4.0.0",
+    "css-loader": "^3.1.0",
+    "file-loader": "^4.1.0",
     "html-webpack-plugin": "^3.2.0",
     "mern-scripts": "^0.1.7",
     "nodemon": "^1.19.1",
@@ -53,7 +53,7 @@
     "serve": "^11.1.0",
     "style-loader": "^0.23.1",
     "svg-react-loader": "^0.4.6",
-    "url-loader": "^2.0.1",
+    "url-loader": "^2.1.0",
     "webpack": "^4.36.1",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"

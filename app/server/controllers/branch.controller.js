@@ -1,4 +1,5 @@
 const Branch = require('../models/branch.model.js');
+const Playlist = require('../models/playlist.model.js');
 
 // Create and Save a new Branch
 exports.create = (req, res) => {
@@ -39,25 +40,12 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single branch with a branchId
-exports.findOne = (req, res) => {
-    Branch.findById(req.params.branchId)
-        .then(branch => {
-            if(!branch) {
-                return res.status(404).send({
-                    message: "Branch not found with id " + req.params.branchId
-                });
-            }
-            res.send(branch);
-        }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Branch not found with id " + req.params.branchId
-            });
-        }
-        return res.status(500).send({
-            message: "Error retrieving branch with id " + req.params.branchId
-        });
-    });
+exports.findOne = async (req, res) => {
+    let data = [];
+    const branch = await Branch.findById(req.params.branchId);
+    const playlists = await Playlist.find({branch_id: branch._id});
+    data = {branch, playlists};
+    res.send(data);
 };
 
 // Update a branch identified by the branchId in the request
