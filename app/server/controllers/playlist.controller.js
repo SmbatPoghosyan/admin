@@ -11,7 +11,6 @@ exports.create = (req, res) => {
                     message: "Branch not found with id " + req.params.branchId
                 });
             }
-            console.log(req.body)
             if(!req.body.name) {
                 return res.status(400).send({
                     message: "Playlist name can not be empty"
@@ -122,17 +121,45 @@ exports.update = (req, res) => {
     // Find playlist and update it with the request body
     Playlist.findByIdAndUpdate(req.params.playlistId, {
         name: req.body.name,
-        screens: req.body.screens
-    }, {new: true})
+        endDate: req.body.endDate,
+        startDate: req.body.startDate,
+        totalTime: req.body.totalTime,
+        currency: req.body.currency,
+        ticker: req.body.ticker,
+    })
         .then(playlist => {
             if(!playlist) {
                 return res.status(404).send({
                     message: "Playlist not found with id " + req.params.playlistId
                 });
             }
+            File.deleteMany({playlistId: req.params.playlistId}).then(files => {
+            })
+                .catch(err => {
+                    if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+                        return res.status(404).send({
+                            message: "Playlist's files not found"
+                        });
+                    }
+                    return res.status(500).send({
+                        message: "Could not delete playlist's files"
+                    });
+                });
+            JSON.parse(req.body.files).forEach((item) => {
+                const file = new File({
+                    url: item.url,
+                    showTime: item.showTime,
+                    screen: item.screen,
+                    order: item.order,
+                    playlistId: playlist._id
+                });
+
+                file.save()
+                    .then()
+                    .catch(err => console.log(err))
+            });
             res.send({message: "You successfully update playlist!"});
         }).catch(err => {
-        console.log(err);
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
                 message: "Playlist not found with id " + req.params.playlistId
@@ -153,7 +180,19 @@ exports.delete = (req, res) => {
                     message: "Playlist not found with id " + req.params.playlistId
                 });
             }
-            res.send({message: "Playlist deleted successfully!"});
+            File.deleteMany({playlistId: playlist._id}).then(files => {
+                res.send({message: "Playlist deleted successfully!"});
+            })
+                .catch(err => {
+                    if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+                        return res.status(404).send({
+                            message: "Playlist's files not found"
+                        });
+                    }
+                    return res.status(500).send({
+                        message: "Could not delete playlist's files"
+                    });
+                })
         }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({

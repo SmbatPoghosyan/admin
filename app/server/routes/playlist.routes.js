@@ -16,10 +16,10 @@ router.get('/:branchId', playlists.findBranchePlaylists);
 router.get('/:branchId/:playlistId', playlists.findOne);
 
 // Delete a Playlist with playlistId
-router.delete('/:branchId/:playlistId', playlists.delete);
+router.delete('/:playlistId', playlists.delete);
 
 // Update a Playlist with playlistId
-router.delete('/:branchId/:playlistId', playlists.delete);
+router.put('/:playlistId', playlists.update);
 
 
 module.exports = router;
