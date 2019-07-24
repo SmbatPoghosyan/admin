@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "client": "webpack-dev-server --port 4000 --hot --inline --watch --progress",
-    "server": "open http://localhost:8000 && nodemon ./app/server/public/server.js localhost 8000",
+    "server": "start http://localhost:8000 && nodemon ./app/server/public/server.js localhost 8000",
     "build": "webpack -p",
     "deploy": "mern-scripts deploy",
     "start": "npm run client"

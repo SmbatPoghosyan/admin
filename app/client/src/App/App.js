@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Link, Switch,Redirect } from "react-router-dom";
-import { getAllBranches } from "../../api/branches";
 import "./reset.css";
 import "./App.css";
 import Branches from "../components/Branches";
@@ -15,6 +14,7 @@ const App = () => {
           <Route exact path="/" component={Branches}/>
           <Route exact path="/branches" component={Branches}/>
           <Route path="/branches/:id" component={BranchPage}/>
+          <Route component={NotFound} />
         </Switch>
       </div>
     </Router>

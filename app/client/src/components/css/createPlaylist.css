@@ -1,11 +1,12 @@
 .createPlaylist { 
-    background: rgb(210, 226, 239);
+    height: 100%;
 }
 .createPlaylist > .head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem;
+    background: rgb(210, 226, 239);
 }
 
 .close { 

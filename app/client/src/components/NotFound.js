@@ -1,5 +1,5 @@
 import React from "react" 
-import { BrowserRouter as Router, Route, Link, Switch,Redirect } from "react-router-dom";
+import { BrowserRouter as Route,Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
 const NotFound = () => {
