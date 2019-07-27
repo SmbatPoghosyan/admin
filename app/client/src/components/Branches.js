@@ -6,9 +6,15 @@ import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
-import { BrowserRouter as Router, Route, Link, Switch,Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import Branch from "./Branch";
-import { withRouter } from 'react-router';
+import { withRouter } from "react-router";
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -40,9 +46,9 @@ const Branches = props => {
   const [name, setName] = React.useState("Branch Name");
   const [screens, setScreens] = React.useState(1);
 
-    useEffect(() => {
-        getAllBranches(setBranches);
-    }, []);
+  useEffect(() => {
+    getAllBranches(setBranches);
+  }, []);
 
   const handleChangeName = event => {
     setName(event.target.value);
@@ -51,13 +57,12 @@ const Branches = props => {
     setScreens(event.target.value);
   };
   const onCreateBranch = () => {
-    if(name) {
+    if (name) {
       setName("Branch Name");
       setScreens(1);
       createBranch(name, screens, setBranches, handleClose);
       setOpen(false);
-    }
-    else{
+    } else {
       alert(`The "Name" field is empty ,please type branch name !!!`);
     }
   };
@@ -110,7 +115,6 @@ const Branches = props => {
         </div>
       </Modal>
 
-      
       <>
         <Button variant="contained" onClick={handleOpen}>
           Create
@@ -118,15 +122,16 @@ const Branches = props => {
         <div className="allListLinkContainer">
           <p className="head">Branches</p>
           <ul className="list">
-            {branches && branches.map((el, i) => (
-              <li key={i}>
-                <p>
-                  <Link to={`/branches/${el._id}`} >{el.name}</Link>
-                  <span>{i+1}</span>
-                </p>
-                <hr />
-              </li>
-            ))}
+            {branches &&
+              branches.map((el, i) => (
+                <li key={i}>
+                  <p>
+                    <Link to={`/branches/${el._id}`}>{el.name}</Link>
+                    <span>{i + 1}</span>
+                  </p>
+                  <hr />
+                </li>
+              ))}
           </ul>
         </div>
       </>

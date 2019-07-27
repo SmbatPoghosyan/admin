@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   background-color: white;
 }
 
@@ -19,18 +19,42 @@ body {
   color: black;
 }
 
-.app { 
+.app {
   display: flex;
   overflow: hidden;
   height: 100vh;
 }
 
 button {
-  background-color:  #6c96b5 !important;
+  background-color: #6c96b5 !important;
   color: #fff !important;
 }
 
 button:hover {
-  background-color: #1A4B73  !important;
-  
+  background-color: #1a4b73 !important;
+}
+
+.spaceBetWeen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.centerByFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonDesabled {
+  opacity: 0.3 !important;
+  border: 1px dashed black !important;
+}
+
+.margin0Auto {
+  margin: 0 auto;
+}
+
+.backgoundFFF {
+  background-color: #fff !important;
 }

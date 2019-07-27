@@ -44,10 +44,6 @@ const BranchPage = props => {
           <div className="allListLinkContainer">
             <p className="head">Playlists</p>
 
-            <Button variant="contained" onClick={createHandleClick}>
-              Create
-            </Button>
-
             <ul className="list listHeight">
               {playlists.length > 0
                 ? playlists.map((playlist, i) => (
@@ -86,6 +82,20 @@ const BranchPage = props => {
             <div className="playlist">
               <Switch>
                 <Route
+                  exact
+                  path={`${props.match.url}/`}
+                  render={props => (
+                    <>
+                      <div className="centerByFlex selectOrCreate">
+                        Select or Create Playlist
+                        <Button variant="contained" onClick={createHandleClick}>
+                          Create
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                />
+                <Route
                   path={`${props.match.url}/playlist/:id`}
                   render={props => <Playlist {...props} />}
                 />
@@ -94,6 +104,7 @@ const BranchPage = props => {
                   render={props => (
                     <CreatePlaylist
                       branchId={branch._id}
+                      branchScreens={branch.screens}
                       setPlaylists={setPlaylists}
                       {...props}
                     />
@@ -106,7 +117,7 @@ const BranchPage = props => {
       </div>
     </>
   ) : (
-    <h1>Loading...</h1>
+    <h1 className="centerByFlex margin0Auto">Loading...</h1>
   );
 };
 

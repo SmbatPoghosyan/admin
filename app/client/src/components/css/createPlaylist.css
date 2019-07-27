@@ -2,13 +2,14 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: #f0f8ff;
 }
 .createPlaylist > .head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
-  background: rgb(210, 226, 239);
+  background-color: #08a4e0;
 }
 
 .close {
@@ -21,30 +22,15 @@
 
 .createPlaylistBody {
   flex: 1;
-  background: #f0f8ff;
   display: flex;
 }
 
-.createPlaylistBody .nameContainer {
-  text-align: left;
-  padding: 1rem;
-}
 .createPlaylistBody .playlistTabHead {
   font-size: 1.3rem;
   margin-right: 1rem;
   line-height: 1;
   text-align: left;
   display: inline-block;
-}
-
-.totalTime {
-  text-align: left;
-  padding: 1rem;
-}
-
-.dataRangePicker {
-  padding: 1rem;
-  text-align: left;
 }
 
 .pickDataRange {
@@ -56,6 +42,7 @@
 .playlistTabsContainer {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .playlistFilesContainer {
@@ -66,4 +53,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.createButton {
+  padding: 1rem !important;
+  margin: 0.5rem !important;
+}
+
+
+
+.playlistCreateItemCont { 
+  text-align: left;
+  padding: 1rem;
+  background-color: #08a4e0;
 }

@@ -46,10 +46,11 @@
   align-items: center;
   justify-content: space-between;
   height: 100vh;
+  margin: 0.5rem;
 }
 
 .playlist {
-  margin: 0 0.5rem;
+  margin-left: 0.5rem;
   box-shadow: 0px 0px 5px 2px #969494;
   flex: 1;
 }
@@ -59,4 +60,13 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.selectOrCreate {
+  font-size: 1.5rem;
+  font-weight: bold;
+  height: 100%;
+  color: #0685f5;
+  flex-direction: column;
+  line-height: 2;
 }
