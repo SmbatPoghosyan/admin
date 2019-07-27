@@ -55,6 +55,7 @@ const Branches = props => {
       setName("Branch Name");
       setScreens(1);
       createBranch(name, screens, setBranches, handleClose);
+      setOpen(false);
     }
     else{
       alert(`The "Name" field is empty ,please type branch name !!!`);
