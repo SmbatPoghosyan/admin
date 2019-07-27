@@ -60,9 +60,7 @@ const CreatePlaylist = props => {
     setSelectedFile(event.target.files[0]);
   };
 
-  // const fileUploadHandler = (event) => {
-
-  // };
+  const fileUploadHandler = event => {};
 
   return branchId ? (
     <div className="createPlaylist">

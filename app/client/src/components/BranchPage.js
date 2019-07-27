@@ -32,7 +32,9 @@ const BranchPage = props => {
   };
 
   const deleteHandleClick = playlistId => {
-    deletePlaylist(playlistId, branch._id, setPlaylists);
+    if (confirm("Are you sure ?")) {
+      deletePlaylist(playlistId, branch._id, setPlaylists);
+    }
   };
 
   return branch && branch._id ? (

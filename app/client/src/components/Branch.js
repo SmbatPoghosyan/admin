@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -10,7 +10,7 @@ import "./css/branch.css";
 import Button from "@material-ui/core/Button";
 import { TextField } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
-import { withRouter } from 'react-router';
+import { withRouter } from "react-router";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -21,20 +21,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Branch = (props) => {
+const Branch = props => {
   const { branch, setBranches } = props;
   const classes = useStyles();
   const [name, setName] = useState(branch.name);
   const [edit, setEdit] = useState(false);
   const [screens, setScreens] = useState(branch.screens);
 
-  useEffect(()=> {
+  useEffect(() => {
     setName(props.branch.name);
     setScreens(props.branch.screens);
-  },[props]);
+  }, [props]);
 
   const handleDelete = () => {
-    deleteBranch(branch._id, setBranches);
+    if (confirm("Are you sure ?")) {
+      deleteBranch(branch._id, setBranches);
+    }
   };
   const handleEdit = () => {
     setEdit(true);
@@ -57,7 +59,10 @@ const Branch = (props) => {
   };
 
   return (
-   <div className={`branchContainer ${edit? "editModeCont" : ""}`} style={{border: `1px solid ${edit? "#236498" : "#969494"}`}}>  
+    <div
+      className={`branchContainer ${edit ? "editModeCont" : ""}`}
+      style={{ border: `1px solid ${edit ? "#236498" : "#969494"}` }}
+    >
       <div className="nameidcont">
         <div className="branchName">
           <Input
@@ -87,31 +92,32 @@ const Branch = (props) => {
           </IconButton>
         </div>
       </div>
-      <div className="branchFooter" >
+      <div className="branchFooter">
         {edit ? (
           <span className="branchButtons">
-            <Button
-              variant="contained"
-              size="small"
-              onClick={onEdit}
-            > Save </Button>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={onCancel}
-            > Cancel </Button>
+            <Button variant="contained" size="small" onClick={onEdit}>
+              {" "}
+              Save{" "}
+            </Button>
+            <Button variant="contained" size="small" onClick={onCancel}>
+              {" "}
+              Cancel{" "}
+            </Button>
           </span>
-          ): <Button size="small" variant="contained" onClick={handleClickBranch}>Open</Button> 
-        }
+        ) : (
+          <Button size="small" variant="contained" onClick={handleClickBranch}>
+            Open
+          </Button>
+        )}
         <TextField
-          className={`brancheScreen ${edit ? "editMode" : ""}`} 
+          className={`brancheScreen ${edit ? "editMode" : ""}`}
           select
           disabled={!edit}
           title="Screen"
           value={screens}
           onChange={handleChangeScreens}
         >
-        {[1, 2, 3].map(option => (
+          {[1, 2, 3].map(option => (
             <MenuItem key={option} dense={false} value={option}>
               {option}
             </MenuItem>
