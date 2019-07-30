@@ -16,6 +16,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { TextField } from "@material-ui/core";
 import "rc-time-picker/assets/index.css";
 import "./css/createPlaylist.css";
+import { createPlaylistFile } from "../../api/files";
 
 const CreatePlaylist = props => {
   const { branchId, setPlaylists, branchScreens } = props;
@@ -29,6 +30,7 @@ const CreatePlaylist = props => {
   const [isValidDate, setIsValidDate] = useState(false);
   const [files, setFiles] = useState(null);
   const [screen, setScreen] = useState(1);
+  const [uploadPercentage, setUploadPercentage] = useState();
 
   useEffect(() => {
     if (name && totalTime && startDate && endDate && isValidDate && files) {
@@ -71,14 +73,16 @@ const CreatePlaylist = props => {
 
   const selectFileHandler = event => {
     setSelectedFile(event.target.files[0]);
-    console.log(event.target);
   };
 
-  if (selectedFile) {
-    console.log("selectedFile", selectedFile);
-  }
-
-  const fileUploadHandler = event => {};
+  const fileUploadHandler = event => {
+    console.log(selectedFile.relativePath);
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("name", selectedFile.name);
+    createPlaylistFile(formData, setFiles, setUploadPercentage);
+  };
 
   return branchId ? (
     <div className="createPlaylist">
@@ -177,8 +181,15 @@ const CreatePlaylist = props => {
                     )}
                   </TextField>
                 </div>
-                <input type="file" onChange={selectFileHandler} />
-                <button onClick={fileUploadHandler}>Upload</button>
+
+                <form onSubmit={fileUploadHandler}>
+                  <input type="file" onChange={selectFileHandler} />
+                  <button type="submit">Upload</button>
+                </form>
+
+                {uploadPercentage && <h1>{uploadPercentage}%</h1>}
+
+                {files && files.path && <img src={files.path + files.name} />}
               </div>
             </>
           )}
