@@ -75,18 +75,35 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve and return all playlists by branchId from the database.
-exports.findBranchePlaylists = async function(req, res) {
+async function findBranchById(id, withFiles) {
     let data = [];
-    let playlists = await Playlist.find({branch_id: req.params.branchId});
-    if(req.params.withFiles){
+    let playlists = await Playlist.find({branch_id: id});
+    if(withFiles){
         for(let i=0; i < playlists.length; i++){
             let files = await File.find({playlistId: playlists[i]._id });
             await data.push({playlist: playlists[i], files});
         }
     }
-    data = req.params.withFiles ? data : playlists;
-    res.send(data);
+    data = withFiles ? data : playlists;
+    return data;
+}
+
+// Retrieve and return all playlists by branchId from the database.
+exports.findBranchePlaylists = async function(req, res) {
+    findBranchById(req.params.branchId, req.params.withFiles)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            if(err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Branch not found with id " + req.params.branchId
+                });
+            }
+            return res.status(500).send({
+                message: "Error updating branch with id " + req.params.branchId
+            });
+        })
 };
 
 

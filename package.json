@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "client": "webpack-dev-server --port 4000 --hot --inline --watch --progress",
-    "server": "start http://localhost:8000 && nodemon ./app/server/public/server.js localhost 8000",
+    "server": "open http://localhost:8000 && nodemon ./app/server/public/server.js localhost 8000",
     "build": "webpack -p",
     "deploy": "mern-scripts deploy",
     "start": "npm run client"
@@ -23,10 +23,13 @@
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
+    "gridfs-stream": "^1.1.1",
     "minimatch": "^3.0.4",
     "moment": "^2.24.0",
     "mongodb": "^3.2.7",
     "mongoose": "^5.6.6",
+    "multer": "^1.4.2",
+    "multer-gridfs-storage": "^3.3.0",
     "npm-check-updates": "^3.1.20",
     "rc-time-picker": "^3.7.1",
     "react": "^16.8.6",

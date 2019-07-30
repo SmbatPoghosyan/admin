@@ -39,13 +39,46 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single branch with a branchId
-exports.findOne = async (req, res) => {
+function asd(id){
+    Branch.find({_id: id})
+        .then(branches => {
+            if(!branches) {
+                return res.status(400).send({
+                    message: "Branch name can not be empty"
+                });
+            }
+            res.send(branches);
+        }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving notes."
+        });
+    });
+}
+
+async function findBranchById(id){
     let data = [];
-    const branch = await Branch.findById(req.params.branchId);
+    const branch = await Branch.findById(id);
     const playlists = await Playlist.find({branch_id: branch._id});
     data = {branch, playlists};
-    res.send(data);
+    return data;
+}
+
+// Find a single branch with a branchId
+exports.findOne =  (req, res) => {
+    findBranchById(req.params.branchId)
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => {
+            if(err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Branch not found with id " + req.params.branchId
+                });
+            }
+            return res.status(500).send({
+                message: "Error updating branch with id " + req.params.branchId
+            });
+        })
 };
 
 // Update a branch identified by the branchId in the request
