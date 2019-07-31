@@ -43,7 +43,7 @@ const Branches = props => {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState("Branch Name");
+  const [name, setName] = React.useState("");
   const [screens, setScreens] = React.useState(1);
 
   useEffect(() => {
@@ -87,6 +87,7 @@ const Branches = props => {
             id="branch-name"
             label="Name"
             value={name}
+            placeholder={"Branch Name"}
             onChange={handleChangeName}
             margin="normal"
             className="mg-16"

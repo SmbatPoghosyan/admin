@@ -72,6 +72,7 @@ const BranchPage = props => {
                   ))
                 : null}
             </ul>
+
           </div>
           <div className="headAndPlaylistcontainer">
             <div className="head">
@@ -106,6 +107,7 @@ const BranchPage = props => {
                       branchId={branch._id}
                       branchScreens={branch.screens}
                       setPlaylists={setPlaylists}
+                      playlists={playlists}
                       {...props}
                     />
                   )}

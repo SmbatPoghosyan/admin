@@ -16,10 +16,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { TextField } from "@material-ui/core";
 import "rc-time-picker/assets/index.css";
 import "./css/createPlaylist.css";
-import { createPlaylistFile } from "../../api/files";
+import {createPlaylistFile, uploadFile} from "../../api/files";
+
 
 const CreatePlaylist = props => {
-  const { branchId, setPlaylists, branchScreens } = props;
+  const { branchId,playlists, setPlaylists, branchScreens } = props;
   const [name, setName] = useState("");
   const [totalTime, setTotalTime] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -76,12 +77,11 @@ const CreatePlaylist = props => {
   };
 
   const fileUploadHandler = event => {
-    console.log(selectedFile.relativePath);
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", selectedFile);
     formData.append("name", selectedFile.name);
-    createPlaylistFile(formData, setFiles, setUploadPercentage);
+    uploadFile(formData, setFiles, setUploadPercentage);
   };
 
   return branchId ? (
@@ -188,8 +188,7 @@ const CreatePlaylist = props => {
                 </form>
 
                 {uploadPercentage && <h1>{uploadPercentage}%</h1>}
-
-                {files && files.path && <img src={files.path + files.name} />}
+                {files && files.path && <img src={files.path} />}
               </div>
             </>
           )}

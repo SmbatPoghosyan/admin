@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function createPlaylistFile(formData, setFiles, setUploadPercentage) {
+export function uploadFile(formData, setFile, setUploadPercentage) {
   axios
     .post("http://localhost:8000/upload/", formData, {
       headers: {
@@ -16,9 +16,9 @@ export function createPlaylistFile(formData, setFiles, setUploadPercentage) {
     })
     .then(response => {
       console.log("kayf", response.data);
-      setFiles({
+      setFile({
         name: response.data.filename,
-        path: response.data.destination
+        path: "http://localhost:8000/files/" + response.data.filename
       });
     })
     .catch(error => {

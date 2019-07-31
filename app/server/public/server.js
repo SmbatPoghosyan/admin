@@ -12,7 +12,7 @@ const branches = require("../routes/branch.routes");
 const plsylists = require("../routes/playlist.routes");
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, __dirname + "/../../storage/");
+    cb(null, __dirname + "/../../storage/files");
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
@@ -24,7 +24,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "../../../build")));
+app.use(express.static(path.join(__dirname, "../../storage")));
 app.use("/branches", branches);
 app.use("/playlists", plsylists);
 
@@ -43,9 +43,5 @@ mongoose.connect(dbConfig.url, {
 app.get("/", (req, res) => {
   res.send("Hiiii");
 });
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, '../../../build', 'index.html'));
-// });
 
 app.listen(port, _ => console.log(`The server is listening on port ${port}`));
