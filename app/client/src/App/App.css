@@ -46,7 +46,7 @@ button:hover {
   justify-content: center;
 }
 
-.buttonDesabled {
+.buttonDisabled {
   opacity: 0.3 !important;
   border: 1px dashed black !important;
 }

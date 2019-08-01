@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export function uploadFile(formData, setFile, setUploadPercentage) {
+export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
   axios
     .post("http://localhost:8000/upload/", formData, {
       headers: {
@@ -16,7 +16,7 @@ export function uploadFile(formData, setFile, setUploadPercentage) {
     })
     .then(response => {
       console.log("kayf", response.data);
-      setFile({
+      setUploadFileItem({
         ...response.data,
         path: "http://localhost:8000/files/" + response.data.filename
       });

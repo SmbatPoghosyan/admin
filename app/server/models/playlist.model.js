@@ -14,10 +14,6 @@ const PlaylistSchema = Schema({
         type: Date,
         required: true
     },
-    totalTime: {
-        type: Number,
-        required: true
-    },
     currency: {
         type: Boolean,
         required: true
@@ -28,7 +24,7 @@ const PlaylistSchema = Schema({
     },
     branch_id: { type: Schema.Types.ObjectId, ref: 'Branch' },
 }, {
-    timestamps: true
-});
+        timestamps: true
+    });
 
 module.exports = mongoose.model("Playlist", PlaylistSchema);

@@ -13,9 +13,9 @@ import DatetimeRangePicker from "react-datetime-range-picker";
 import moment from "moment";
 import MenuItem from "@material-ui/core/MenuItem";
 import { TextField } from "@material-ui/core";
-import "rc-time-picker/assets/index.css";
 import "./css/createPlaylist.css";
 import { uploadFile } from "../../api/files";
+
 
 const CreatePlaylist = props => {
   const { branchId, playlists, setPlaylists, branchScreens } = props;
@@ -24,18 +24,20 @@ const CreatePlaylist = props => {
   const [endDate, setEndDate] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [disableCreate, setDisableCreate] = useState(true);
-  const [file, setFile] = useState(null);
+  const [enableUpload, setEnableUpload] = useState(false);
+  const [uploadFileItem, setUploadFileItem] = useState(null);
   const [screen, setScreen] = useState(1);
   const [uploadPercentage, setUploadPercentage] = useState();
   const [day, setDay] = useState("");
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
   const [second, setSecond] = useState("");
-  const [showTime, setShowTime] = useState(null);
+  const [showTime, setShowTime] = useState(0);
   const [order, setOrder] = useState("");
+  const [files, setFiles] = useState([]);
 
   useEffect(() => {
-    let miliseconds =
+    const miliseconds =
       (second ? second : 0) * 1000 +
       (minute ? minute : 0) * 60 * 1000 +
       (hour ? hour : 0) * 60 * 60 * 1000 +
@@ -44,19 +46,57 @@ const CreatePlaylist = props => {
   }, [day, hour, minute, second]);
 
   useEffect(() => {
-    if (name && startDate && endDate && file && showTime && order) {
-      setDisableCreate(false);
+    if (showTime && order && screen && selectedFile) {
+      setEnableUpload(true);
+      if (uploadFileItem && name && startDate && endDate) {
+        setDisableCreate(false);
+      }
     }
-  }, [name, startDate, endDate, file, showTime, order]);
+    else {
+      setEnableUpload(false);
+      if (files.length === 0) {
+        setDisableCreate(true);
+      }
+    }
+  }, [name, startDate, endDate, uploadFileItem, showTime, order, screen, selectedFile]);
+
+  useEffect(() => {
+    if (uploadFileItem) {
+      setFiles([
+        ...files,
+        {
+          showTime,
+          order,
+          screen,
+          url: uploadFileItem.path
+        }
+      ])
+    }
+    setTimeout(() => {
+      setShowTime(0);
+      setOrder("");
+      setScreen(1);
+      setDay("");
+      setHour("");
+      setMinute("");
+      setSecond("");
+      setUploadFileItem(null);
+      setSelectedFile(null);
+      console.log("3333", files)
+    }, 500);
+
+  }, [uploadFileItem]);
 
   const createHandleClick = () => {
-      let playlistObj = {
-        name,
-        endDate,
-        startDate,
-        files: JSON.stringify([{ url, screen, order }, { url, screen, order }])
-      };
-      //createBranchPlaylist(branchId,playlistObj,setPlaylists);
+    let playlistObj = {
+      name,
+      endDate,
+      startDate,
+      currency: false,
+      ticker: false,
+      files: JSON.stringify([{ url: "url1", screen, order, showTime }])
+    };
+    createBranchPlaylist(branchId, playlistObj, setPlaylists);
   };
 
   const handleChangeName = event => {
@@ -69,10 +109,6 @@ const CreatePlaylist = props => {
       setEndDate(moment(value.start).format());
     }
   }
-
-  const selectFileHandler = event => {
-    setSelectedFile(event.target.files[0]);
-  };
 
   const handleChangeDay = event => {
     let val = event.target.value ? parseInt(event.target.value) : "";
@@ -98,25 +134,27 @@ const CreatePlaylist = props => {
       setSecond(val);
     }
   };
+  const selectFileHandler = event => {
+    setSelectedFile(event.target.files[0]);
+  };
 
   const fileUploadHandler = event => {
     event.preventDefault();
     const formData = new FormData();
     formData.append("file", selectedFile);
-    formData.append("name", selectedFile.name);
-    uploadFile(formData, setFile, setUploadPercentage);
+    uploadFile(formData, setUploadFileItem, setUploadPercentage);
   };
 
   const strDay = `D:${day || day === 0 ? (day < 10 ? "0" + day : day) : " --"}`;
   const strHour = `H:${
     hour || hour === 0 ? (hour < 10 ? "0" + hour : hour) : " --"
-  }`;
+    }`;
   const strMinute = `M:${
     minute || minute === 0 ? (minute < 10 ? "0" + minute : minute) : " --"
-  }`;
+    }`;
   const strSecond = `S:${
     second || second === 0 ? (second < 10 ? "0" + second : second) : " --"
-  }`;
+    }`;
 
   return branchId ? (
     <div className="createPlaylist">
@@ -185,7 +223,7 @@ const CreatePlaylist = props => {
                   onChange={handleChangeSecond}
                   value={second}
                 />
-                <div>{`${strDay} ${strHour} ${strMinute} ${strSecond} `}</div>
+                <div style={{ color: "#fff" }}>{`${strDay} ${strHour} ${strMinute} ${strSecond} `}</div>
               </div>
             </div>
             <div className="playlistCreateItemCont spaceBetWeen">
@@ -195,6 +233,7 @@ const CreatePlaylist = props => {
                 type="number"
                 title="order"
                 min="0"
+                value={order}
                 onChange={e => setOrder(e.target.value)}
               />
             </div>
@@ -225,20 +264,20 @@ const CreatePlaylist = props => {
                       {uploadPercentage}%
                     </label>
                   )}
-                  <button type="submit">Upload</button>
+                  <button disabled={!enableUpload} type="submit" className={!enableUpload ? "buttonDisabled" : ""}>Upload</button>
                 </span>
               </div>
             </form>
-            {file && file.path && (
+            {uploadFileItem && uploadFileItem.path && (
               <div className="fileContainer">
-                {file.mimetype.split("/")[0] === "video" ? (
-                  <video src={file.path} controls preload="none">
+                {uploadFileItem.mimetype.split("/")[0] === "video" && (
+                  <video src={uploadFileItem.path} controls preload="none">
                     Your browser does not support the video tag.
                   </video>
-                ) : null}
-                {file.mimetype.split("/")[0] === "image" ? (
-                  <img src={file.path} />
-                ) : null}
+                )}
+                {uploadFileItem.mimetype.split("/")[0] === "image" && (
+                  <img src={uploadFileItem.path} />
+                )}
               </div>
             )}
           </div>
@@ -277,16 +316,16 @@ const CreatePlaylist = props => {
       </div>
       <Button
         variant="contained"
-        //onClick={createHandleClick}
-        className={`createButton ${disableCreate ? "buttonDesabled" : ""}`}
+        onClick={createHandleClick}
+        className={`createButton ${disableCreate ? "buttonDisabled" : ""}`}
         disabled={disableCreate}
       >
         Create
       </Button>
     </div>
   ) : (
-    <h1 className="centerByFlex">Loading...</h1>
-  );
+      <h1 className="centerByFlex">Loading...</h1>
+    );
 };
 
 export default CreatePlaylist;

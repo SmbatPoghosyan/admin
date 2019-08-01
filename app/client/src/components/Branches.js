@@ -15,6 +15,8 @@ import {
 } from "react-router-dom";
 import Branch from "./Branch";
 import { withRouter } from "react-router";
+
+
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -43,7 +45,7 @@ const Branches = props => {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState("name");
   const [screens, setScreens] = React.useState(1);
 
   useEffect(() => {
@@ -58,7 +60,7 @@ const Branches = props => {
   };
   const onCreateBranch = () => {
     if (name) {
-      setName("Branch Name");
+      setName("name");
       setScreens(1);
       createBranch(name, screens, setBranches, handleClose);
       setOpen(false);

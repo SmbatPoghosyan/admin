@@ -9,9 +9,11 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
-  background-color: #08a4e0;
+  background: linear-gradient(90deg, rgb(120, 166, 204) 0%, rgba(68,113,142,0.8435749299719888) 100%, rgba(32,28,106,1) 100%);
 }
-
+.createPlaylist > .head > span {
+  color:#fff
+}
 .close {
   display: inline-block;
   width: 30px;
@@ -32,6 +34,7 @@
   line-height: 1;
   text-align: left;
   display: inline-block;
+  color: #fff;
 }
 
 .pickDataRange {
@@ -57,12 +60,13 @@
 
 .createButton {
   padding: 1rem !important;
+  margin: 0.5rem !important;
 }
 
 .playlistCreateItemCont {
   text-align: left;
   padding: 0.4rem;
-  background-color: #08a4e0;
+  background: linear-gradient(90deg, rgb(120, 166, 204) 0%, rgba(68,113,142,0.8435749299719888) 100%, rgba(32,28,106,1) 100%);
 }
 
 .fileContainer {
