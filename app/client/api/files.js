@@ -17,7 +17,7 @@ export function uploadFile(formData, setFile, setUploadPercentage) {
     .then(response => {
       console.log("kayf", response.data);
       setFile({
-        name: response.data.filename,
+        ...response.data,
         path: "http://localhost:8000/files/" + response.data.filename
       });
     })
