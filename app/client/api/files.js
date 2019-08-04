@@ -9,12 +9,15 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
         "Content-Type": "multipart/form-data"
       },
       onUploadProgress: progressEvent => {
-        setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)));
+        setUploadPercentage(
+          parseInt(
+            Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          )
+        );
       },
-        cancelToken: new CancelToken(function executor(c) {
-            // An executor function receives a cancel function as a parameter
-            cancel = c;
-        })
+      cancelToken: new CancelToken(function executor(c) {
+        cancel = c;
+      })
     })
     .then(response => {
       console.log("kayf", response.data);
@@ -24,12 +27,12 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
       });
     })
     .catch(error => {
-        if (axios.isCancel(error)) {
-            console.log('Request canceled', error.message);
-            alert('Upload canceled');
-            setUploadPercentage("");
-        } else{
-            alert(error.message);
-        }
+      if (axios.isCancel(error)) {
+        console.log("Request canceled", error.message);
+        alert("Upload canceled");
+        setUploadPercentage("");
+      } else {
+        alert(error.message);
+      }
     });
 }

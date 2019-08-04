@@ -10,11 +10,8 @@ import { createBranchPlaylist } from "../../api/playlists";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import DatetimeRangePicker from "react-datetime-range-picker";
-import Checkbox from '@material-ui/core/Checkbox';
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
-import MenuItem from "@material-ui/core/MenuItem";
-import { TextField } from "@material-ui/core";
 import "./css/createPlaylist.css";
 import { uploadFile } from "../../api/files";
 import { cancel } from "../../api/files";
@@ -95,8 +92,10 @@ const CreatePlaylist = props => {
   function dateTimeRangePickerChange(value) {
     const start = new Date(value.start).valueOf();
     const end = new Date(value.end).valueOf();
+
     let minDate = -Infinity;
     let maxDate = Infinity;
+
     for(let item of disabledDates) {
       const startRange = new Date(item.startDate).valueOf();
       const endRange = new Date(item.endDate).valueOf();
@@ -115,23 +114,17 @@ const CreatePlaylist = props => {
     }
 
     if(start && start > minDate && start < maxDate){
-      if(end) {
+      if( end && end > minDate && end < maxDate){
         setIsInvalidDate(false);
+        setEndDate(end);
       }
       setStartDate(start);
-      return;
-    }
-
-    if( end && end > minDate && end < maxDate){
-      if(start) {
-        setIsInvalidDate(false);
-      }
-      setEndDate(end);
       return;
     }
     setIsInvalidDate(true);
     alert(`This date is in used!!! try less than ${new Date(maxDate).toLocaleString()} .`);
   };
+
   const handleChangeDay = event => {
     let val = event.target.value ? parseInt(event.target.value) : "";
     if (val <= 365 && val >= 0) {
@@ -178,7 +171,6 @@ const CreatePlaylist = props => {
     formData.append("file", selectedFile);
     uploadFile(formData, setUploadFileItem, setUploadPercentage);
   };
-
 
   const checkBoxHandleChange = name => event => {
     if((check.checked1 && !check.checked2 && name==="checked3")|| (check.checked3 && !check.checked2 && name==="checked1") ) {
@@ -229,13 +221,13 @@ const CreatePlaylist = props => {
     sec  -= hrs*3600;
     let mnts = Math.floor(sec / 60);
     sec  -= mnts*60;
-    return (days + " d, " + hrs + " h, " + mnts + " m, " + sec + " s");
+    return (days + "d:" + hrs + "h:" + mnts + "m:" + sec + "s");
   };
 
-  const strDay = `D:${day || day === 0 ? (day < 10 ? "0" + day : day) : " --"}`;
-  const strHour = `H:${hour || hour === 0 ? (hour < 10 ? "0" + hour : hour) : " --"}`;
-  const strMinute = `M:${minute || minute === 0 ? (minute < 10 ? "0" + minute : minute) : " --"}`;
-  const strSecond = `S:${second || second === 0 ? (second < 10 ? "0" + second : second) : " --"}`;
+  const strDay = `${day || day === 0 ? (day < 10 ? "0" + day : day) : " --"}:d`;
+  const strHour = `${hour || hour === 0 ? (hour < 10 ? "0" + hour : hour) : " --"}:h`;
+  const strMinute = `${minute || minute === 0 ? (minute < 10 ? "0" + minute : minute) : " --"}:m`;
+  const strSecond = `${second || second === 0 ? (second < 10 ? "0" + second : second) : " --"}:s`;
 
   return branchId ? (
     <div className="createPlaylist">
@@ -263,8 +255,8 @@ const CreatePlaylist = props => {
               <DatetimeRangePicker
                   inputProps={{className:"margin05",placeholder:"pick date and time"}}
                   timeFormat
-                  startDate={new Date(startDate)}
-                  endDate={new Date(endDate)}
+                  startDate={startDate ? new Date(startDate): ""}
+                  endDate={endDate ? new Date(endDate): ""}
                   onChange={dateTimeRangePickerChange}
                   className="marginRight5 centerByFlex"
               />
@@ -389,7 +381,7 @@ const CreatePlaylist = props => {
 
             <div className="playlistFilesContainer spaceBetWeen">
               <>
-                <div className="allListLinkContainer" style={{ margin: "0.5rem" }}>
+                <div className="allListLinkContainer" style={{ margin: "0.5rem",maxHeight: "54vh" }}>
                   <p className="head">File List</p>
 
                   <ul className="list listHeight">
@@ -398,19 +390,23 @@ const CreatePlaylist = props => {
                           <li className="playlistLink" key={i}>
                             <div>
                               <div>{i + 1}. {file.name}</div>
-                                <span className="fileLi">Screen: {file.screen}. </span>
-                                <span className="fileLi">Order: {file.order}. </span>
-                                <span className="fileLi">Time: {convertSeconds(file.showTime)}. </span>
-                              <span>
-                                <IconButton
-                                  aria-label="Delete"
-                                  onClick={() => deleteFile(file.name)}
-                                  title="Delete"
-                                  style={{ padding: "3px" }}
-                                >
-                                  <DeleteIcon fontSize="small" />
-                                </IconButton>
-                              </span>
+                              <div className="spaceBetWeen">
+                                <div>
+                                  <span className="fileLi">Screen: <strong className="bold">{file.screen}</strong>. </span>
+                                  <span className="fileLi">Order: <strong className="bold">{file.order}</strong>. </span>
+                                  <span className="fileLi">Time: {convertSeconds(file.showTime)}. </span>
+                                </div>
+                                <span>
+                                  <IconButton
+                                    aria-label="Delete"
+                                    onClick={() => deleteFile(file.name)}
+                                    title="Delete"
+                                    style={{ padding: "3px" }}
+                                  >
+                                    <DeleteIcon fontSize="small" />
+                                  </IconButton>
+                                </span>
+                              </div>
                             </div>
                             <hr />
                           </li>
