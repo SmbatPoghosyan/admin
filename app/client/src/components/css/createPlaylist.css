@@ -50,6 +50,9 @@
 }
 
 .playlistFilesContainer {
+  height: 100%;
+  flex:1;
+  max-width: 400px;
 }
 
 .spaceBetWeen {
@@ -78,4 +81,22 @@
 
 .showTimeCont > input {
   width: 65px;
+}
+
+.fileLi {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.createFileCont {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 3;
+}
+
+.marginRight5 {
+  margin-right: 5rem;
 }

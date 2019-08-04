@@ -55,6 +55,15 @@ button:hover {
   margin: 0 auto;
 }
 
-.backgoundFFF {
+.margin05 { margin: 0.5rem}
+.padding05 { padding: 0.5rem}
+.backgroundFFF {
   background-color: #fff !important;
+}
+
+
+.spaceEvenly {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }

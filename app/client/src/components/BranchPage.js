@@ -20,12 +20,33 @@ import { getAllBranchePlaylists, deletePlaylist } from "../../api/playlists";
 const BranchPage = props => {
   const [branch, setBranch] = useState({});
   const [playlists, setPlaylists] = useState([]);
+  const [disabledDates,setDisabledDates] = useState([]);
   const { params } = props.match;
+
 
   useEffect(() => {
     getBranchById(params.id, setBranch, setPlaylists);
     getAllBranchePlaylists(params.id, setPlaylists);
   }, []);
+
+  useEffect(()=>{
+    initDisabledDates();
+  },[playlists]);
+
+  const initDisabledDates  = () => {
+    let arr = [];
+    playlists.forEach((playlist)=>{
+      arr.push(
+          {
+            id: playlist._id,
+            startDate: new Date(playlist.startDate).valueOf() ,
+            endDate: new Date(playlist.endDate).valueOf()
+          });
+    });
+    arr.sort((a,b) => a.startDate-b.startDate);
+    console.log(arr);
+    setDisabledDates(arr);
+  };
 
   const createHandleClick = () => {
     props.history.push(`/branches/${branch._id}/create`);
@@ -108,6 +129,7 @@ const BranchPage = props => {
                       branchScreens={branch.screens}
                       setPlaylists={setPlaylists}
                       playlists={playlists}
+                      disabledDates={disabledDates}
                       {...props}
                     />
                   )}

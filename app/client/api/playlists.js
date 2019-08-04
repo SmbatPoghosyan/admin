@@ -27,10 +27,9 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists){
     })
         .then(response => {
             getAllBranchePlaylists(branchId, setPlaylists);
-            alert(response.data.message);
         })
         .catch(error => {
-            alert(error.message);
+            alert(error.message)
         });
 };
 
