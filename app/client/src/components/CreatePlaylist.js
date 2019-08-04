@@ -113,11 +113,21 @@ const CreatePlaylist = props => {
         return;
       }
     }
-    if(end > minDate && end < maxDate){
-      setIsInvalidDate(false);
+
+    if(start && start > minDate && start < maxDate){
+      if(end) {
+        setIsInvalidDate(false);
+      }
       setStartDate(start);
+      return;
+    }
+
+    if( end && end > minDate && end < maxDate){
+      if(start) {
+        setIsInvalidDate(false);
+      }
       setEndDate(end);
-      return
+      return;
     }
     setIsInvalidDate(true);
     alert(`This date is in used!!! try less than ${new Date(maxDate).toLocaleString()} .`);
