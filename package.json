@@ -4,15 +4,22 @@
   "description": "That's my admin project.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 4000 --hot --inline --watch --progress"
+    "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "proxy": "http://mighty-sierra-48879.herokuapp.com",
+  "homepage": "https://smbatpoghosyan.github.io/admin/",
   "author": "Author of admin",
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.2.1",
     "@material-ui/icons": "^4.2.1",
     "axios": "^0.19.0",
+    "gh-pages": "^2.1.0",
     "moment": "^2.24.0",
     "npm-check-updates": "^3.1.20",
     "react": "^16.8.6",
