@@ -4,32 +4,16 @@
   "description": "That's my admin project.",
   "main": "index.js",
   "scripts": {
-    "client": "webpack-dev-server --port 4000 --hot --inline --watch --progress",
-    "server": "start http://localhost:8000 && nodemon ./app/server/public/server.js localhost 8000",
-    "build": "webpack -p",
-    "deploy": "mern-scripts deploy",
-    "start": "npm run client"
+    "start": "webpack-dev-server --port 4000 --hot --inline --watch --progress"
   },
-  "engines": {
-    "node": "^8.5.0"
-  },
+  "proxy": "http://mighty-sierra-48879.herokuapp.com",
   "author": "Author of admin",
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.2.1",
     "@material-ui/icons": "^4.2.1",
     "axios": "^0.19.0",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.0.0",
-    "express": "^4.17.1",
-    "gridfs-stream": "^1.1.1",
-    "minimatch": "^3.0.4",
     "moment": "^2.24.0",
-    "mongodb": "^3.2.7",
-    "mongoose": "^5.6.6",
-    "multer": "^1.4.2",
-    "multer-gridfs-storage": "^3.3.0",
     "npm-check-updates": "^3.1.20",
     "react": "^16.8.6",
     "react-datetime": "^2.16.3",
@@ -53,8 +37,6 @@
     "css-loader": "^3.1.0",
     "file-loader": "^4.1.0",
     "html-webpack-plugin": "^3.2.0",
-    "mern-scripts": "^0.1.7",
-    "nodemon": "^1.19.1",
     "opn-cli": "^5.0.0",
     "serve": "^11.1.0",
     "style-loader": "^0.23.1",

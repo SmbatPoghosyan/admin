@@ -4,7 +4,7 @@ export let cancel;
 
 export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
   axios
-    .post("http://localhost:8000/upload/", formData, {
+    .post("/upload/", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       },
@@ -23,7 +23,7 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
       console.log("kayf", response.data);
       setUploadFileItem({
         ...response.data,
-        path: "http://localhost:8000/files/" + response.data.filename
+        path: "/files/" + response.data.filename
       });
     })
     .catch(error => {

@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 const config = {
-  entry: path.resolve(__dirname, 'app/client/public/index.js'),
+  entry: path.resolve(__dirname, 'app/public/index.js'),
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'app.bundled.js',
@@ -36,8 +36,8 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './app/client/public/index.html',
-      favicon: './app/client/public/favicon.ico'
+      template: './app/public/index.html',
+      favicon: './app/public/favicon.ico'
     }),
   ],
   devServer: {
@@ -48,8 +48,9 @@ const config = {
     overlay: true,
     port: 4000,
     inline: true,
+    proxy: { "/**": { target: 'http://mighty-sierra-48879.herokuapp.com', secure: false, changeOrigin: true }},
     open: 'http://localhost:4000'
   },
-}
+};
 
 module.exports = config;
