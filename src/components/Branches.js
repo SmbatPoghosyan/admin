@@ -125,7 +125,7 @@ const Branches = props => {
         <div className="allListLinkContainer">
           <p className="head">Branches</p>
           <ul className="list">
-            {branches &&
+            {branches && branches.length &&
               branches.map((el, i) => (
                 <li key={i}>
                   <p>
