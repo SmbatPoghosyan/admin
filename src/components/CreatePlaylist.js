@@ -6,15 +6,15 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import { createBranchPlaylist } from "../../api/playlists";
+import { createBranchPlaylist } from "../api/playlists";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import DatetimeRangePicker from "react-datetime-range-picker";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import "./css/createPlaylist.css";
-import { uploadFile } from "../../api/files";
-import { cancel } from "../../api/files";
+import { uploadFile } from "../api/files";
+import { cancel } from "../api/files";
 
 
 const CreatePlaylist = props => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getBranchById } from "../../api/branches";
+import { getBranchById } from "../api/branches";
 import {
   BrowserRouter as Router,
   Route,
@@ -15,7 +15,7 @@ import "./css/branchPage.css";
 import "./css/branches.css";
 import CreatePlaylist from "./CreatePlaylist";
 import { withRouter } from "react-router";
-import { getAllBranchePlaylists, deletePlaylist } from "../../api/playlists";
+import { getAllBranchePlaylists, deletePlaylist } from "../api/playlists";
 
 const BranchPage = props => {
   const [branch, setBranch] = useState({});
@@ -53,7 +53,7 @@ const BranchPage = props => {
   };
 
   const deleteHandleClick = playlistId => {
-    if (confirm("Are you sure ?")) {
+    if (window.confirm("Are you sure ?")) {
       deletePlaylist(playlistId, branch._id, setPlaylists);
     }
   };

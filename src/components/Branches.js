@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { createBranch, getAllBranches } from "../../api/branches";
+import { createBranch, getAllBranches } from "../api/branches";
 import "./css/branches.css";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";

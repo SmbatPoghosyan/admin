@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Icon from "@material-ui/core/Icon";
-import { deleteBranch } from "../../api/branches";
-import { updateBranch } from "../../api/branches";
+import { deleteBranch } from "../api/branches";
+import { updateBranch } from "../api/branches";
 import Input from "@material-ui/core/Input";
 import "./css/branch.css";
 import Button from "@material-ui/core/Button";
@@ -34,7 +34,7 @@ const Branch = props => {
   }, [props]);
 
   const handleDelete = () => {
-    if (confirm("Are you sure ?")) {
+    if (window.confirm("Are you sure ?")) {
       deleteBranch(branch._id, setBranches);
     }
   };

@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 const config = {
-  entry: path.resolve(__dirname, 'app/public/index.js'),
+  entry: path.resolve(__dirname, '/public/index.js'),
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'app.bundled.js',
@@ -36,8 +36,8 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './app/public/index.html',
-      favicon: './app/public/favicon.ico'
+      template: './public/index.html',
+      favicon: './public/favicon.ico'
     }),
   ],
   devServer: {

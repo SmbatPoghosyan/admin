@@ -46,7 +46,7 @@ export function deletePlaylist(playlistId,branchId, setPlaylists){
 };
 
 export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists ){
-    axios.put('/branches/' + id,{
+    axios.put('/branches/' + playlistId,{
             ...playlistInfo
         }
     ).then(response => {
