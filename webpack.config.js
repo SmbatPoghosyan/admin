@@ -39,6 +39,10 @@ const config = {
       template: './public/index.html',
       favicon: './public/favicon.ico'
     }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"production"',
+      'process.env.REACT_APP_BASE_API_URL': '"https://mighty-sierra-48879.herokuapp.com"'
+    }),
   ],
   devServer: {
     historyApiFallback: true,

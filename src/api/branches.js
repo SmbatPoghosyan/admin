@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function getAllBranches(setBranches) {
   axios
-    .get("https://mighty-sierra-48879.herokuapp.com/branches/", {})
+    .get(process.env.REACT_APP_BASE_API_URL + "/branches/", {})
     .then(response => {
       setBranches(response.data);
     })
