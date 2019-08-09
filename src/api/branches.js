@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function getAllBranches(setBranches) {
   axios
-    .get(process.env.NODE_ENV + "/branches/", {})
+    .get(process.env.REACT_APP_NODE_ENV + "/branches/", {})
     .then(response => {
       setBranches(response.data);
     })
