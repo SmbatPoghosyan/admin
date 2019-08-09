@@ -4,7 +4,7 @@ export let cancel;
 
 export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
   axios
-    .post("/upload/", formData, {
+    .post("https://mighty-sierra-48879.herokuapp.com/upload/", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       },
@@ -23,7 +23,7 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
       console.log("kayf", response.data);
       setUploadFileItem({
         ...response.data,
-        path: "/files/" + response.data.filename
+        path: "https://mighty-sierra-48879.herokuapp.com/files/" + response.data.filename
       });
     })
     .catch(error => {

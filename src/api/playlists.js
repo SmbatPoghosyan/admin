@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export function getAllBranchePlaylists(branchId, setPlaylists){
-    axios.get('/playlists/' + branchId,{})
+    axios.get('https://mighty-sierra-48879.herokuapp.com/playlists/' + branchId,{})
         .then(response => {
             setPlaylists(response.data);
         })
@@ -11,7 +11,7 @@ export function getAllBranchePlaylists(branchId, setPlaylists){
 };
 
 export function getPlaylistById(branchId, paylistId,setPlaylist, setFiles){
-    axios.get('/playlists/' + branchId + '/' + paylistId,{})
+    axios.get('https://mighty-sierra-48879.herokuapp.com/playlists/' + branchId + '/' + paylistId,{})
         .then(response => {
             setPlaylist(response.data.playlist);
             setFiles(response.data.files);
@@ -22,7 +22,7 @@ export function getPlaylistById(branchId, paylistId,setPlaylist, setFiles){
 };
 
 export function createBranchPlaylist(branchId, playlistInfo, setPlaylists){
-    axios.post('/playlists/' + branchId,{
+    axios.post('https://mighty-sierra-48879.herokuapp.com/playlists/' + branchId,{
         ...playlistInfo
     })
         .then(response => {
@@ -35,7 +35,7 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists){
 
 export function deletePlaylist(playlistId,branchId, setPlaylists){
     axios.delete(
-        '/playlists/' + playlistId)
+        'https://mighty-sierra-48879.herokuapp.com/playlists/' + playlistId)
         .then(response => {
             getAllBranchePlaylists(branchId, setPlaylists);
             alert(response.data.message)
@@ -46,7 +46,7 @@ export function deletePlaylist(playlistId,branchId, setPlaylists){
 };
 
 export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists ){
-    axios.put('/branches/' + playlistId,{
+    axios.put('https://mighty-sierra-48879.herokuapp.com/branches/' + playlistId,{
             ...playlistInfo
         }
     ).then(response => {
