@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function getAllBranches(setBranches) {
   axios
-    .get("/branches/", {})
+    .get("http://mighty-sierra-48879.herokuapp.com/branches/", {})
     .then(response => {
       setBranches(response.data);
     })
