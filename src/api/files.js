@@ -1,10 +1,11 @@
 import axios from "axios";
+import baseUrl from "./index";
 const CancelToken = axios.CancelToken;
 export let cancel;
 
 export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
   axios
-    .post("https://mighty-sierra-48879.herokuapp.com/upload/", formData, {
+    .post(baseUrl + "/upload/", formData, {
       headers: {
         "Content-Type": "multipart/form-data"
       },
@@ -23,7 +24,7 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage) {
       console.log("kayf", response.data);
       setUploadFileItem({
         ...response.data,
-        path: "https://mighty-sierra-48879.herokuapp.com/files/" + response.data.filename
+        path: baseUrl + "/files/" + response.data.filename
       });
     })
     .catch(error => {

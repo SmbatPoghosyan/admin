@@ -1,8 +1,9 @@
 import axios from "axios";
+import baseUrl from "./index";
 
 export function getAllBranches(setBranches) {
   axios
-    .get(process.env.REACT_APP_BASE_API_URL + "/branches/", {})
+    .get(baseUrl + "/branches/", {})
     .then(response => {
       setBranches(response.data);
     })
@@ -13,7 +14,7 @@ export function getAllBranches(setBranches) {
 
 export function getBranchById(id, setBranch, setPlaylists) {
   axios
-    .get("https://mighty-sierra-48879.herokuapp.com/branches/" + id, {})
+    .get(baseUrl + "/branches/" + id, {})
     .then(response => {
       console.log(response.data);
       setBranch(response.data.branch);
@@ -28,7 +29,7 @@ export function getBranchById(id, setBranch, setPlaylists) {
 
 export function createBranch(name, screens, setBranches, handleClose) {
   axios
-    .post("https://mighty-sierra-48879.herokuapp.com/branches/", {
+    .post(baseUrl + "/branches/", {
       name,
       screens
     })
@@ -44,7 +45,7 @@ export function createBranch(name, screens, setBranches, handleClose) {
 
 export function deleteBranch(id, setBranches) {
   axios
-    .delete("https://mighty-sierra-48879.herokuapp.com/branches/" + id)
+    .delete(baseUrl + "/branches/" + id)
     .then(response => {
       getAllBranches(setBranches);
       alert(response.data.message);
@@ -56,7 +57,7 @@ export function deleteBranch(id, setBranches) {
 
 export function updateBranch(id, name, screens, setBranches) {
   axios
-    .put("https://mighty-sierra-48879.herokuapp.com/branches/" + id, {
+    .put(baseUrl + "/branches/" + id, {
       name,
       screens
     })

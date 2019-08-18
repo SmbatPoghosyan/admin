@@ -15,6 +15,8 @@ import IconButton from "@material-ui/core/IconButton";
 import "./css/createPlaylist.css";
 import { uploadFile } from "../api/files";
 import { cancel } from "../api/files";
+import { TextField } from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
 
 
 const CreatePlaylist = props => {
@@ -26,14 +28,18 @@ const CreatePlaylist = props => {
   const [disableCreate, setDisableCreate] = useState(true);
   const [enableUpload, setEnableUpload] = useState(false);
   const [uploadFileItem, setUploadFileItem] = useState(null);
-  const [screen, setScreen] = useState(1);
+  const [screen, setScreen] = useState([]);
   const [uploadPercentage, setUploadPercentage] = useState();
   const [day, setDay] = useState("");
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
   const [second, setSecond] = useState("");
   const [showTime, setShowTime] = useState(0);
-  const [order, setOrder] = useState(1);
+  const [order, setOrder] = useState({
+    order1: [],
+    order2: [],
+    order3: []
+  });
   const [files, setFiles] = useState([]);
   const [isInvalidDate, setIsInvalidDate] = useState(true);
   const [check, setCheck] = useState({
@@ -41,6 +47,19 @@ const CreatePlaylist = props => {
     checked2: false,
     checked3: false,
   });
+  const [maxOrder,setMaxOrder] = useState(1);
+  const [orderTemp,setOrderTemp] = useState(1);
+
+  useEffect(() => {
+    let max = 0;
+    screen.forEach(s => {
+      let arr = order[`order${s}`];
+      let temp = Math.max(...arr);
+      max = max > temp ? max : temp;
+    })
+    setMaxOrder(max + 1);
+    setOrderTemp(max + 1);  
+  }, [screen]);
 
   useEffect(() => {
     const seconds =
@@ -67,7 +86,7 @@ const CreatePlaylist = props => {
     else {
       setEnableUpload(false);
     }
-  }, [ uploadFileItem, showTime, order, screen, selectedFile]);
+  }, [uploadFileItem, showTime, order, screen, selectedFile]);
 
   const createHandleClick = () => {
     const playlistObj = {
@@ -152,9 +171,9 @@ const CreatePlaylist = props => {
   const selectFileHandler = event => {
     setSelectedFile(event.target.files[0]);
   };
-  const deleteFile =(name) => {
-    setFiles(files.filter(function( obj ) {
-      return obj.name !== name;
+  const deleteFile =(i) => {
+    setFiles(files.filter(function(v, ind ) {
+      return ind !== i;
     }));
   };
   const resetForm = () => {
@@ -182,17 +201,70 @@ const CreatePlaylist = props => {
         checked2: false,
         checked3: false
       });
+      setScreen([])
       return;
     }
+    let screenArr = screen;
     setCheck({ ...check, [name]: event.target.checked });
+    if(screenArr.indexOf(parseInt(name.split("")[name.length - 1])) === -1 ) {
+      setScreen([...screenArr,parseInt(name.split("")[name.length - 1])])
+    }
+    else if(screenArr.indexOf(parseInt(name.split("")[name.length - 1])) !== -1) {
+      screenArr.splice(screenArr.indexOf(parseInt(name.split("")[name.length - 1])),1) 
+      setScreen([...screenArr])
+    }
   };
+
+  const handleChangeOrder = event => {   
+    setOrderTemp(event.target.value);
+  }
+
   const createFile = event => {
     if (uploadFileItem) {
+
+      screen.forEach(s => {
+        let arr = order[`order${s}`];
+        arr.push(orderTemp);
+        console.log("arr",arr)
+        setOrder({...order,[`order${s}`]: [...arr]})
+      })
+
+      let tempFiles = files;
+      screen.forEach(s => {
+        console.log("s",s)
+        tempFiles = tempFiles.map(file => {
+          if(file.screen.indexOf(s) !== -1) {
+            let order = file.order;
+            if(file.order >= orderTemp) {
+              file.screen.forEach(scr => {
+                if(scr === s) {
+                  order++;
+                }
+                else {
+                  tempFiles.map(f => {
+                    if(f.screen.indexOf(scr) !== -1){
+                      let ord = f.order;
+                      if(f.order >= order){
+                        ord++;
+                      }
+                      return {...f, ord};
+                    }
+                    return f;
+                  })
+                } 
+              })
+            }
+            return {...file, order}
+          }
+          return file;
+        })
+      })
+
       setFiles([
-        ...files,
+        ...tempFiles,
         {
           showTime,
-          order,
+          order: orderTemp,
           screen,
           name: uploadFileItem.filename,
           type: uploadFileItem.mimetype,
@@ -200,10 +272,11 @@ const CreatePlaylist = props => {
         }
       ])
     }
+
+    
     setTimeout(() => {
       setShowTime(0);
-      setOrder(1);
-      setScreen(1);
+      setScreen([]);
       setDay("");
       setHour("");
       setMinute("");
@@ -211,6 +284,11 @@ const CreatePlaylist = props => {
       setUploadFileItem(null);
       setSelectedFile(null);
       resetForm();
+      setCheck({
+        checked1: false,
+        checked2: false,
+        checked3: false
+      });
     }, 500);
   };
   const convertSeconds = (seconds) => {
@@ -309,17 +387,6 @@ const CreatePlaylist = props => {
                 </div>
               </div>
               <div className="playlistCreateItemCont spaceBetWeen">
-                <span className="playlistTabHead">Order</span>
-                <input
-                  placeholder="order"
-                  type="number"
-                  title="order"
-                  min="0"
-                  value={order}
-                  onChange={e => setOrder(e.target.value)}
-                />
-              </div>
-              <div className="playlistCreateItemCont spaceBetWeen">
                 <span className="playlistTabHead">Screen</span>
                 <div className="backgroundFFF" style={{padding: "0.5rem"}}>
                   {[1, 2, 3].map(option =>
@@ -337,6 +404,32 @@ const CreatePlaylist = props => {
                   )}
                 </div>
               </div>
+              { screen.length>0 && <div className="playlistCreateItemCont spaceBetWeen">
+                <span className="playlistTabHead">Order</span>
+                <TextField
+                  className={`brancheScreen`}
+                  select
+                  title="order"
+                  value={orderTemp}
+                  onChange={handleChangeOrder}
+                >
+                  {
+                    Array.from({length: maxOrder}, (v,k)=>k+1).map((a, i) => (
+                    <MenuItem key={a} dense={false} value={a}>
+                      {a}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                {/* <input
+                  placeholder="order"
+                  type="number"
+                  title="order"
+                  min="0"
+                  value={order}
+                  onChange={e => setOrder(e.target.value)}
+                /> */}
+              </div>
+              }
               <form id="form" onSubmit={fileUploadHandler} >
                 <div className="spaceBetWeen" style={{ margin: "0.5rem 0" }}>
                   <input type="file" onChange={selectFileHandler} />
@@ -392,14 +485,14 @@ const CreatePlaylist = props => {
                               <div>{i + 1}. {file.name}</div>
                               <div className="spaceBetWeen">
                                 <div>
-                                  <span className="fileLi">Screen: <strong className="bold">{file.screen}</strong>. </span>
+                                  <span className="fileLi">Screen: <strong className="bold">{file.screen.join(",")}</strong>. </span>
                                   <span className="fileLi">Order: <strong className="bold">{file.order}</strong>. </span>
                                   <span className="fileLi">Time: {convertSeconds(file.showTime)}. </span>
                                 </div>
                                 <span>
                                   <IconButton
                                     aria-label="Delete"
-                                    onClick={() => deleteFile(file.name)}
+                                    onClick={() => deleteFile(i)}
                                     title="Delete"
                                     style={{ padding: "3px" }}
                                   >
