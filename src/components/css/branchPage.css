@@ -15,7 +15,7 @@
 .headAndPlaylistcontainer > .head > .hello {
   font-size: 2rem;
   font-weight: bold;
-  color: #5a76ac;
+  color: #f88224;
 }
 
 .headAndPlaylistcontainer > .head > .screen {
@@ -66,7 +66,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   height: 100%;
-  color: #0685f5;
+  color: #000;
   flex-direction: column;
   line-height: 2;
 }

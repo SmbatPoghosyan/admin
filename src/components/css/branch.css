@@ -1,114 +1,117 @@
 .branchContainer {
-    background: #ffffff;
-    display: inline-block;
-    border-radius: 2px;
-    box-shadow: 0px 0px 2px 1px #969494;
-    color: #f5f5f5;
-    width: 260px;
-    margin: 10px;
-    padding: 0 5px 5px;
-    transition: all 0.1s;
+  background: #ffffff;
+  display: inline-block;
+  border-radius: 2px;
+  box-shadow: 0px 0px 2px 1px #969494;
+  color: #f5f5f5;
+  width: 260px;
+  margin: 10px;
+  padding: 0 5px 5px;
+  transition: all 0.1s;
 }
 
 .branchContainer:hover {
-    box-shadow: 0px 0px 5px 2px #969494;
-    background: #eaeaea;;
-    transform: scale(1.01);
+  box-shadow: 0px 0px 5px 2px #969494;
+  background: #eaeaea;
+  transform: scale(1.01);
 }
 
 .branchName {
-    text-align: left;
-    font-size: 1rem;
-    margin-top: 5px;
-    color: white;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: inline-block;
-    flex:1;
+  text-align: left;
+  font-size: 1rem;
+  margin-top: 5px;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  flex: 1;
 }
 .branchName > div {
-    text-align: left;
-    font-size: 1.5rem;
-    color: white;
-    font-weight: bold;
+  text-align: left;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
 }
 .branchName input {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .branchName > p {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .brancheId {
-    text-align: left;
-    color: #e0e0e0;
-    font-size: 0.8rem;
-    margin-top: 5px;
-
+  text-align: left;
+  color: #e0e0e0;
+  font-size: 0.8rem;
+  margin-top: 5px;
 }
 .branchButtons > button:first-child {
-    margin-right:5px;
+  margin-right: 5px;
 }
-
 
 .branchFooter {
-    margin-top: 0.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  margin-top: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.brancheId > span { 
-    font-weight: 200;
-    margin-right: 2px;
+.brancheId > span {
+  font-weight: 200;
+  margin-right: 2px;
 }
 
 .brancheScreen {
-    text-align: right;
-    margin-top: 5px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    height: 36px !important;
+  text-align: right;
+  margin-top: 5px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  height: 36px !important;
 }
-.brancheScreen > div {
+/* .brancheScreen > div {
     color:#426988 !important;
+} */
+
+.nameidcont {
+  background: #f88224;
+  border-radius: 2px;
+  padding: 3px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
-.nameidcont { 
-    background: linear-gradient(90deg, rgb(120, 166, 204) 0%, rgba(68,113,142,0.8435749299719888) 100%, rgba(32,28,106,1) 100%);
-    border-radius: 2px;
-    padding: 3px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+.iconsContainer {
+  display: inline-block;
 }
 
-.iconsContainer { 
-    display: inline-block;
+.iconsContainer > button {
+  padding: 6px;
+  background: none !important;
+}
+.iconsContainer > button:hover {
+  background: #1a4b73 !important;
+}
+.iconsContainer > button > span {
+  color: white;
 }
 
-.iconsContainer>button {
-    padding: 6px;
-    background: none !important;
-}
-.iconsContainer>button:hover {
-    background: #1A4B73 !important;
-}
-.iconsContainer>button >span {
-    color:white
-}
-
-.editMode { 
-    background: rgb(255, 255, 255);
-    color: black !important;
-    font-weight: normal !important;
+.editMode {
+  background: rgb(255, 255, 255);
+  color: black !important;
+  font-weight: normal !important;
 }
 
 .editModeCont {
-    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgba(107, 156, 187, 0.8435749299719888) 100%, rgba(32,28,106,1) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    rgb(255, 255, 255) 0%,
+    rgba(107, 156, 187, 0.8435749299719888) 100%,
+    rgba(32, 28, 106, 1) 100%
+  ) !important;
 }

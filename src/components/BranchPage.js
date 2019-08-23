@@ -44,7 +44,6 @@ const BranchPage = props => {
           });
     });
     arr.sort((a,b) => a.startDate-b.startDate);
-    console.log(arr);
     setDisabledDates(arr);
   };
 
@@ -70,11 +69,7 @@ const BranchPage = props => {
                 ? playlists.map((playlist, i) => (
                     <li className="playlistLink" key={i}>
                       <p>
-                        <Link
-                          to={`/branches/${branch._id}/playlist/${
-                            playlist._id
-                          }`}
-                        >
+                        <Link to={`/branches/${branch._id}/playlist/${playlist._id}`}>
                           {i + 1}. {playlist.name}{" "}
                         </Link>
                         <span>
@@ -97,6 +92,7 @@ const BranchPage = props => {
           </div>
           <div className="headAndPlaylistcontainer">
             <div className="head">
+              <span><Link to="/">Home</Link></span>
               <span className="hello">Hello, {branch.name}</span>
               <span className="screen">Screen {branch.screens}</span>
             </div>
@@ -134,6 +130,7 @@ const BranchPage = props => {
                     />
                   )}
                 />
+                <Redirect to="/" />
               </Switch>
             </div>
           </div>
