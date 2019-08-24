@@ -6,13 +6,7 @@ import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Branch from "./Branch";
 import { withRouter } from "react-router";
 

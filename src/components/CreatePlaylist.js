@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch,
-  Redirect
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createBranchPlaylist } from "../api/playlists";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
@@ -17,11 +11,11 @@ import { uploadFile } from "../api/files";
 import { cancel } from "../api/files";
 import { TextField } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
+import { convertSeconds, formatTime, formatBytes } from "./Utils";
 
 const CreatePlaylist = props => {
   const {
     branchId,
-    playlists,
     setPlaylists,
     branchScreens,
     disabledDates
@@ -84,7 +78,7 @@ const CreatePlaylist = props => {
   }, [files, name, startDate, endDate, isInvalidDate]);
 
   useEffect(() => {
-    if (showTime && order && screen && selectedFile && uploadFileItem) {
+    if (showTime && order && screen.length>0 && selectedFile && uploadFileItem) {
       setEnableUpload(true);
     } else {
       setEnableUpload(false);
@@ -204,10 +198,9 @@ const CreatePlaylist = props => {
     uploadFile(formData, setUploadFileItem, setUploadPercentage);
   };
   const checkBoxHandleChange = name => event => {
-    if (
-      (check.checked1 && !check.checked2 && name === "checked3") ||
-      (check.checked3 && !check.checked2 && name === "checked1")
-    ) {
+    if ((check.checked1 && !check.checked2 && name === "checked3") ||
+        (check.checked3 && !check.checked2 && name === "checked1")) 
+    {
       return;
     }
     if (
@@ -226,20 +219,37 @@ const CreatePlaylist = props => {
     }
     let screenArr = screen;
     setCheck({ ...check, [name]: event.target.checked });
-    if (screenArr.indexOf(parseInt(name.split("")[name.length - 1])) === -1) {
-      setScreen([...screenArr, parseInt(name.split("")[name.length - 1])]);
-    } else if (
-      screenArr.indexOf(parseInt(name.split("")[name.length - 1])) !== -1
-    ) {
-      screenArr.splice(
-        screenArr.indexOf(parseInt(name.split("")[name.length - 1])),
-        1
-      );
-      setScreen([...screenArr]);
+    if (screenArr.indexOf(parseInt(name.split("")[name.length - 1])) === -1) 
+    {
+      setScreen([...screenArr, parseInt(name.split("")[name.length - 1])].sort((a, b)=> a-b) );
+    } 
+    else if (screenArr.indexOf(parseInt(name.split("")[name.length - 1])) !== -1) 
+    {
+      screenArr.splice(screenArr.indexOf(parseInt(name.split("")[name.length - 1])), 1);
+      setScreen([...screenArr].sort((a, b)=> a-b));
     }
   };
   const handleChangeOrder = event => {
     setOrderTemp(event.target.value);
+  };
+
+
+  const ordering = (screen, files, tempOrder) => {
+    files.forEach((file, i) => {
+      if (file.screen.indexOf(screen) !== -1) {
+        let o = file.order;
+        if (file.order === tempOrder) {
+          o++;
+          file.screen.forEach(scr => {
+            ordering(scr, files, o)
+          });
+        }
+        let arr = order[`order${screen}`];
+        arr.push(o);
+        setOrder({ ...order, [`order${screen}`]: [...arr] });
+        files[i] = { ...file, order: o };
+      }
+    });
   };
 
   const createFile = event => {
@@ -252,37 +262,7 @@ const CreatePlaylist = props => {
 
       let tempFiles = files;
       screen.forEach(s => {
-        files.forEach((file, i) => {
-          if (file.screen.indexOf(s) !== -1) {
-            let o = file.order;
-            if (file.order >= orderTemp) {
-              file.screen.forEach(scr => {
-                if (scr === s) {
-                  o++;
-                  let arr = order[`order${scr}`];
-                  arr.push(o);
-                  setOrder({ ...order, [`order${scr}`]: [...arr] });
-                } else {
-                  tempFiles = tempFiles.map(f => {
-                    if (f.screen.indexOf(scr) !== -1) {
-                      let ord = f.order;
-                      if (f.order >= o) {
-                        ord++;
-                        let arr = order[`order${scr}`];
-                        arr.push(ord);
-                        setOrder({ ...order, [`order${scr}`]: [...arr] });
-                      }
-                      return { ...f, order: ord };
-                    }
-                    return f;
-                  });
-                }
-              });
-            }
-            tempFiles[i] = { ...file, order: o };
-          }
-          return file;
-        });
+        ordering(s, tempFiles, orderTemp);
       });
 
       setFiles([
@@ -295,10 +275,9 @@ const CreatePlaylist = props => {
           type: uploadFileItem.mimetype,
           url: uploadFileItem.path
         }
-      ]);
+      ].sort((a, b)=> a.order-b.order));
     }
 
-    setTimeout(() => {
       setShowTime(0);
       setScreen([]);
       setDay("");
@@ -313,23 +292,14 @@ const CreatePlaylist = props => {
         checked2: false,
         checked3: false
       });
-    }, 500);
+    
   };
-  const convertSeconds = seconds => {
-    let sec = parseInt(seconds, 10);
-    let days = Math.floor(sec / (3600 * 24));
-    sec -= days * 3600 * 24;
-    let hrs = Math.floor(sec / 3600);
-    sec -= hrs * 3600;
-    let mnts = Math.floor(sec / 60);
-    sec -= mnts * 60;
-    return days + "d:" + hrs + "h:" + mnts + "m:" + sec + "s";
-  };
+  
 
-  const strDay = `${day || day === 0 ? (day < 10 ? "0" + day : day) : " --"}:d`;
-  const strHour = `${hour || hour === 0 ? (hour < 10 ? "0" + hour : hour) : " --"}:h`;
-  const strMinute = `${minute || minute === 0 ? (minute < 10 ? "0" + minute : minute) : " --"}:m`;
-  const strSecond = `${second || second === 0 ? (second < 10 ? "0" + second : second) : " --"}:s`;
+  const strDay = formatTime("d",day);
+  const strHour = formatTime("h",hour);
+  const strMinute = formatTime("m",minute);
+  const strSecond = formatTime("s",second);
 
   return branchId ? (
     <div className="createPlaylist">
@@ -375,45 +345,47 @@ const CreatePlaylist = props => {
               <div className="playlistCreateItemCont spaceBetWeen">
                 <span className="playlistTabHead">Show Time:</span>
                 <div className="showTimeCont centerByFlex">
+                  <div>
+                    <input
+                      placeholder="day"
+                      type="number"
+                      title="day"
+                      min="0"
+                      max="365"
+                      onChange={handleChangeDay}
+                      value={day}
+                    />
+                    <input
+                      placeholder="hour"
+                      type="number"
+                      title="hour"
+                      min="0"
+                      max="23"
+                      onChange={handleChangeHour}
+                      value={hour}
+                    />
+                    <input
+                      placeholder="minute"
+                      type="number"
+                      title="minute"
+                      min="0"
+                      max="59"
+                      onChange={handleChangeMinute}
+                      value={minute}
+                    />
+                    <input
+                      placeholder="second"
+                      type="number"
+                      title="second"
+                      min="0"
+                      max="59"
+                      onChange={handleChangeSecond}
+                      value={second}
+                    />
+                  </div>
                   <span >
                     {`${strDay} ${strHour} ${strMinute} ${strSecond} `}
                   </span>
-                  <input
-                    placeholder="day"
-                    type="number"
-                    title="day"
-                    min="0"
-                    max="365"
-                    onChange={handleChangeDay}
-                    value={day}
-                  />
-                  <input
-                    placeholder="hour"
-                    type="number"
-                    title="hour"
-                    min="0"
-                    max="23"
-                    onChange={handleChangeHour}
-                    value={hour}
-                  />
-                  <input
-                    placeholder="minute"
-                    type="number"
-                    title="minute"
-                    min="0"
-                    max="59"
-                    onChange={handleChangeMinute}
-                    value={minute}
-                  />
-                  <input
-                    placeholder="second"
-                    type="number"
-                    title="second"
-                    min="0"
-                    max="59"
-                    onChange={handleChangeSecond}
-                    value={second}
-                  />
                 </div>
               </div>
               <div className="playlistCreateItemCont spaceBetWeen">
@@ -488,16 +460,20 @@ const CreatePlaylist = props => {
                 </div>
               </form>
               {uploadFileItem && (
-                <div className="fileContainer">
-                  {uploadFileItem.mimetype.split("/")[0] === "video" && (
-                    <video src={uploadFileItem.path} controls preload="none">
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
-                  {uploadFileItem.mimetype.split("/")[0] === "image" && (
-                    <img src={uploadFileItem.path} />
-                  )}
-                </div>
+                <>
+                  <div className="fileContainer">
+                    {uploadFileItem.mimetype.split("/")[0] === "video" && (
+                      <video src={uploadFileItem.path} controls preload="none">
+                        Your browser does not support the video tag.
+                      </video>
+                      
+                    )}
+                    {uploadFileItem.mimetype.split("/")[0] === "image" && (
+                      <img src={uploadFileItem.path} alt={uploadFileItem.filename}/>
+                    )}
+                    <span>{formatBytes(uploadFileItem.size)}</span>  
+                  </div>          
+                </>
               )}
               <button
                 onClick={createFile}
@@ -506,29 +482,29 @@ const CreatePlaylist = props => {
               >
                 Create File
               </button>
-              
             </div>
 
             <div className="playlistFilesContainer spaceBetWeen">
               <>
-                <div className="allListLinkContainer" style={{ margin: "0.5rem", maxHeight: "62vh" }}>
+                <div className="allListLinkContainer fileList">
                   <p className="head">File List</p>
 
-                  <ul className="list listHeight">
+                  <ol className="list listHeight">
                     {files.length > 0
                       ? files.map((file, i) => (
                           <li className="playlistLink" key={i}>
                             <div>
                               <div>
-                                {i + 1}. {file.name}
+                                [{i + 1}]. {file.name} 
+                                
                               </div>
                               <div className="spaceBetWeen">
                                 <div>
                                   <span className="fileLi">
-                                    Screen:
-                                    <strong className="bold">
-                                      {file.screen.join(",")}
-                                    </strong>.
+                                      Screen:
+                                      <strong className="bold">
+                                        {file.screen.join(",")}
+                                      </strong>.
                                   </span>
                                   <span className="fileLi">
                                     Order:
@@ -556,7 +532,7 @@ const CreatePlaylist = props => {
                           </li>
                         ))
                       : null}
-                  </ul>
+                  </ol>
                 </div>
               </>
             </div>

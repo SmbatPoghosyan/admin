@@ -16,7 +16,7 @@ export function getBranchById(id, setBranch, setPlaylists) {
   axios
     .get(baseUrl + "/branches/" + id, {})
     .then(response => {
-      console.log(response.data);
+      console.log("branch",response.data);
       setBranch(response.data.branch);
       setPlaylists(response.data.playlists);
     })

@@ -11,7 +11,7 @@ export function getAllBranchePlaylists(branchId, setPlaylists){
         });
 };
 
-export function getPlaylistById(branchId, paylistId,setPlaylist, setFiles){
+export function getPlaylistById(branchId, paylistId, setPlaylist, setFiles){
     axios.get(baseUrl + "/playlists/"+ branchId + "/" + paylistId,{})
         .then(response => {
             setPlaylist(response.data.playlist);

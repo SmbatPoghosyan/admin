@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getBranchById } from "../api/branches";
 import {
-  BrowserRouter as Router,
   Route,
   Link,
   Switch,
@@ -27,11 +26,9 @@ const BranchPage = props => {
   useEffect(() => {
     getBranchById(params.id, setBranch, setPlaylists);
     getAllBranchePlaylists(params.id, setPlaylists);
-  }, []);
+  }, [params.id]);
 
-  useEffect(()=>{
-    initDisabledDates();
-  },[playlists]);
+  
 
   const initDisabledDates  = () => {
     let arr = [];
@@ -47,6 +44,10 @@ const BranchPage = props => {
     setDisabledDates(arr);
   };
 
+  useEffect(()=> {
+    initDisabledDates();
+  },[playlists]);
+  
   const createHandleClick = () => {
     props.history.push(`/branches/${branch._id}/create`);
   };
@@ -70,7 +71,7 @@ const BranchPage = props => {
                     <li className="playlistLink" key={i}>
                       <p>
                         <Link to={`/branches/${branch._id}/playlist/${playlist._id}`}>
-                          {i + 1}. {playlist.name}{" "}
+                          {i + 1}. {playlist.name}
                         </Link>
                         <span>
                           <IconButton
@@ -115,7 +116,14 @@ const BranchPage = props => {
                 />
                 <Route
                   path={`${props.match.url}/playlist/:id`}
-                  render={props => <Playlist {...props} />}
+                  render={props => 
+                  <Playlist                     
+                    setPlaylists={setPlaylists}
+                    branchId={branch._id}
+                    disabledDates={disabledDates}
+                    {...props}
+                    />
+                  }
                 />
                 <Route
                   path={`${props.match.url}/create`}

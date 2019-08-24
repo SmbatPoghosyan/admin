@@ -26,6 +26,7 @@
   flex: 1;
   display: flex;
   padding: 0.5rem 0.5rem 0 0.5rem;
+  height: calc(100vh - 3rem - 121px);
 }
 
 .createPlaylistBody .playlistTabHead {
@@ -50,7 +51,8 @@
 }
 
 .playlistFilesContainer {
-  height: 100%;
+  height: calc(100vh - 240px);
+  margin-top: 0.5rem;
   flex: 1;
   max-width: 400px;
 }
@@ -62,7 +64,6 @@
 }
 
 .createButton {
-  padding: 1rem !important;
   margin: 0.5rem !important;
 }
 
@@ -81,6 +82,11 @@
 .fileContainer img {
   width: 250px;
 }
+
+.showTimeCont { 
+  flex-wrap: wrap;
+}
+
 .showTimeCont > span {
   border: 1px solid white;
   line-height: initial;
@@ -88,17 +94,20 @@
   padding: 0 0.5rem;
   font-size: 0.9rem;
 }
-.showTimeCont > input {
+.showTimeCont > div > input {
   width: 65px;
   font-size: 0.85rem;
 }
 
 .fileLi {
+  margin-left: 0.5rem;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
+.fileLi:first-child {
+  margin:0;
+}
 .createFileCont {
   width: 100%;
   display: flex;
@@ -106,7 +115,7 @@
   flex: 2;
   border: 1px solid #628ba6;
   margin-top: 0.5rem;
-  height: 62vh;
+  height: 97%;
   position: relative;
   font-size: 1rem;
 }
@@ -139,4 +148,8 @@
   position: absolute;
   width: 100%;
   height: 30px;
+}
+
+.fileList { 
+  margin-left: 0.5rem;
 }
