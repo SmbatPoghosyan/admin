@@ -50,12 +50,13 @@ export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists 
     axios.put(baseUrl + "/branches/" + playlistId,{
             ...playlistInfo
         }
-    ).then(response => {
+    )
+    .then(response => {
         getAllBranchePlaylists(branchId, setPlaylists);
         alert(response.data.message);
     })
-        .catch(error => {
-            console.log(error);
-            alert(error.message);
-        });
+    .catch(error => {
+        console.log(error);
+        alert(error.message);
+    });
 };

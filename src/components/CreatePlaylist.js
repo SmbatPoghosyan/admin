@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { createBranchPlaylist } from "../api/playlists";
+import { createBranchPlaylist, getPlaylistById, updatePlaylist } from "../api/playlists";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import DatetimeRangePicker from "react-datetime-range-picker";
@@ -18,7 +18,8 @@ const CreatePlaylist = props => {
     branchId,
     setPlaylists,
     branchScreens,
-    disabledDates
+    disabledDates,
+    playlistId
   } = props;
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState();
@@ -48,6 +49,25 @@ const CreatePlaylist = props => {
   });
   const [maxOrder, setMaxOrder] = useState(1);
   const [orderTemp, setOrderTemp] = useState(1);
+  const [playlist,setPlaylist] = useState();
+  const [changed,setChanged] = useState(false);
+
+
+  useEffect(() => {
+    if(playlistId) {
+      console.log("branchId:",branchId,"playlistId",playlistId)
+      getPlaylistById(branchId,playlistId,setPlaylist,setFiles);
+    }
+   }, [playlistId]);
+
+  useEffect(() => {
+      if(playlist) {
+        setName(playlist.name);
+        setStartDate(new Date(playlist.startDate).valueOf());
+        setEndDate(new Date(playlist.endDate).valueOf());
+        setIsInvalidDate(false);
+      }
+  }, [playlist]);
 
   useEffect(() => {
     let max = 0;
@@ -70,12 +90,20 @@ const CreatePlaylist = props => {
   }, [day, hour, minute, second]);
 
   useEffect(() => {
-    if (files.length && name && startDate && endDate && !isInvalidDate) {
+    if(playlist) {
+      if(changed) {
+        setDisableCreate(false);
+      }
+    }
+    else if (files.length>0 && name && startDate && endDate && !isInvalidDate)
+    {
       setDisableCreate(false);
-    } else {
+    } 
+    else
+    {
       setDisableCreate(true);
     }
-  }, [files, name, startDate, endDate, isInvalidDate]);
+  }, [files, name, startDate, endDate, isInvalidDate,changed]);
 
   useEffect(() => {
     if (showTime && order && screen.length>0 && selectedFile && uploadFileItem) {
@@ -86,6 +114,7 @@ const CreatePlaylist = props => {
   }, [uploadFileItem, showTime, order, screen, selectedFile]);
 
   const createHandleClick = () => {
+    console.log("ffffff",files)
     const playlistObj = {
       name,
       endDate,
@@ -94,17 +123,24 @@ const CreatePlaylist = props => {
       ticker: false,
       files: JSON.stringify([...files])
     };
-    createBranchPlaylist(branchId, playlistObj, setPlaylists);
-
-    setName("");
-    setStartDate(new Date());
-    setEndDate(new Date());
-    setFiles([]);
+    if(playlist) {
+      updatePlaylist(playlistId,branchId,playlistObj,setPlaylists);
+      setChanged(false);
+    }
+    else 
+    { 
+      createBranchPlaylist(branchId, playlistObj, setPlaylists);
+      setName("");
+      setStartDate(new Date());
+      setEndDate(new Date());
+      setFiles([]);
+    }
   };
   const handleChangeName = event => {
     setName(event.target.value);
+    setChanged(true);
   };
-  function dateTimeRangePickerChange(value) {
+  const dateTimeRangePickerChange = (value) => {
     const start = new Date(value.start).valueOf();
     const end = new Date(value.end).valueOf();
 
@@ -114,21 +150,24 @@ const CreatePlaylist = props => {
     for (let item of disabledDates) {
       const startRange = new Date(item.startDate).valueOf();
       const endRange = new Date(item.endDate).valueOf();
-      if (start < startRange || start > endRange) {
+      // if(item.id === playlistId && (start===startRange || end===endRange) )
+      // {
+      //   continue;
+      // }
+      if (start < startRange || start > endRange) 
+      {
         if (minDate === -Infinity) {
           minDate = start > endRange ? endRange : minDate;
         }
         if (maxDate === Infinity) {
           maxDate = start < startRange ? startRange : maxDate;
         }
-      } else if (start >= startRange && start <= endRange) {
+      } 
+      else if (start >= startRange && start <= endRange) 
+      {
         setIsInvalidDate(true);
         alert(
-          `This date is in used!!! ${new Date(
-            item.startDate
-          ).toLocaleString()} - ${new Date(
-            item.endDate
-          ).toLocaleString()} try another date.`
+          `This date is in used!!! ${new Date(item.startDate).toLocaleString()} - ${new Date(item.endDate).toLocaleString()} try another date.`
         );
         return;
       }
@@ -137,16 +176,22 @@ const CreatePlaylist = props => {
     if (start && start > minDate && start < maxDate) {
       if (end && end > minDate && end < maxDate) {
         setIsInvalidDate(false);
+        setChanged(true);
         setEndDate(end);
       }
+      // else 
+      // {
+      //   setIsInvalidDate(true);
+      //   alert(
+      //     `This date is in used!!! try end Date less than ${new Date(maxDate).toLocaleString()} .`
+      //   );
+      // }
       setStartDate(start);
       return;
     }
     setIsInvalidDate(true);
     alert(
-      `This date is in used!!! try less than ${new Date(
-        maxDate
-      ).toLocaleString()} .`
+      `This date is in used!!! try less than ${new Date(maxDate).toLocaleString()} .`
     );
   };
   const handleChangeDay = event => {
@@ -182,6 +227,7 @@ const CreatePlaylist = props => {
         return ind !== i;
       })
     );
+    setChanged(true);
   };
   const resetForm = () => {
     const form = document.getElementById("form");
@@ -232,8 +278,6 @@ const CreatePlaylist = props => {
   const handleChangeOrder = event => {
     setOrderTemp(event.target.value);
   };
-
-
   const ordering = (screen, files, tempOrder) => {
     files.forEach((file, i) => {
       if (file.screen.indexOf(screen) !== -1) {
@@ -277,7 +321,7 @@ const CreatePlaylist = props => {
         }
       ].sort((a, b)=> a.order-b.order));
     }
-
+      setChanged(true);
       setShowTime(0);
       setScreen([]);
       setDay("");
@@ -304,7 +348,7 @@ const CreatePlaylist = props => {
   return branchId ? (
     <div className="createPlaylist">
       <div className="head">
-        <span>Create Playlist </span>
+        <span>{playlist ? "Update" : "Create Playlist" }</span>
         <Link to={`/branches/${branchId}/`}>
           <i className="close" />
         </Link>
@@ -326,7 +370,7 @@ const CreatePlaylist = props => {
                   className: "margin05",
                   placeholder: "pick date and time"
                 }}
-                timeFormat
+                timeFormat={'hh:mm P'}
                 startDate={startDate ? new Date(startDate) : ""}
                 endDate={endDate ? new Date(endDate) : ""}
                 onChange={dateTimeRangePickerChange}
@@ -545,7 +589,7 @@ const CreatePlaylist = props => {
         className={`createButton ${disableCreate ? "buttonDisabled" : ""}`}
         disabled={disableCreate}
       >
-        Create
+        {playlist? "Update" :"Create"}
       </Button>
     </div>
   ) : (

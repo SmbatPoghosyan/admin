@@ -120,6 +120,7 @@ const BranchPage = props => {
                   <Playlist                     
                     setPlaylists={setPlaylists}
                     branchId={branch._id}
+                    branchScreens={branch.screens}
                     disabledDates={disabledDates}
                     {...props}
                     />
