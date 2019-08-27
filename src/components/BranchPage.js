@@ -10,26 +10,25 @@ import Playlist from "./Playlist";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import "./css/branchPage.css";
 import "./css/branches.css";
 import CreatePlaylist from "./CreatePlaylist";
 import { withRouter } from "react-router";
-import { getAllBranchePlaylists, deletePlaylist } from "../api/playlists";
+import { getAllBranchePlaylists, deletePlaylist, createBranchPlaylist } from "../api/playlists";
 
 const BranchPage = props => {
   const [branch, setBranch] = useState({});
   const [playlists, setPlaylists] = useState([]);
   const [disabledDates,setDisabledDates] = useState([]);
   const { params } = props.match;
-
+  const [letAdd,setLetAdd] = useState(false);
 
   useEffect(() => {
     getBranchById(params.id, setBranch, setPlaylists);
     getAllBranchePlaylists(params.id, setPlaylists);
   }, [params.id]);
-
   
-
   const initDisabledDates  = () => {
     let arr = [];
     playlists.forEach((playlist)=>{
@@ -58,13 +57,56 @@ const BranchPage = props => {
     }
   };
 
+  const handleAddPlaylist = () => {
+    let playlistInfo = JSON.parse(localStorage.getItem('copiedPlaylist'));
+    playlistInfo.files = JSON.stringify(playlistInfo.files);
+    createBranchPlaylist(branch._id, playlistInfo,setPlaylists);
+  };
+
+  useEffect(()=> {
+    setLetAdd(letAddPlaylist());
+  },[branch])
+
+  const letAddPlaylist = () => {
+    let playlistInfo = JSON.parse(localStorage.getItem('copiedPlaylist'));
+    if(!playlistInfo || parseInt(localStorage.getItem('screens')) !== branch.screens)
+    {
+      return false;
+    }
+
+    for(let it of disabledDates) 
+    {
+      if( (playlistInfo.startDate >= it.startDate && playlistInfo.startDate <= it.endDate) ||
+          (playlistInfo.endDate >= it.startDate && playlistInfo.endDate <= it.endDate)) 
+      {  
+        return false;
+      }
+      if( (it.startDate >= playlistInfo.startDate && it.startDate <= playlistInfo.endDate) ||
+          (it.endDate >= playlistInfo.startDate && it.endDate <= playlistInfo.endDate)) 
+      {
+        return false;
+      }  
+    }
+    return true;
+  };
+  
   return branch && branch._id ? (
     <>
       <div className="branchPageContainer">
         <div className="body">
           <div className="allListLinkContainer">
             <p className="head">Playlists</p>
-
+            { letAdd &&
+              <div className="iconsContainer" style={{background: "#f99a4e"}}>
+                <IconButton
+                  aria-label="Add"
+                  onClick={handleAddPlaylist}
+                  title="Add Playlist"
+                >
+                  <AddToPhotosIcon fontSize="small" />
+                </IconButton>
+              </div>
+            }
             <ul className="list listHeight">
               {playlists.length > 0
                 ? playlists.map((playlist, i) => (

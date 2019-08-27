@@ -27,7 +27,9 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists){
         ...playlistInfo
     })
         .then(response => {
-            getAllBranchePlaylists(branchId, setPlaylists);
+            if(setPlaylists){
+                getAllBranchePlaylists(branchId, setPlaylists);
+            }
         })
         .catch(error => {
             alert(error.message)
@@ -47,7 +49,7 @@ export function deletePlaylist(playlistId,branchId, setPlaylists){
 };
 
 export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists ){
-    axios.put(baseUrl + "/branches/" + playlistId,{
+    axios.put(baseUrl + "/playlists/" + playlistId,{
             ...playlistInfo
         }
     )

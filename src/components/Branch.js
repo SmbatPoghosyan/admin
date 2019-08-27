@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Icon from "@material-ui/core/Icon";
 import { deleteBranch } from "../api/branches";
 import { updateBranch } from "../api/branches";
+import {createBranchPlaylist} from '../api/playlists';
 import Input from "@material-ui/core/Input";
 import "./css/branch.css";
 import Button from "@material-ui/core/Button";
 import { TextField } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withRouter } from "react-router";
+
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -57,7 +59,7 @@ const Branch = props => {
   const handleClickBranch = event => {
     props.history.push(`/branches/${branch._id}`);
   };
-
+  
   return (
     <div
       className={`branchContainer ${edit ? "editModeCont" : ""}`}
@@ -76,6 +78,7 @@ const Branch = props => {
             {branch._id}
           </p>
         </div>
+        
         <div className="iconsContainer">
           <IconButton onClick={handleEdit} aria-label="Edit" title="Edit">
             <Icon fontSize="small">edit_icon</Icon>

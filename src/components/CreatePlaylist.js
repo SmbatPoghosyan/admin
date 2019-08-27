@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import DatetimeRangePicker from "react-datetime-range-picker";
 import DeleteIcon from "@material-ui/icons/Delete";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 import IconButton from "@material-ui/core/IconButton";
 import "./css/createPlaylist.css";
 import { uploadFile } from "../api/files";
@@ -52,16 +53,37 @@ const CreatePlaylist = props => {
   const [playlist,setPlaylist] = useState();
   const [changed,setChanged] = useState(false);
 
+  const copyHandleClick = (p) => {
+    const {name,currency,ticker,startDate,endDate} = p;
+    localStorage.setItem('copiedPlaylist', JSON.stringify({
+      name,
+      endDate:new Date(endDate).valueOf(),
+      startDate:new Date(startDate).valueOf(),
+      currency,
+      ticker,
+      files:[...files]
+    }));
+    localStorage.setItem('screens', branchScreens);
+    alert(`Playlist "${name}" copied `);
+  };
+
+  let dates = null;
 
   useEffect(() => {
     if(playlistId) {
-      console.log("branchId:",branchId,"playlistId",playlistId)
       getPlaylistById(branchId,playlistId,setPlaylist,setFiles);
     }
    }, [playlistId]);
 
   useEffect(() => {
       if(playlist) {
+        dates = disabledDates;
+        for(let i in dates){
+          if(dates[i].id === playlistId)
+          {
+            dates.splice(i,1);
+          }
+        }
         setName(playlist.name);
         setStartDate(new Date(playlist.startDate).valueOf());
         setEndDate(new Date(playlist.endDate).valueOf());
@@ -94,6 +116,9 @@ const CreatePlaylist = props => {
       if(changed) {
         setDisableCreate(false);
       }
+      else { 
+        setDisableCreate(true);
+      }
     }
     else if (files.length>0 && name && startDate && endDate && !isInvalidDate)
     {
@@ -114,7 +139,6 @@ const CreatePlaylist = props => {
   }, [uploadFileItem, showTime, order, screen, selectedFile]);
 
   const createHandleClick = () => {
-    console.log("ffffff",files)
     const playlistObj = {
       name,
       endDate,
@@ -126,6 +150,7 @@ const CreatePlaylist = props => {
     if(playlist) {
       updatePlaylist(playlistId,branchId,playlistObj,setPlaylists);
       setChanged(false);
+      props.history.push(`/branches/${branchId}/`);
     }
     else 
     { 
@@ -146,14 +171,10 @@ const CreatePlaylist = props => {
 
     let minDate = -Infinity;
     let maxDate = Infinity;
-
-    for (let item of disabledDates) {
+    let d = dates ? dates : disabledDates;
+    for (let item of d) {
       const startRange = new Date(item.startDate).valueOf();
       const endRange = new Date(item.endDate).valueOf();
-      // if(item.id === playlistId && (start===startRange || end===endRange) )
-      // {
-      //   continue;
-      // }
       if (start < startRange || start > endRange) 
       {
         if (minDate === -Infinity) {
@@ -179,13 +200,6 @@ const CreatePlaylist = props => {
         setChanged(true);
         setEndDate(end);
       }
-      // else 
-      // {
-      //   setIsInvalidDate(true);
-      //   alert(
-      //     `This date is in used!!! try end Date less than ${new Date(maxDate).toLocaleString()} .`
-      //   );
-      // }
       setStartDate(start);
       return;
     }
@@ -231,8 +245,14 @@ const CreatePlaylist = props => {
   };
   const resetForm = () => {
     const form = document.getElementById("form");
-    form.reset();
-    cancel();
+    if(form)
+    {
+      form.reset();
+    }
+    if(cancel)
+    { 
+      cancel();
+    }
     setUploadPercentage("");
     setSelectedFile(null);
     setUploadFileItem(null);
@@ -349,6 +369,18 @@ const CreatePlaylist = props => {
     <div className="createPlaylist">
       <div className="head">
         <span>{playlist ? "Update" : "Create Playlist" }</span>
+        {playlist && 
+          <span>
+            <IconButton
+              aria-label="Copy"
+              onClick={() => copyHandleClick(playlist)}
+              title="Copy"
+              style={{ padding: "3px" }}
+            >
+              <FileCopyIcon fontSize="small" />
+            </IconButton>
+          </span>
+        }
         <Link to={`/branches/${branchId}/`}>
           <i className="close" />
         </Link>
