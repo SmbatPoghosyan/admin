@@ -36,7 +36,7 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists){
         });
 };
 
-export function deletePlaylist(playlistId,branchId, setPlaylists){
+export function deletePlaylist(playlistId,branchId, setPlaylists,callBack){
     axios.delete(
         baseUrl + "/playlists/" + playlistId)
         .then(response => {
@@ -45,10 +45,13 @@ export function deletePlaylist(playlistId,branchId, setPlaylists){
         })
         .catch(error => {
             alert(error.message);
+        })
+        .finally(()=>{
+            callBack();
         });
 };
 
-export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists ){
+export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists,callBack){
     axios.put(baseUrl + "/playlists/" + playlistId,{
             ...playlistInfo
         }
@@ -60,5 +63,8 @@ export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists 
     .catch(error => {
         console.log(error);
         alert(error.message);
+    })
+    .finally(()=> {
+        callBack();
     });
 };

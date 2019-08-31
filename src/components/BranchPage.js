@@ -53,8 +53,12 @@ const BranchPage = props => {
 
   const deleteHandleClick = playlistId => {
     if (window.confirm("Are you sure ?")) {
-      deletePlaylist(playlistId, branch._id, setPlaylists);
+      deletePlaylist(playlistId, branch._id, setPlaylists,toBranchPage);
     }
+  };
+
+  const toBranchPage = () => { 
+    return props.history.push(`/branches/${branch._id}/`);
   };
 
   const handleAddPlaylist = () => {

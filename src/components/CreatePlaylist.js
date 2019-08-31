@@ -52,6 +52,9 @@ const CreatePlaylist = props => {
   const [orderTemp, setOrderTemp] = useState(1);
   const [playlist,setPlaylist] = useState();
   const [changed,setChanged] = useState(false);
+  const [currency,setCurrency] = useState(false);
+  const [ticker,setTicker] = useState(false);
+
 
   const copyHandleClick = (p) => {
     const {name,currency,ticker,startDate,endDate} = p;
@@ -87,6 +90,8 @@ const CreatePlaylist = props => {
         setName(playlist.name);
         setStartDate(new Date(playlist.startDate).valueOf());
         setEndDate(new Date(playlist.endDate).valueOf());
+        setCurrency(playlist.currency);
+        setTicker(playlist.ticker);
         setIsInvalidDate(false);
       }
   }, [playlist]);
@@ -143,26 +148,38 @@ const CreatePlaylist = props => {
       name,
       endDate,
       startDate,
-      currency: false,
-      ticker: false,
+      currency: currency,
+      ticker: ticker,
       files: JSON.stringify([...files])
     };
     if(playlist) {
-      updatePlaylist(playlistId,branchId,playlistObj,setPlaylists);
+      updatePlaylist(playlistId,branchId,playlistObj,setPlaylists,toBranchPage);
       setChanged(false);
-      props.history.push(`/branches/${branchId}/`);
     }
     else 
     { 
-      createBranchPlaylist(branchId, playlistObj, setPlaylists);
+      createBranchPlaylist(branchId, playlistObj, setPlaylists,toBranchPage);
       setName("");
-      setStartDate(new Date());
-      setEndDate(new Date());
+      setCurrency(false);
+      setTicker(false);
+      setStartDate();
+      setEndDate();
       setFiles([]);
     }
   };
   const handleChangeName = event => {
     setName(event.target.value);
+    setChanged(true);
+  };
+  const toBranchPage = () => { 
+    return props.history.push(`/branches/${branchId}/`);
+  };
+  const handleChangeCurrency = event => {
+    setCurrency(event.target.checked);
+    setChanged(true);
+  };
+  const handleChangeTicker = event => {
+    setTicker(event.target.checked);
     setChanged(true);
   };
   const dateTimeRangePickerChange = (value) => {
@@ -315,7 +332,6 @@ const CreatePlaylist = props => {
       }
     });
   };
-
   const createFile = event => {
     if (uploadFileItem) {
       screen.forEach(s => {
@@ -359,7 +375,6 @@ const CreatePlaylist = props => {
     
   };
   
-
   const strDay = formatTime("d",day);
   const strHour = formatTime("h",hour);
   const strMinute = formatTime("m",minute);
@@ -402,12 +417,20 @@ const CreatePlaylist = props => {
                   className: "margin05",
                   placeholder: "pick date and time"
                 }}
-                timeFormat={'hh:mm P'}
+                timeFormat={'HH:mm'}
                 startDate={startDate ? new Date(startDate) : ""}
                 endDate={endDate ? new Date(endDate) : ""}
                 onChange={dateTimeRangePickerChange}
                 className="centerByFlex dateRangeClass"
               />
+              <label style={{color: "#fff"}}> Currency
+                <input type="checkbox" name="currency" checked={currency} className="margin05"
+                      onChange={handleChangeCurrency} />
+              </label>
+              <label style={{color: "#fff"}}> Ticker
+                <input type="checkbox" name="ticker" checked={ticker} className="margin05"
+                      onChange={handleChangeTicker} />
+              </label>
             </div>
           </div>
           <div
@@ -547,7 +570,7 @@ const CreatePlaylist = props => {
                     {uploadFileItem.mimetype.split("/")[0] === "image" && (
                       <img src={uploadFileItem.path} alt={uploadFileItem.filename}/>
                     )}
-                    <span>{formatBytes(uploadFileItem.size)}</span>  
+                    <div>{formatBytes(uploadFileItem.size)}</div>  
                   </div>          
                 </>
               )}

@@ -2,7 +2,7 @@
   background: #ffffff;
   display: inline-block;
   border-radius: 2px;
-  box-shadow: 0px 0px 2px 1px #969494;
+  box-shadow: inset 0px 0px 3px 1px #c3c3c3;
   color: #f5f5f5;
   width: 260px;
   margin: 10px;
@@ -11,8 +11,8 @@
 }
 
 .branchContainer:hover {
-  box-shadow: 0px 0px 5px 2px #969494;
-  background: #eaeaea;
+  box-shadow: 0px 0px 5px 2px #cecece;
+  background: #ef850224;
   transform: scale(1.01);
 }
 
@@ -108,10 +108,5 @@
 }
 
 .editModeCont {
-  background: linear-gradient(
-    90deg,
-    rgb(255, 255, 255) 0%,
-    rgba(107, 156, 187, 0.8435749299719888) 100%,
-    rgba(32, 28, 106, 1) 100%
-  ) !important;
+ background: linear-gradient(90deg, rgba(255, 255, 255, 0.5326505602240896) 0%, rgba(228, 122, 36, 0.69) 100%) !important;
 }

@@ -76,11 +76,13 @@
 }
 
 .fileContainer {
-  width: 250px;
+  height: 150px;
+  width: auto;
 }
 
 .fileContainer img {
-  width: 250px;
+  height: 150px;
+  width: auto;
 }
 
 .showTimeCont { 
