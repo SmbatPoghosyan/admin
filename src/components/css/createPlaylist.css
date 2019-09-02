@@ -80,7 +80,7 @@
   width: auto;
 }
 
-.fileContainer img {
+.fileContainer img,.fileContainer video {
   height: 150px;
   width: auto;
 }

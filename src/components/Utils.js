@@ -24,3 +24,12 @@ export const formatTime = (type="",value) => {
     }
     else return "type is not valid";
 };
+
+
+export const isEmpty = (object) => { 
+    if(Object.keys(object).length === 0) 
+    {
+        return true;
+    }
+    else return false;
+};

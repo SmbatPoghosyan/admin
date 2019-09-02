@@ -12,7 +12,7 @@ import { uploadFile } from "../api/files";
 import { cancel } from "../api/files";
 import { TextField } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
-import { convertSeconds, formatTime, formatBytes } from "./Utils";
+import { convertSeconds, formatTime, formatBytes, isEmpty } from "./Utils";
 
 const CreatePlaylist = props => {
   const {
@@ -36,6 +36,7 @@ const CreatePlaylist = props => {
   const [minute, setMinute] = useState("");
   const [second, setSecond] = useState("");
   const [showTime, setShowTime] = useState(0);
+  const [first, setFirst] = useState(true);
   const [order, setOrder] = useState({
     order1: [],
     order2: [],
@@ -73,13 +74,27 @@ const CreatePlaylist = props => {
   let dates = null;
 
   useEffect(() => {
+    if(playlist && files.length && first) {
+      for(let file of files) {
+        file.screen.forEach(screen => {
+          let arr = order[`order${screen}`];
+          arr.push(file.order);
+          
+          setOrder({ ...order, [`order${screen}`]: [...arr] });
+        })
+      }
+      setFirst(false);
+    }
+  }, [files,playlist]);
+
+  useEffect(() => {
     if(playlistId) {
       getPlaylistById(branchId,playlistId,setPlaylist,setFiles);
     }
    }, [playlistId]);
 
   useEffect(() => {
-      if(playlist) {
+      if(playlist && !isEmpty(playlist)) {
         dates = disabledDates;
         for(let i in dates){
           if(dates[i].id === playlistId)
@@ -87,6 +102,8 @@ const CreatePlaylist = props => {
             dates.splice(i,1);
           }
         }
+        debugger
+        
         setName(playlist.name);
         setStartDate(new Date(playlist.startDate).valueOf());
         setEndDate(new Date(playlist.endDate).valueOf());
