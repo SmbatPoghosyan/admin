@@ -97,7 +97,7 @@
   font-size: 0.9rem;
 }
 .showTimeCont > div > input {
-  width: 65px;
+  width: 45px;
   font-size: 0.85rem;
 }
 
@@ -154,4 +154,18 @@
 
 .fileList { 
   margin-left: 0.5rem;
+}
+
+.multiply { 
+  margin-right: 0.5rem; 
+}
+.takitox { 
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.copyStyle {
+  border-radius: 50%;
+  border: 2px solid white;
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { Link } from "react-router-dom";
 import { createBranchPlaylist, getPlaylistById, updatePlaylist } from "../api/playlists";
 import Button from "@material-ui/core/Button";
@@ -12,7 +12,8 @@ import { uploadFile } from "../api/files";
 import { cancel } from "../api/files";
 import { TextField } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
-import { convertSeconds, formatTime, formatBytes, isEmpty } from "./Utils";
+import { convertSeconds, formatTime, formatBytes, isEmpty, convertSecondsIntoString } from "./Utils";
+import { withRouter } from "react-router";
 
 const CreatePlaylist = props => {
   const {
@@ -55,7 +56,8 @@ const CreatePlaylist = props => {
   const [changed,setChanged] = useState(false);
   const [currency,setCurrency] = useState(false);
   const [ticker,setTicker] = useState(false);
-
+  const [multiply,setMultiply] = useState(1);
+  const [duration,setDuration] = useState(0);
 
   const copyHandleClick = (p) => {
     const {name,currency,ticker,startDate,endDate} = p;
@@ -101,9 +103,7 @@ const CreatePlaylist = props => {
           {
             dates.splice(i,1);
           }
-        }
-        debugger
-        
+        }        
         setName(playlist.name);
         setStartDate(new Date(playlist.startDate).valueOf());
         setEndDate(new Date(playlist.endDate).valueOf());
@@ -159,6 +159,27 @@ const CreatePlaylist = props => {
       setEnableUpload(false);
     }
   }, [uploadFileItem, showTime, order, screen, selectedFile]);
+
+  useEffect(()=>{
+    if(duration) {
+      setShowTimeByMultiply(multiply*duration);
+    }
+  },[multiply,duration]);
+    
+  const setShowTimeByMultiply = (d) => {
+    const obj = convertSeconds(d);
+    const {days,hrs,mnts,sec} = obj;
+    setDay(days);
+    setHour(hrs);
+    setMinute(mnts);
+    setSecond(sec);
+  };
+
+  const handleMetadata = (e) => {
+    const d = e.currentTarget.duration.toFixed(2);
+    setDuration(d);
+    setShowTimeByMultiply(d);
+  };
 
   const createHandleClick = () => {
     const playlistObj = {
@@ -243,38 +264,38 @@ const CreatePlaylist = props => {
     );
   };
   const handleChangeDay = event => {
-    let val = event.target.value ? parseInt(event.target.value) : "";
-    if (val <= 365 && val >= 0) {
+    let val = event.target.value ? Number(event.target.value) : "";
+    if (!isNaN(val) && val <= 365 && val >= 0) {
       setDay(val);
     }
+    else setDay(0);
   };
   const handleChangeHour = event => {
-    let val = event.target.value ? parseInt(event.target.value) : "";
-    if (val <= 23 && val >= 0) {
+    let val = event.target.value ? Number(event.target.value) : "";
+    if (!isNaN(val) && val <= 23 && val >= 0) {
       setHour(val);
     }
+    else setHour(0);
   };
   const handleChangeMinute = event => {
-    let val = event.target.value ? parseInt(event.target.value) : "";
-    if (val <= 59 && val >= 0) {
+    let val = event.target.value ? Number(event.target.value) : "";
+    if (!isNaN(val) && val <= 59 && val >= 0) {
       setMinute(val);
     }
+    else setMinute(0);
   };
   const handleChangeSecond = event => {
-    let val = event.target.value ? parseInt(event.target.value) : "";
-    if (val <= 59 && val >= 0) {
+    let val = event.target.value ? Number(event.target.value) : "";
+    if (!isNaN(val) && val <= 59 && val >= 0) {
       setSecond(val);
     }
+    else setSecond(0);
   };
   const selectFileHandler = event => {
     setSelectedFile(event.target.files[0]);
   };
   const deleteFile = i => {
-    setFiles(
-      files.filter(function(v, ind) {
-        return ind !== i;
-      })
-    );
+    setFiles( files.filter((v, ind) => ind !== i) );
     setChanged(true);
   };
   const resetForm = () => {
@@ -289,6 +310,7 @@ const CreatePlaylist = props => {
     }
     setUploadPercentage("");
     setSelectedFile(null);
+    setMultiply(1);
     setUploadFileItem(null);
   };
   const fileUploadHandler = event => {
@@ -332,6 +354,13 @@ const CreatePlaylist = props => {
   const handleChangeOrder = event => {
     setOrderTemp(event.target.value);
   };
+  const handleMultiply = event => {
+    const val = event.target.value;
+    if(val>=1) {
+      setMultiply(val);
+    }
+    else setMultiply(1);
+  };
   const ordering = (screen, files, tempOrder) => {
     files.forEach((file, i) => {
       if (file.screen.indexOf(screen) !== -1) {
@@ -374,6 +403,7 @@ const CreatePlaylist = props => {
         }
       ].sort((a, b)=> a.order-b.order));
     }
+      setDuration(0);
       setChanged(true);
       setShowTime(0);
       setScreen([]);
@@ -391,7 +421,7 @@ const CreatePlaylist = props => {
       });
     
   };
-  
+
   const strDay = formatTime("d",day);
   const strHour = formatTime("h",hour);
   const strMinute = formatTime("m",minute);
@@ -402,7 +432,7 @@ const CreatePlaylist = props => {
       <div className="head">
         <span>{playlist ? "Update" : "Create Playlist" }</span>
         {playlist && 
-          <span>
+          <span className="copyStyle">
             <IconButton
               aria-label="Copy"
               onClick={() => copyHandleClick(playlist)}
@@ -461,7 +491,21 @@ const CreatePlaylist = props => {
               <div className="playlistCreateItemCont spaceBetWeen">
                 <span className="playlistTabHead">Show Time:</span>
                 <div className="showTimeCont centerByFlex">
-                  <div>
+                  <div className="centerByFlex">
+                    {uploadFileItem && uploadFileItem.mimetype.split("/")[0]==="video" &&
+                    <>
+                      <span>{convertSecondsIntoString(duration)}x</span>
+                      <input
+                        className="multiply"
+                        placeholder="X"
+                        type="number"
+                        title="X"
+                        min="1"
+                        onChange={handleMultiply}
+                        value={multiply}
+                       />
+                    </>
+                    }
                     <input
                       placeholder="day"
                       type="number"
@@ -481,7 +525,7 @@ const CreatePlaylist = props => {
                       value={hour}
                     />
                     <input
-                      placeholder="minute"
+                      placeholder="min"
                       type="number"
                       title="minute"
                       min="0"
@@ -490,7 +534,7 @@ const CreatePlaylist = props => {
                       value={minute}
                     />
                     <input
-                      placeholder="second"
+                      placeholder="sec"
                       type="number"
                       title="second"
                       min="0"
@@ -549,7 +593,7 @@ const CreatePlaylist = props => {
                 </div>
               )}
               <form id="form" onSubmit={fileUploadHandler}>
-                <div className="spaceBetWeen" style={{ margin: "0.5rem 0" }}>
+                <div className="spaceBetWeen" style={{ margin: "0.5rem 0",padding: "0 0.4rem" }}>
                   <input type="file" onChange={selectFileHandler} />
                   <span>
                     {uploadPercentage && (
@@ -579,7 +623,8 @@ const CreatePlaylist = props => {
                 <>
                   <div className="fileContainer">
                     {uploadFileItem.mimetype.split("/")[0] === "video" && (
-                      <video src={uploadFileItem.path} controls preload="none">
+                      <video controls preload="metadata" onLoadedMetadata={handleMetadata}>
+                        <source src={uploadFileItem.path} type={uploadFileItem.mimetype} />
                         Your browser does not support the video tag.
                       </video>
                       
@@ -610,26 +655,27 @@ const CreatePlaylist = props => {
                       ? files.map((file, i) => (
                           <li className="playlistLink" key={i}>
                             <div>
-                              <div>
+                              <div style={{fontWeight: "bold"}}>
                                 [{i + 1}]. {file.name} 
-                                
                               </div>
                               <div className="spaceBetWeen">
-                                <div>
-                                  <span className="fileLi">
-                                      Screen:
+                                <div className="takitox">
+                                  <span>
+                                    <span className="fileLi">
+                                        Screen:
+                                        <strong className="bold">
+                                          {file.screen.join(",")}
+                                        </strong>.
+                                    </span>
+                                    <span className="fileLi">
+                                      Order:
                                       <strong className="bold">
-                                        {file.screen.join(",")}
+                                        {file.order}
                                       </strong>.
+                                    </span>
                                   </span>
                                   <span className="fileLi">
-                                    Order:
-                                    <strong className="bold">
-                                      {file.order}
-                                    </strong>.
-                                  </span>
-                                  <span className="fileLi">
-                                    Time: {convertSeconds(file.showTime)}.
+                                    Time: <span style={{fontWeight: "bold"}}>{convertSecondsIntoString(file.showTime)}</span>.
                                   </span>
                                 </div>
                                 <span>
@@ -669,4 +715,4 @@ const CreatePlaylist = props => {
   );
 };
 
-export default CreatePlaylist;
+export default withRouter(CreatePlaylist);

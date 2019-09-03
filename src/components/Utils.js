@@ -1,13 +1,28 @@
 export const convertSeconds = seconds => {
-    let sec = parseInt(seconds, 10);
-    let days = Math.floor(sec / (3600 * 24));
-    sec -= days * 3600 * 24;
-    let hrs = Math.floor(sec / 3600);
-    sec -= hrs * 3600;
-    let mnts = Math.floor(sec / 60);
-    sec -= mnts * 60;
-    return `[${(days?days + "d:":"") + (hrs?hrs + "h:":"") + (mnts?mnts + "m:":"") + (sec?sec + "s":"")}]`;
+    let sec = Number(seconds).toFixed(1);
+    if(sec) {
+        let days = Math.floor(sec / (3600 * 24));
+        sec -= days * 3600 * 24;
+        let hrs = Math.floor(sec / 3600);
+        sec -= hrs * 3600;
+        let mnts = Math.floor(sec / 60);
+        sec -= mnts * 60;
+        sec = sec.toFixed(1);
+        return {
+            days,
+            hrs,
+            mnts,
+            sec
+        };
+    }
+    return "";
 };
+
+export const convertSecondsIntoString = (seconds) => {
+    const obj = convertSeconds(seconds);
+    const { days, hrs, mnts, sec } = obj;
+    return `[${(days?days + "d:":"") + (hrs?hrs + "h:":"") + (mnts?mnts + "m:":"") + (sec?sec + "s":"")}]`;
+}
 
 export const formatBytes = (bytes,decimals) => {
     if(bytes === 0) return '0 Bytes';
