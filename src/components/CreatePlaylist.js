@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createBranchPlaylist, getPlaylistById, updatePlaylist } from "../api/playlists";
 import Button from "@material-ui/core/Button";
@@ -295,6 +295,18 @@ const CreatePlaylist = props => {
     setSelectedFile(event.target.files[0]);
   };
   const deleteFile = i => {
+    let tempScreen = files[i].screen;
+    let tempOrder = files[i].order;
+    tempScreen.forEach(scr => {
+      let arr = order[`order${scr}`];
+      for( let i = 0; i < arr.length; i++){
+        if ( arr[i] === tempOrder) {
+          arr.splice(i, 1);
+        }
+      }
+      setOrder({ ...order, [`order${scr}`]: [...arr] });
+    });
+
     setFiles( files.filter((v, ind) => ind !== i) );
     setChanged(true);
   };
