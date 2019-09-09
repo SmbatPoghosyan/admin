@@ -295,20 +295,23 @@ const CreatePlaylist = props => {
     setSelectedFile(event.target.files[0]);
   };
   const deleteFile = i => {
-    let tempScreen = files[i].screen;
-    let tempOrder = files[i].order;
-    tempScreen.forEach(scr => {
-      let arr = order[`order${scr}`];
-      for( let i = 0; i < arr.length; i++){
-        if ( arr[i] === tempOrder) {
-          arr.splice(i, 1);
+    const sure = window.confirm("Are you sure want to delete file?");
+    if(sure) {
+      let tempScreen = files[i].screen;
+      let tempOrder = files[i].order;
+      tempScreen.forEach(scr => {
+        let arr = order[`order${scr}`];
+        for( let i = 0; i < arr.length; i++){
+          if ( arr[i] === tempOrder) {
+            arr.splice(i, 1);
+          }
         }
-      }
-      setOrder({ ...order, [`order${scr}`]: [...arr] });
-    });
+        setOrder({ ...order, [`order${scr}`]: [...arr] });
+      });
 
-    setFiles( files.filter((v, ind) => ind !== i) );
-    setChanged(true);
+      setFiles( files.filter((v, ind) => ind !== i) );
+      setChanged(true);
+    }
   };
   const resetForm = () => {
     const form = document.getElementById("form");
