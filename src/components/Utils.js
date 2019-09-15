@@ -1,5 +1,5 @@
 export const convertSeconds = seconds => {
-    let sec = Number(seconds).toFixed(1);
+    let sec = Number(Number(seconds).toFixed(1));
     if(sec) {
         let days = Math.floor(sec / (3600 * 24));
         sec -= days * 3600 * 24;
@@ -7,7 +7,7 @@ export const convertSeconds = seconds => {
         sec -= hrs * 3600;
         let mnts = Math.floor(sec / 60);
         sec -= mnts * 60;
-        sec = sec.toFixed(1);
+        sec = Number(Number(sec).toFixed(1));
         return {
             days,
             hrs,

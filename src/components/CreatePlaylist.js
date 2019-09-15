@@ -37,7 +37,6 @@ const CreatePlaylist = props => {
   const [minute, setMinute] = useState("");
   const [second, setSecond] = useState("");
   const [showTime, setShowTime] = useState(0);
-  const [first, setFirst] = useState(true);
   const [order, setOrder] = useState({
     order1: [],
     order2: [],
@@ -58,6 +57,7 @@ const CreatePlaylist = props => {
   const [ticker,setTicker] = useState(false);
   const [multiply,setMultiply] = useState(1);
   const [duration,setDuration] = useState(0);
+  const [playlistID,setPlaylistID] = useState(null);
 
   const copyHandleClick = (p) => {
     const {name,currency,ticker,startDate,endDate} = p;
@@ -74,23 +74,33 @@ const CreatePlaylist = props => {
   };
 
   let dates = null;
-
   useEffect(() => {
-    if(playlist && files.length && first) {
+    if(playlist && files.length) {
+      let tempOrder = {
+        order1: [],
+        order2: [],
+        order3: []
+      };
       for(let file of files) {
         file.screen.forEach(screen => {
-          let arr = order[`order${screen}`];
+          let arr = tempOrder[`order${screen}`];
           arr.push(file.order);
           
-          setOrder({ ...order, [`order${screen}`]: [...arr] });
+          setOrder({ ...tempOrder, [`order${screen}`]: [...arr] });
         })
       }
-      setFirst(false);
     }
   }, [files,playlist]);
 
   useEffect(() => {
-    if(playlistId) {
+    if(playlistId && playlistId !== playlistID) {
+      resetPlaylist();
+      setOrder({
+        order1: [],
+        order2: [],
+        order3: []
+      });
+      setPlaylistID(playlistId);
       getPlaylistById(branchId,playlistId,setPlaylist,setFiles);
     }
    }, [playlistId]);
@@ -124,12 +134,9 @@ const CreatePlaylist = props => {
     setOrderTemp(max + 1);
   }, [screen]);
 
-  useEffect(() => {
-    const seconds =
-      (second ? second : 0) +
-      (minute ? minute : 0) * 60 +
-      (hour ? hour : 0) * 60 * 60 +
-      (day ? day : 0) * 24 * 60 * 60;
+  useEffect(() => 
+  {
+    const seconds = (second ? second : 0) + (minute ? minute : 0) * 60 + (hour ? hour : 0) * 60 * 60 + (day ? day : 0) * 24 * 60 * 60;
     setShowTime(seconds);
   }, [day, hour, minute, second]);
 
@@ -176,9 +183,9 @@ const CreatePlaylist = props => {
   };
 
   const handleMetadata = (e) => {
-    const d = e.currentTarget.duration.toFixed(2);
-    setDuration(d);
-    setShowTimeByMultiply(d);
+    const d = Number(e.currentTarget.duration).toFixed(2);
+    setDuration(Number(d));
+    setShowTimeByMultiply(Number(d));
   };
 
   const createHandleClick = () => {
@@ -418,9 +425,14 @@ const CreatePlaylist = props => {
         }
       ].sort((a, b)=> a.order-b.order));
     }
+    resetPlaylist();
+    setChanged(true);
+  };
+
+  const resetPlaylist = () => {
       setDuration(0);
-      setChanged(true);
       setShowTime(0);
+      setChanged(false);
       setScreen([]);
       setDay("");
       setHour("");
@@ -434,7 +446,6 @@ const CreatePlaylist = props => {
         checked2: false,
         checked3: false
       });
-    
   };
 
   const strDay = formatTime("d",day);

@@ -146,23 +146,16 @@ const BranchPage = props => {
 
             <div className="playlist">
               <Switch>
-                <Route
-                  exact
-                  path={`${props.match.url}/`}
-                  render={props => (
-                    <>
-                      <div className="centerByFlex selectOrCreate">
-                        Select or Create Playlist
-                        <Button variant="contained" onClick={createHandleClick}>
-                          Create
-                        </Button>
-                      </div>
-                    </>
+                <Route exact path={`${props.match.url}/`} render={props => (
+                    <div className="centerByFlex selectOrCreate">
+                      Select or Create Playlist
+                      <Button variant="contained" onClick={createHandleClick}>
+                        Create
+                      </Button>
+                    </div>
                   )}
                 />
-                <Route
-                  path={`${props.match.url}/playlist/:id`}
-                  render={props => 
+                <Route path={`${props.match.url}/playlist/:id`} render={props => 
                   <Playlist                     
                     setPlaylists={setPlaylists}
                     branchId={branch._id}
@@ -172,9 +165,7 @@ const BranchPage = props => {
                     />
                   }
                 />
-                <Route
-                  path={`${props.match.url}/create`}
-                  render={props => (
+                <Route path={`${props.match.url}/create`} render={props => (
                     <CreatePlaylist
                       branchId={branch._id}
                       branchScreens={branch.screens}
