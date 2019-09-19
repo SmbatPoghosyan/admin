@@ -93,7 +93,7 @@ const CreatePlaylist = props => {
   }, [files,playlist]);
 
   useEffect(() => {
-    if(playlistId && playlistId !== playlistID) {
+    if(playlistId) {
       resetPlaylist();
       setOrder({
         order1: [],
