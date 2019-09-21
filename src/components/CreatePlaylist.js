@@ -57,25 +57,11 @@ const CreatePlaylist = props => {
   const [ticker,setTicker] = useState(false);
   const [multiply,setMultiply] = useState(1);
   const [duration,setDuration] = useState(0);
-  const [playlistID,setPlaylistID] = useState(null);
-
-  const copyHandleClick = (p) => {
-    const {name,currency,ticker,startDate,endDate} = p;
-    localStorage.setItem('copiedPlaylist', JSON.stringify({
-      name,
-      endDate:new Date(endDate).valueOf(),
-      startDate:new Date(startDate).valueOf(),
-      currency,
-      ticker,
-      files:[...files]
-    }));
-    localStorage.setItem('screens', branchScreens);
-    alert(`Playlist "${name}" copied `);
-  };
 
   let dates = null;
+
   useEffect(() => {
-    if(playlist && files.length) {
+    if(files.length) {
       let tempOrder = {
         order1: [],
         order2: [],
@@ -90,7 +76,7 @@ const CreatePlaylist = props => {
         })
       }
     }
-  }, [files,playlist]);
+  }, [files]);
 
   useEffect(() => {
     if(playlistId) {
@@ -100,20 +86,21 @@ const CreatePlaylist = props => {
         order2: [],
         order3: []
       });
-      setPlaylistID(playlistId);
       getPlaylistById(branchId,playlistId,setPlaylist,setFiles);
     }
    }, [playlistId]);
 
   useEffect(() => {
-      if(playlist && !isEmpty(playlist)) {
+      if(playlist && !isEmpty(playlist))
+      {
         dates = disabledDates;
-        for(let i in dates){
+        for(let i in dates)
+        {
           if(dates[i].id === playlistId)
           {
             dates.splice(i,1);
           }
-        }        
+        }
         setName(playlist.name);
         setStartDate(new Date(playlist.startDate).valueOf());
         setEndDate(new Date(playlist.endDate).valueOf());
@@ -134,18 +121,21 @@ const CreatePlaylist = props => {
     setOrderTemp(max + 1);
   }, [screen]);
 
-  useEffect(() => 
+  useEffect(() =>
   {
     const seconds = (second ? second : 0) + (minute ? minute : 0) * 60 + (hour ? hour : 0) * 60 * 60 + (day ? day : 0) * 24 * 60 * 60;
     setShowTime(seconds);
   }, [day, hour, minute, second]);
 
   useEffect(() => {
-    if(playlist) {
-      if(changed) {
+    if(playlist)
+    {
+      if(changed)
+      {
         setDisableCreate(false);
       }
-      else { 
+      else
+      { 
         setDisableCreate(true);
       }
     }
@@ -171,7 +161,7 @@ const CreatePlaylist = props => {
     if(duration) {
       setShowTimeByMultiply(multiply*duration);
     }
-  },[multiply,duration]);
+  }, [multiply,duration]);
     
   const setShowTimeByMultiply = (d) => {
     const obj = convertSeconds(d);
@@ -181,13 +171,11 @@ const CreatePlaylist = props => {
     setMinute(mnts);
     setSecond(sec);
   };
-
   const handleMetadata = (e) => {
     const d = Number(e.currentTarget.duration).toFixed(2);
     setDuration(Number(d));
     setShowTimeByMultiply(Number(d));
   };
-
   const createHandleClick = () => {
     const playlistObj = {
       name,
@@ -255,7 +243,6 @@ const CreatePlaylist = props => {
         return;
       }
     }
-
     if (start && start > minDate && start < maxDate) {
       if (end && end > minDate && end < maxDate) {
         setIsInvalidDate(false);
@@ -428,7 +415,6 @@ const CreatePlaylist = props => {
     resetPlaylist();
     setChanged(true);
   };
-
   const resetPlaylist = () => {
       setDuration(0);
       setShowTime(0);
@@ -446,6 +432,19 @@ const CreatePlaylist = props => {
         checked2: false,
         checked3: false
       });
+  };
+  const copyHandleClick = (p) => {
+    const {name,currency,ticker,startDate,endDate} = p;
+    localStorage.setItem('copiedPlaylist', JSON.stringify({
+      name,
+      endDate:new Date(endDate).valueOf(),
+      startDate:new Date(startDate).valueOf(),
+      currency,
+      ticker,
+      files: [...files]
+    }));
+    localStorage.setItem('screens', branchScreens);
+    alert(`Playlist "${name}" copied `);
   };
 
   const strDay = formatTime("d",day);
