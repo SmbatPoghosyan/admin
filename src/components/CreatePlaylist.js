@@ -14,6 +14,7 @@ import { TextField } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import { convertSeconds, formatTime, formatBytes, isEmpty, convertSecondsIntoString } from "./Utils";
 import { withRouter } from "react-router";
+import { isEqual,cloneDeep } from "lodash";
 
 const CreatePlaylist = props => {
   const {
@@ -177,27 +178,33 @@ const CreatePlaylist = props => {
     setShowTimeByMultiply(Number(d));
   };
   const createHandleClick = () => {
-    const playlistObj = {
-      name,
-      endDate,
-      startDate,
-      currency: currency,
-      ticker: ticker,
-      files: JSON.stringify([...files])
-    };
-    if(playlist) {
-      updatePlaylist(playlistId,branchId,playlistObj,setPlaylists,toBranchPage);
-      setChanged(false);
+    if(checkSumEquality()) 
+    {      
+      const playlistObj = {
+        name,
+        endDate,
+        startDate,
+        currency: currency,
+        ticker: ticker,
+        files: JSON.stringify([...files])
+      };
+      if(playlist) {
+        updatePlaylist(playlistId,branchId,playlistObj,setPlaylists,toBranchPage);
+        setChanged(false);
+      }
+      else 
+      { 
+        createBranchPlaylist(branchId, playlistObj, setPlaylists,toBranchPage);
+        setName("");
+        setCurrency(false);
+        setTicker(false);
+        setStartDate();
+        setEndDate();
+        setFiles([]);
+      }
     }
-    else 
-    { 
-      createBranchPlaylist(branchId, playlistObj, setPlaylists,toBranchPage);
-      setName("");
-      setCurrency(false);
-      setTicker(false);
-      setStartDate();
-      setEndDate();
-      setFiles([]);
+    else {
+      alert("check files showTime summarize equality for every screen");
     }
   };
   const handleChangeName = event => {
@@ -288,7 +295,7 @@ const CreatePlaylist = props => {
   const selectFileHandler = event => {
     setSelectedFile(event.target.files[0]);
   };
-  const deleteFile = i => {
+  const deleteFile = (file,i) => {
     const sure = window.confirm("Are you sure want to delete file?");
     if(sure) {
       let tempScreen = files[i].screen;
@@ -302,8 +309,15 @@ const CreatePlaylist = props => {
         }
         setOrder({ ...order, [`order${scr}`]: [...arr] });
       });
-
-      setFiles( files.filter((v, ind) => ind !== i) );
+      const filesClone = cloneDeep(files);
+      for(let j = 0; j < filesClone.length; j++) 
+      {
+        if( isEqual(filesClone[j],file) && j===i) 
+        {
+          filesClone.splice(j,1);
+        }
+      }
+      setFiles( filesClone );
       setChanged(true);
     }
   };
@@ -446,6 +460,34 @@ const CreatePlaylist = props => {
     localStorage.setItem('screens', branchScreens);
     alert(`Playlist "${name}" copied `);
   };
+  const checkSumEquality = () => 
+  {
+    const arr = [];
+    for(let scr = 0; scr < branchScreens; scr++) 
+    {
+      arr[scr] = 0;
+    }
+
+    files.forEach(f => {
+      for(let scr = 0; scr < arr.length; scr++) 
+      {
+        if(f.screen.indexOf(scr+1) !==-1)
+        {
+          arr[scr] += f.showTime;
+        }
+      }
+    });
+    
+    for(let k=0;k<arr.length;k++) 
+    {
+      if(arr[k] !== arr[arr.length-1-k]) 
+      {
+        return false;
+      }
+    }
+     
+    return true;
+  };
 
   const strDay = formatTime("d",day);
   const strHour = formatTime("h",hour);
@@ -513,66 +555,7 @@ const CreatePlaylist = props => {
               <span className="head"> 
                 Create File
               </span>
-              <div className="playlistCreateItemCont spaceBetWeen">
-                <span className="playlistTabHead">Show Time:</span>
-                <div className="showTimeCont centerByFlex">
-                  <div className="centerByFlex">
-                    {uploadFileItem && uploadFileItem.mimetype.split("/")[0]==="video" &&
-                    <>
-                      <span>{convertSecondsIntoString(duration)}x</span>
-                      <input
-                        className="multiply"
-                        placeholder="X"
-                        type="number"
-                        title="X"
-                        min="1"
-                        onChange={handleMultiply}
-                        value={multiply}
-                       />
-                    </>
-                    }
-                    <input
-                      placeholder="day"
-                      type="number"
-                      title="day"
-                      min="0"
-                      max="365"
-                      onChange={handleChangeDay}
-                      value={day}
-                    />
-                    <input
-                      placeholder="hour"
-                      type="number"
-                      title="hour"
-                      min="0"
-                      max="23"
-                      onChange={handleChangeHour}
-                      value={hour}
-                    />
-                    <input
-                      placeholder="min"
-                      type="number"
-                      title="minute"
-                      min="0"
-                      max="59"
-                      onChange={handleChangeMinute}
-                      value={minute}
-                    />
-                    <input
-                      placeholder="sec"
-                      type="number"
-                      title="second"
-                      min="0"
-                      max="59"
-                      onChange={handleChangeSecond}
-                      value={second}
-                    />
-                  </div>
-                  <span >
-                    {`${strDay} ${strHour} ${strMinute} ${strSecond} `}
-                  </span>
-                </div>
-              </div>
+              
               <div className="playlistCreateItemCont spaceBetWeen">
                 <span className="playlistTabHead">Screen:</span>
                 <div className="backgroundFFF" style={{ padding: "0.5rem" }}>
@@ -620,13 +603,15 @@ const CreatePlaylist = props => {
               <form id="form" onSubmit={fileUploadHandler}>
                 <div className="spaceBetWeen" style={{ margin: "0.5rem 0",padding: "0 0.4rem" }}>
                   <input type="file" onChange={selectFileHandler} />
-                  <span>
-                    {uploadPercentage && (
-                      <label style={{ marginRight: "0.5rem" }}>
+                  {uploadPercentage ? (
+                      <label style={{ marginRight: "0.5rem",flex: "1",textAlign: "right" }}>
                         {uploadPercentage}%
-                      </label>
-                    )}
+                      </label> ) : null
+                  }
+                  <span>
+                    
                     <button
+                      style={{width: "66px", height: "22px"}}
                       type="submit"
                       disabled={!selectedFile || uploadFileItem}
                       className={(!selectedFile || uploadFileItem) ? "buttonDisabled" : ""}
@@ -634,6 +619,7 @@ const CreatePlaylist = props => {
                       Upload
                     </button>
                     <button
+                      style={{width: "66px", height: "22px"}}
                       type="reset"
                       onClick={resetForm}
                       disabled={!selectedFile}
@@ -644,23 +630,83 @@ const CreatePlaylist = props => {
                   </span>
                 </div>
               </form>
-              {uploadFileItem && (
+              {uploadFileItem ? (
                 <>
                   <div className="fileContainer">
-                    {uploadFileItem.mimetype.split("/")[0] === "video" && (
+                    {uploadFileItem.mimetype.split("/")[0] === "video" ? (
                       <video controls preload="metadata" onLoadedMetadata={handleMetadata}>
                         <source src={uploadFileItem.path} type={uploadFileItem.mimetype} />
                         Your browser does not support the video tag.
-                      </video>
-                      
-                    )}
-                    {uploadFileItem.mimetype.split("/")[0] === "image" && (
-                      <img src={uploadFileItem.path} alt={uploadFileItem.filename}/>
-                    )}
+                      </video> ): null
+                    }
+                    {uploadFileItem.mimetype.split("/")[0] === "image" ? (
+                      <img src={uploadFileItem.path} alt={uploadFileItem.filename}/> ): null
+                    }
                     <div>{formatBytes(uploadFileItem.size)}</div>  
-                  </div>          
+                  </div>
+                  <div className="playlistCreateItemCont spaceBetWeen">
+                    <span className="playlistTabHead">Show Time:</span>
+                    <div className="showTimeCont centerByFlex">
+                      <div className="centerByFlex">
+                        {uploadFileItem && uploadFileItem.mimetype.split("/")[0]==="video" &&
+                        <>
+                          <span>{convertSecondsIntoString(duration)}x</span>
+                          <input
+                            className="multiply"
+                            placeholder="X"
+                            type="number"
+                            title="X"
+                            min="1"
+                            onChange={handleMultiply}
+                            value={multiply}
+                          />
+                        </>
+                        }
+                        <input
+                          placeholder="day"
+                          type="number"
+                          title="day"
+                          min="0"
+                          max="365"
+                          onChange={handleChangeDay}
+                          value={day}
+                        />
+                        <input
+                          placeholder="hour"
+                          type="number"
+                          title="hour"
+                          min="0"
+                          max="23"
+                          onChange={handleChangeHour}
+                          value={hour}
+                        />
+                        <input
+                          placeholder="min"
+                          type="number"
+                          title="minute"
+                          min="0"
+                          max="59"
+                          onChange={handleChangeMinute}
+                          value={minute}
+                        />
+                        <input
+                          placeholder="sec"
+                          type="number"
+                          title="second"
+                          min="0"
+                          max="59"
+                          onChange={handleChangeSecond}
+                          value={second}
+                        />
+                      </div>
+                      <span >
+                        {`${strDay} ${strHour} ${strMinute} ${strSecond} `}
+                      </span>
+                    </div>
+                  </div>        
                 </>
-              )}
+                ): null
+              }
               <button
                 onClick={createFile}
                 disabled={!enableUpload}
@@ -706,7 +752,7 @@ const CreatePlaylist = props => {
                                 <span>
                                   <IconButton
                                     aria-label="Delete"
-                                    onClick={() => deleteFile(i)}
+                                    onClick={() => deleteFile(file,i)}
                                     title="Delete"
                                     style={{ padding: "3px" }}
                                   >
