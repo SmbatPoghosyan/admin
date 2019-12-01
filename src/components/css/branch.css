@@ -95,7 +95,7 @@
   background: none !important;
 }
 .iconsContainer > button:hover {
-  background: #1a4b73 !important;
+  background: #ec6200 !important;
 }
 .iconsContainer > button > span {
   color: white;
@@ -108,5 +108,9 @@
 }
 
 .editModeCont {
- background: linear-gradient(90deg, rgba(255, 255, 255, 0.5326505602240896) 0%, rgba(228, 122, 36, 0.69) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.5326505602240896) 0%,
+    rgba(228, 122, 36, 0.69) 100%
+  ) !important;
 }

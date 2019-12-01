@@ -80,12 +80,13 @@
   width: auto;
 }
 
-.fileContainer img,.fileContainer video {
+.fileContainer img,
+.fileContainer video {
   height: 150px;
   width: auto;
 }
 
-.showTimeCont { 
+.showTimeCont {
   flex-wrap: wrap;
 }
 
@@ -108,7 +109,7 @@
   text-overflow: ellipsis;
 }
 .fileLi:first-child {
-  margin:0;
+  margin: 0;
 }
 .createFileCont {
   width: 100%;
@@ -152,14 +153,14 @@
   height: 30px;
 }
 
-.fileList { 
+.fileList {
   margin-left: 0.5rem;
 }
 
-.multiply { 
-  margin-right: 0.5rem; 
+.multiply {
+  margin-right: 0.5rem;
 }
-.takitox { 
+.takitox {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -168,4 +169,13 @@
 .copyStyle {
   border-radius: 50%;
   border: 2px solid white;
+}
+.currencyTickerStyle {
+  height: 25px;
+  color: #fff;
+  padding-left: 10px;
+  border-left: 1px dotted grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
