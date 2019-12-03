@@ -3,15 +3,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Icon from "@material-ui/core/Icon";
-import { deleteBranch } from "../api/branches";
-import { updateBranch } from "../api/branches";
+import { deleteBranch, updateBranch } from "../api/branches";
 import Input from "@material-ui/core/Input";
 import "./css/branch.css";
 import Button from "@material-ui/core/Button";
 import { TextField } from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withRouter } from "react-router";
-// import FadeIn from "./FadeIn";
+import Confirmation from "./ConfirmAlert/Confirm";
 
 const useStyles = makeStyles(theme => ({
 	margin: {
@@ -34,14 +33,11 @@ const Branch = props =>
 	{
 		setName(props.branch.name);
 		setScreens(props.branch.screens);
-	}, [props]);
+	}, [props, edit]);
 
 	const handleDelete = () =>
 	{
-		if (window.confirm("Are you sure ?"))
-		{
-			deleteBranch(branch._id, setBranches);
-		}
+		Confirmation("Are you sure to delete the branch.",deleteBranch,[branch._id, setBranches]);
 	};
 	const handleEdit = () =>
 	{
@@ -70,8 +66,7 @@ const Branch = props =>
 	};
 
 	return (
-		<div
-			className={`branchContainer ${edit ? "editModeCont" : ""}`}
+		<div className={`branchContainer ${edit ? "editModeCont" : ""}`}
 			style={{ border: `1px solid ${edit ? "#236498" : "#969494"}` }}
 		>
 			<div className="nameidcont">
@@ -116,7 +111,7 @@ const Branch = props =>
 					</span>
 				) : (
 					<Button size="small" variant="contained" onClick={handleClickBranch}>
-							Open
+						Open
 					</Button>
 				)}
 				<TextField

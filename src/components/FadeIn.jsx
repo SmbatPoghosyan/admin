@@ -20,10 +20,6 @@ function fadeIn(WrappedComponent)
 				}
 			});
 		}
-		componentWillUnmount() 
-		{
-			this._container = null;
-		}
 
 		render()
 		{
@@ -43,5 +39,5 @@ const styles = {
 	width: "100%",
 	transition: "opacity 0.4s cubic-bezier(.17,.67,.17,.91)",
 	opacity: 0,
-	display: "inherit"
+	display: "inherit",
 };

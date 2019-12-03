@@ -1,5 +1,6 @@
 import axios from "axios";
 import baseUrl from "./index";
+import AlertMe from "../components/ConfirmAlert/AlertMe";
 
 export function getAllBranches(setBranches)
 {
@@ -44,11 +45,11 @@ export function createBranch(name, screens, setBranches, handleClose)
 		{
 			getAllBranches(setBranches);
 			handleClose();
-			alert(response.data.message);
+			AlertMe(response.data.message);
 		})
 		.catch(error =>
 		{
-			alert(error.message);
+			AlertMe(error.message);
 		});
 }
 
@@ -59,11 +60,11 @@ export function deleteBranch(id, setBranches)
 		.then(response =>
 		{
 			getAllBranches(setBranches);
-			alert(response.data.message);
+			AlertMe(response.data.message);
 		})
 		.catch(error =>
 		{
-			alert(error.message);
+			AlertMe(error.message);
 		});
 }
 
@@ -77,11 +78,10 @@ export function updateBranch(id, name, screens, setBranches)
 		.then(response =>
 		{
 			getAllBranches(setBranches);
-			alert(response.data.message);
+			AlertMe(response.data.message);
 		})
 		.catch(error =>
 		{
-			console.log(error);
-			alert(error.message);
+			AlertMe(error.message);
 		});
 }

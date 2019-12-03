@@ -11,8 +11,7 @@ import Branch from "./Branch";
 import { withRouter } from "react-router";
 import fadeIn from "./FadeIn";
 import Loader from "./Loader";
-import Fade from "@material-ui/core/Fade";
-import Backdrop from "@material-ui/core/Backdrop";
+import AlertMe from "./ConfirmAlert/AlertMe";
 
 function getModalStyle()
 {
@@ -42,10 +41,10 @@ const Branches = props =>
 {
 	const [branches, setBranches] = useState(null);
 	const classes = useStyles();
-	const [modalStyle] = React.useState(getModalStyle);
-	const [open, setOpen] = React.useState(false);
-	const [name, setName] = React.useState("name");
-	const [screens, setScreens] = React.useState(1);
+	const [modalStyle] = useState(getModalStyle);
+	const [open, setOpen] = useState(false);
+	const [name, setName] = useState("name");
+	const [screens, setScreens] = useState(1);
 
 	useEffect(() =>
 	{
@@ -60,19 +59,7 @@ const Branches = props =>
 	{
 		setScreens(event.target.value);
 	};
-	const onCreateBranch = () =>
-	{
-		if (name)
-		{
-			setName("name");
-			setScreens(1);
-			createBranch(name, screens, setBranches, handleClose);
-			setOpen(false);
-		} else
-		{
-			alert("The \"Name\" field is empty ,please type branch name !!!");
-		}
-	};
+	
 	const handleOpen = () =>
 	{
 		setOpen(true);
@@ -82,54 +69,63 @@ const Branches = props =>
 		setOpen(false);
 	};
 
+	const onCreateBranch = () =>
+	{
+		if (name)
+		{
+			setName("name");
+			setScreens(1);
+			createBranch(name, screens, setBranches, handleClose);
+		} else
+		{
+			AlertMe("The \"Name\" field is empty ,please type branch name !!!");
+		}
+	};
+
 	return branches ? (
 		<>
 			<Modal
+				key={Date.now()}
 				aria-labelledby="simple-modal-title"
 				aria-describedby="simple-modal-description"
 				open={open}
 				onClose={handleClose}
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{ timeout: 400 }}
 			>
-				<Fade in={open}>
-					<div style={modalStyle} className={classes.paper}>
-						<h1 id="modal-title"> Create branch </h1>
-						<TextField
-							id="branch-name"
-							label="Name"
-							value={name}
-							placeholder={"Branch Name"}
-							onChange={handleChangeName}
-							margin="normal"
-							className="mg-16"
-							helperText={"The \"Name\" field is required*"}
-							error={name.length !== 0 ? false : true}
-						/>
-						<TextField
-							id="select-screens"
-							select
-							label="Select"
-							value={screens}
-							onChange={handleChangeScreens}
-							helperText="Please select screens count"
-							margin="normal"
-							className="mg-16"
-						>
-							{[1, 2, 3].map(option => (
-								<MenuItem key={option} value={option}>
-									{option}
-								</MenuItem>
-							))}
-						</TextField>
-						<Button variant="contained" onClick={onCreateBranch}>
-						Create
-						</Button>
-					</div>
-				</Fade>
+				<div style={modalStyle} className={classes.paper}>
+					<h1 id="modal-title"> Create branch </h1>
+					<TextField
+						id="branch-name"
+						label="Name"
+						value={name}
+						placeholder={"Branch Name"}
+						onChange={handleChangeName}
+						margin="normal"
+						className="mg-16"
+						helperText={"The \"Name\" field is required*"}
+						error={name.length !== 0 ? false : true}
+					/>
+					<TextField
+						id="select-screens"
+						select
+						label="Select"
+						value={screens}
+						onChange={handleChangeScreens}
+						helperText="Please select screens count"
+						margin="normal"
+						className="mg-16"
+					>
+						{[1, 2, 3].map(option => (
+							<MenuItem key={option} value={option}>
+								{option}
+							</MenuItem>
+						))}
+					</TextField>
+					<Button variant="contained" onClick={onCreateBranch}>
+						Save New
+					</Button>
+				</div>
 			</Modal>
-
+						
 			<>
 				<Button variant="contained" onClick={handleOpen}>
 					Create
@@ -154,7 +150,7 @@ const Branches = props =>
 			{branches && branches.length > 0 && (
 				<div className="allBranchesContainer">
 					{branches.map((el, i) => (
-						<Branch branch={el} setBranches={setBranches} key={i} />
+						<Branch branch={el} setBranches={setBranches} key={i}/>
 					))}
 				</div>
 			)}
@@ -162,4 +158,4 @@ const Branches = props =>
 	) : <Loader />;
 };
 
-export default withRouter(fadeIn(Branches));
+export default withRouter(Branches);
