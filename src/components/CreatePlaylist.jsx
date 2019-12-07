@@ -81,8 +81,7 @@ const CreatePlaylist = props =>
 	const [open, setOpen] = React.useState(false);
 
 	const textRef = useRef("");
-
-	let dates = null;
+	const dates = useRef(null);
 
 	useEffect(() =>
 	{
@@ -140,15 +139,16 @@ const CreatePlaylist = props =>
 	{
 		if (playlist && !isEmpty(playlist))
 		{
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-			dates = cloneDeep(disabledDates);
-			for (let i in dates)
+			let filterDates = cloneDeep(disabledDates);
+
+			for (let i in filterDates)
 			{
-				if (dates[i].id === playlistId)
+				if (filterDates[i].id === playlistId)
 				{
-					dates.splice(i, 1);
+					filterDates.splice(i, 1);
 				}
 			}
+			dates.current = cloneDeep(filterDates);
 			setName(playlist.name);
 			setStartDate(new Date(playlist.startDate).valueOf());
 			setEndDate(new Date(playlist.endDate).valueOf());
@@ -156,7 +156,7 @@ const CreatePlaylist = props =>
 			setTicker(playlist.ticker);
 			setIsInvalidDate(false);
 		}
-	}, [playlist]);
+	}, [disabledDates, playlist, playlistId]);
 
 	useEffect(() =>
 	{
@@ -269,7 +269,7 @@ const CreatePlaylist = props =>
 			}
 		} else
 		{
-			alert("check files showTime summarize equality for every screen");
+			AlertMe("check files showTime summarize equality for every screen");
 		}
 	};
 	const handleChangeName = event =>
@@ -307,12 +307,13 @@ const CreatePlaylist = props =>
 
 		let minDate = -Infinity;
 		let maxDate = Infinity;
-		let d = dates ? dates : disabledDates;
+		let d = dates && dates.current ? dates.current : disabledDates;
+
 		for (let item of d)
 		{
 			const startRange = new Date(item.startDate).valueOf();
 			const endRange = new Date(item.endDate).valueOf();
-			if (start < startRange || start > endRange)
+			if ((start < startRange) || (start > endRange))
 			{
 				if (minDate === -Infinity)
 				{
@@ -322,22 +323,16 @@ const CreatePlaylist = props =>
 				{
 					maxDate = start < startRange ? startRange : maxDate;
 				}
-			} else if (start >= startRange && start <= endRange)
+			} else if ((start >= startRange) && (start <= endRange))
 			{
 				setIsInvalidDate(true);
-				alert(
-					`This date is in used!!! ${new Date(
-						item.startDate
-					).toLocaleString()} - ${new Date(
-						item.endDate
-					).toLocaleString()} try another date.`
-				);
+				AlertMe(`This date is in used!!! ${new Date(item.startDate).toLocaleString()} - ${new Date(item.endDate).toLocaleString()} try another date.`);
 				return;
 			}
 		}
-		if (start && start > minDate && start < maxDate)
+		if (start && (start > minDate) && (start < maxDate))
 		{
-			if (end && end > minDate && end < maxDate)
+			if (end && (end > minDate) && (end < maxDate))
 			{
 				setIsInvalidDate(false);
 				setChanged(true);
@@ -347,19 +342,17 @@ const CreatePlaylist = props =>
 			return;
 		}
 		setIsInvalidDate(true);
-		alert(
-			`This date is in used!!! try less than ${new Date(
-				maxDate
-			).toLocaleString()} .`
-		);
+		AlertMe(`This date is in used!!! try less than ${new Date(maxDate).toLocaleString()} .`);
 	};
 	const handleChangeDay = event =>
 	{
 		let val = event.target.value ? Number(event.target.value) : "";
-		if (!isNaN(val) && val <= 365 && val >= 0)
+		if (!isNaN(val) && (val <= 365) && (val >= 0))
 		{
 			setDay(val);
-		} else setDay(0);
+		} else { 
+			setDay(0);
+		}
 	};
 	const handleChangeHour = event =>
 	{
@@ -367,7 +360,9 @@ const CreatePlaylist = props =>
 		if (!isNaN(val) && val <= 23 && val >= 0)
 		{
 			setHour(val);
-		} else setHour(0);
+		} else { 
+			setHour(0);
+		}
 	};
 	const handleChangeMinute = event =>
 	{
@@ -589,7 +584,7 @@ const CreatePlaylist = props =>
 		}
 		localStorage.setItem("copiedPlaylist", JSON.stringify(obj));
 		localStorage.setItem("screens", branchScreens);
-		alert(`Playlist "${name}" copied `);
+		AlertMe(`Playlist "${name}" copied `);
 	};
 	const checkSumEquality = () =>
 	{
