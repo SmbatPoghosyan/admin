@@ -32,6 +32,8 @@ import fadeIn from "./FadeIn";
 import Fade from "@material-ui/core/Fade";
 import Backdrop from "@material-ui/core/Backdrop";
 import Loader from "./Loader";
+import Confirmation from "./ConfirmAlert/Confirm";
+import AlertMe from "./ConfirmAlert/AlertMe";
 
 const CreatePlaylist = props =>
 {
@@ -130,9 +132,9 @@ const CreatePlaylist = props =>
 				order2: [],
 				order3: []
 			});
-			getPlaylistById(branchId, playlistId, setPlaylist, setFiles);
+			getPlaylistById(branchId, playlistId, setPlaylist, setFiles, () => props.history.push(`/branches/${branchId}/`));
 		}
-	}, [branchId, playlistId]);
+	}, [branchId, playlistId, props.history]);
 
 	useEffect(() =>
 	{
@@ -277,19 +279,20 @@ const CreatePlaylist = props =>
 	};
 	const toBranchPage = () =>
 	{
-		return props.history.push(`/branches/${branchId}/`);
+		props.history.push(`/branches/${branchId}/`);
 	};
 	const handleChangeCurrency = event =>
 	{
 		setCurrency(event.target.checked);
 		setChanged(true);
 	};
-	const handleClickTicker = event =>
+	const handleSaveTicker = event =>
 	{
 		const val = textRef.current.value;
 		if (val.trim().length)
 		{
 			setTicker(val);
+			AlertMe("ticker saved");
 		} else
 		{
 			setTicker("");
@@ -388,9 +391,7 @@ const CreatePlaylist = props =>
 	};
 	const deleteFile = (file, i) =>
 	{
-		const sure = window.confirm("Are you sure want to delete file?");
-		if (sure)
-		{
+		Confirmation("Are you sure to delete the file?",()=> {
 			let tempScreen = files[i].screen;
 			let tempOrder = files[i].order;
 			tempScreen.forEach(scr =>
@@ -415,7 +416,7 @@ const CreatePlaylist = props =>
 			}
 			setFiles(filesClone);
 			setChanged(true);
-		}
+		},[]);
 	};
 	const resetForm = () =>
 	{
@@ -954,9 +955,10 @@ const CreatePlaylist = props =>
 				{playlist ? "Update" : "Create"}
 			</Button>
 			
-			<Modal open={open} onClose={handleClose} closeAfterTransition
+			<Modal open={open} onClose={handleClose} 
+				closeAfterTransition
 				BackdropComponent={Backdrop}
-				BackdropProps={{ timeout: 400 }}
+				BackdropProps={{ timeout: 350 }}
 			>
 				<Fade in={open}>
 					<div
@@ -980,7 +982,7 @@ const CreatePlaylist = props =>
 							defaultValue={ticker}
 						></textarea>
 
-						<Button style={{ margin: "5px 0" }} onClick={handleClickTicker}>
+						<Button style={{ margin: "5px 0" }} onClick={handleSaveTicker}>
 							Save
 						</Button>
 					</div>

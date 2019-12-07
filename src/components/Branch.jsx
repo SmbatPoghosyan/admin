@@ -37,7 +37,7 @@ const Branch = props =>
 
 	const handleDelete = () =>
 	{
-		Confirmation("Are you sure to delete the branch.",deleteBranch,[branch._id, setBranches]);
+		Confirmation("Are you sure to delete the branch?",deleteBranch,[branch._id, setBranches]);
 	};
 	const handleEdit = () =>
 	{

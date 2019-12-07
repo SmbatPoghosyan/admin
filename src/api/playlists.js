@@ -1,5 +1,6 @@
 import axios from "axios";
 import baseUrl from "./index";
+import AlertMe from "../components/ConfirmAlert/AlertMe";
 
 export function getAllBranchePlaylists(branchId, setPlaylists)
 {
@@ -10,11 +11,11 @@ export function getAllBranchePlaylists(branchId, setPlaylists)
 		})
 		.catch(error =>
 		{
-			alert(error.message);
+			console.error(error.message);
 		});
 }
 
-export function getPlaylistById(branchId, paylistId, setPlaylist, setFiles)
+export function getPlaylistById(branchId, paylistId, setPlaylist, setFiles, callBack)
 {
 	axios.get(baseUrl + "/playlists/" + branchId + "/" + paylistId, {})
 		.then(response =>
@@ -24,7 +25,8 @@ export function getPlaylistById(branchId, paylistId, setPlaylist, setFiles)
 		})
 		.catch(error =>
 		{
-			alert(error.message);
+			console.error(error.message);
+			callBack();
 		});
 }
 
@@ -42,7 +44,7 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists)
 		})
 		.catch(error =>
 		{
-			alert(error.message);
+			AlertMe(error.message);
 		});
 }
 
@@ -53,11 +55,11 @@ export function deletePlaylist(playlistId, branchId, setPlaylists, callBack)
 		.then(response =>
 		{
 			getAllBranchePlaylists(branchId, setPlaylists);
-			alert(response.data.message);
+			AlertMe(response.data.message);
 		})
 		.catch(error =>
 		{
-			alert(error.message);
+			AlertMe(error.message);
 		})
 		.finally(() =>
 		{
@@ -73,12 +75,12 @@ export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists,
 		.then(response =>
 		{
 			getAllBranchePlaylists(branchId, setPlaylists);
-			alert(response.data.message);
+			AlertMe(response.data.message);
 		})
 		.catch(error =>
 		{
 			console.log(error);
-			alert(error.message);
+			AlertMe(error.message);
 		})
 		.finally(() =>
 		{

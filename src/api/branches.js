@@ -12,25 +12,23 @@ export function getAllBranches(setBranches)
 		})
 		.catch(error =>
 		{
-			alert(error.message);
+			console.error(error.message);
 		});
 }
 
-export function getBranchById(id, setBranch, setPlaylists)
+export function getBranchById(id, setBranch, setPlaylists, getBack)
 {
 	axios
 		.get(baseUrl + "/branches/" + id, {})
 		.then(response =>
 		{
-			console.log("branch", response.data);
 			setBranch(response.data.branch);
 			setPlaylists(response.data.playlists);
 		})
 		.catch(error =>
 		{
-			console.log(error);
-			alert(error.message);
-			alert("WRONG ID!!!");
+			console.error("Wrong Id " + error.message);
+			getBack();
 		});
 }
 
@@ -49,6 +47,7 @@ export function createBranch(name, screens, setBranches, handleClose)
 		})
 		.catch(error =>
 		{
+			handleClose();
 			AlertMe(error.message);
 		});
 }

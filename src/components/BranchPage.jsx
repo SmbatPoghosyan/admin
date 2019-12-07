@@ -19,6 +19,7 @@ import { withRouter } from "react-router";
 import { getAllBranchePlaylists, deletePlaylist, createBranchPlaylist } from "../api/playlists";
 import fadeIn from "./FadeIn";
 import Loader from "./Loader";
+import Confirmation from "./ConfirmAlert/Confirm";
 
 const BranchPage = props =>
 {
@@ -30,9 +31,9 @@ const BranchPage = props =>
 
 	useEffect(() =>
 	{
-		getBranchById(params.id, setBranch, setPlaylists);
+		getBranchById(params.id, setBranch, setPlaylists, () => props.history.push("/branches/"));
 		getAllBranchePlaylists(params.id, setPlaylists);
-	}, [params.id]);
+	}, [params.id, props.history]);
 
 	useEffect(() =>
 	{
@@ -87,15 +88,12 @@ const BranchPage = props =>
 
 	const deleteHandleClick = playlistId =>
 	{
-		if (window.confirm("Are you sure ?"))
-		{
-			deletePlaylist(playlistId, branch._id, setPlaylists, toBranchPage);
-		}
+		Confirmation("Are you sure to delete the playlist?",deletePlaylist,[playlistId, branch._id, setPlaylists, toBranchPage]);
 	};
 
 	const toBranchPage = () =>
 	{
-		return props.history.push(`/branches/${branch._id}/`);
+		props.history.push(`/branches/${branch._id}/`);
 	};
 
 	const handleAddPlaylist = () =>
@@ -187,7 +185,7 @@ const BranchPage = props =>
 									/>
 								)}
 								/>
-								<Redirect to="/" />
+								<Redirect to={`${props.match.url}/`} />
 							</Switch>
 						</div>
 					</div>

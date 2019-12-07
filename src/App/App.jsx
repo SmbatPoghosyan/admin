@@ -1,5 +1,5 @@
 import React, {Suspense,lazy} from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch,Redirect } from "react-router-dom";
 import "./reset.css";
 import "./App.css";
 import Loader from "../components/Loader";
@@ -16,8 +16,9 @@ const App = () =>
 				<Suspense fallback={<Loader />}>
 					<Switch>
 						<Route exact path={["/", "/branches"]} component={Branches} />
-						<Route path="/branches/:id" component={BranchPage} />
+						<Route path={"/branches/:id"} component={BranchPage} />
 						<Route component={NotFound} />
+						<Redirect to="/" />
 					</Switch>
 				</Suspense>
 			</div>

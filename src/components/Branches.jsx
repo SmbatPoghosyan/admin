@@ -9,9 +9,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Branch from "./Branch";
 import { withRouter } from "react-router";
-import fadeIn from "./FadeIn";
 import Loader from "./Loader";
 import AlertMe from "./ConfirmAlert/AlertMe";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 
 function getModalStyle()
 {
@@ -67,14 +68,14 @@ const Branches = props =>
 	const handleClose = () =>
 	{
 		setOpen(false);
+		setName("name");
+		setScreens(1);
 	};
 
 	const onCreateBranch = () =>
 	{
 		if (name)
 		{
-			setName("name");
-			setScreens(1);
 			createBranch(name, screens, setBranches, handleClose);
 		} else
 		{
@@ -85,45 +86,51 @@ const Branches = props =>
 	return branches ? (
 		<>
 			<Modal
-				key={Date.now()}
 				aria-labelledby="simple-modal-title"
 				aria-describedby="simple-modal-description"
 				open={open}
 				onClose={handleClose}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 350,
+				}}
 			>
-				<div style={modalStyle} className={classes.paper}>
-					<h1 id="modal-title"> Create branch </h1>
-					<TextField
-						id="branch-name"
-						label="Name"
-						value={name}
-						placeholder={"Branch Name"}
-						onChange={handleChangeName}
-						margin="normal"
-						className="mg-16"
-						helperText={"The \"Name\" field is required*"}
-						error={name.length !== 0 ? false : true}
-					/>
-					<TextField
-						id="select-screens"
-						select
-						label="Select"
-						value={screens}
-						onChange={handleChangeScreens}
-						helperText="Please select screens count"
-						margin="normal"
-						className="mg-16"
-					>
-						{[1, 2, 3].map(option => (
-							<MenuItem key={option} value={option}>
-								{option}
-							</MenuItem>
-						))}
-					</TextField>
-					<Button variant="contained" onClick={onCreateBranch}>
-						Save New
-					</Button>
-				</div>
+				<Fade in={open}>
+					<div style={modalStyle} className={classes.paper}>
+						<h1 id="modal-title"> Create branch </h1>
+						<TextField
+							id="branch-name"
+							label="Name"
+							value={name}
+							placeholder={"Branch Name"}
+							onChange={handleChangeName}
+							margin="normal"
+							className="mg-16"
+							helperText={"The \"Name\" field is required*"}
+							error={name.length !== 0 ? false : true}
+						/>
+						<TextField
+							id="select-screens"
+							select
+							label="Select"
+							value={screens}
+							onChange={handleChangeScreens}
+							helperText="Please select screens count"
+							margin="normal"
+							className="mg-16"
+						>
+							{[1, 2, 3].map(option => (
+								<MenuItem key={option} value={option}>
+									{option}
+								</MenuItem>
+							))}
+						</TextField>
+						<Button variant="contained" onClick={onCreateBranch}>
+							Save New
+						</Button>
+					</div>
+				</Fade>
 			</Modal>
 						
 			<>

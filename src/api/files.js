@@ -1,5 +1,6 @@
 import axios from "axios";
 import baseUrl from "./index";
+import AlertMe from "../components/ConfirmAlert/AlertMe";
 const CancelToken = axios.CancelToken;
 export let cancel;
 
@@ -36,11 +37,11 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage)
 			if (axios.isCancel(error))
 			{
 				console.log("Request canceled", error.message);
-				alert("Upload canceled");
+				AlertMe("Upload canceled");
 				setUploadPercentage("");
 			} else
 			{
-				alert(error.message);
+				AlertMe(error.message);
 			}
 		});
 }
