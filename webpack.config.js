@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ASSET_PATH = process.env.ASSET_PATH || "/";
 
 const config = {
-	entry: path.resolve(__dirname, "/public/index.js"),
+	entry: path.resolve(__dirname, "/src/index.js"),
 	output: {
 		path: path.resolve(__dirname, "build"),
 		filename: "app.bundled.js",

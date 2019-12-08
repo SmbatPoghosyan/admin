@@ -34,6 +34,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Loader from "./Loader";
 import Confirmation from "./ConfirmAlert/Confirm";
 import AlertMe from "./ConfirmAlert/AlertMe";
+import { ChromePicker } from 'react-color'
 
 const CreatePlaylist = props =>
 {
@@ -75,7 +76,7 @@ const CreatePlaylist = props =>
 	const [playlist, setPlaylist] = useState();
 	const [changed, setChanged] = useState(false);
 	const [currency, setCurrency] = useState(false);
-	const [ticker, setTicker] = useState("");
+	const [ticker, setTicker] = useState({ text: "", color: "", fontSize: "16" });
 	const [multiply, setMultiply] = useState(1);
 	const [duration, setDuration] = useState(0);
 	const [open, setOpen] = React.useState(false);
@@ -125,7 +126,7 @@ const CreatePlaylist = props =>
 				checked2: false,
 				checked3: false
 			});
-			
+
 			setOrder({
 				order1: [],
 				order2: [],
@@ -185,15 +186,18 @@ const CreatePlaylist = props =>
 	{
 		if (playlist)
 		{
-			if (changed) {
+			if (changed)
+			{
 				setDisableCreate(false);
-			} else {
+			} else
+			{
 				setDisableCreate(true);
 			}
-		} else if (files.length > 0 && name && startDate &&	endDate && !isInvalidDate)
+		} else if (files.length > 0 && name && startDate && endDate && !isInvalidDate)
 		{
 			setDisableCreate(false);
-		} else	{
+		} else
+		{
 			setDisableCreate(true);
 		}
 	}, [files, name, startDate, endDate, isInvalidDate, changed, playlist]);
@@ -243,9 +247,9 @@ const CreatePlaylist = props =>
 				currency: currency,
 				files: JSON.stringify([...files])
 			};
-			if (ticker.length)
+			if (ticker.text.length)
 			{
-				playlistObj["ticker"] = ticker;
+				playlistObj.ticker = ticker;
 			}
 			if (playlist)
 			{
@@ -262,7 +266,7 @@ const CreatePlaylist = props =>
 				createBranchPlaylist(branchId, playlistObj, setPlaylists, toBranchPage);
 				setName("");
 				setCurrency(false);
-				setTicker("");
+				setTicker({ text: "", color: "", fontSize: "16" });
 				setStartDate();
 				setEndDate();
 				setFiles([]);
@@ -291,11 +295,13 @@ const CreatePlaylist = props =>
 		const val = textRef.current.value;
 		if (val.trim().length)
 		{
-			setTicker(val);
+			const tickerMutate = cloneDeep(ticker);
+			tickerMutate.text = val;
+			setTicker(tickerMutate);
 			AlertMe("ticker saved");
 		} else
 		{
-			setTicker("");
+			setTicker({ text: "", color: "", fontSize: "16" });
 		}
 		setChanged(true);
 		handleClose();
@@ -350,7 +356,8 @@ const CreatePlaylist = props =>
 		if (!isNaN(val) && (val <= 365) && (val >= 0))
 		{
 			setDay(val);
-		} else { 
+		} else
+		{
 			setDay(0);
 		}
 	};
@@ -360,7 +367,8 @@ const CreatePlaylist = props =>
 		if (!isNaN(val) && val <= 23 && val >= 0)
 		{
 			setHour(val);
-		} else { 
+		} else
+		{
 			setHour(0);
 		}
 	};
@@ -386,7 +394,8 @@ const CreatePlaylist = props =>
 	};
 	const deleteFile = (file, i) =>
 	{
-		Confirmation("Are you sure to delete the file?",()=> {
+		Confirmation("Are you sure to delete the file?", () =>
+		{
 			let tempScreen = files[i].screen;
 			let tempOrder = files[i].order;
 			tempScreen.forEach(scr =>
@@ -411,7 +420,7 @@ const CreatePlaylist = props =>
 			}
 			setFiles(filesClone);
 			setChanged(true);
-		},[]);
+		}, []);
 	};
 	const resetForm = () =>
 	{
@@ -578,9 +587,9 @@ const CreatePlaylist = props =>
 			currency,
 			files: [...files]
 		};
-		if (ticker.length)
+		if (ticker.text.length)
 		{
-			obj["ticker"] = ticker;
+			obj.ticker = ticker;
 		}
 		localStorage.setItem("copiedPlaylist", JSON.stringify(obj));
 		localStorage.setItem("screens", branchScreens);
@@ -618,7 +627,22 @@ const CreatePlaylist = props =>
 	};
 	const handleClose = () =>
 	{
+		setTicker({ text: "", color: "", fontSize: "16" });
 		setOpen(false);
+	};
+
+	const handleChangeTickerColor = (color) => 
+	{
+		const tickerMutate = cloneDeep(ticker);
+		tickerMutate.color = color.rgb;
+		setTicker(tickerMutate);
+	};
+
+	const handleChangeFontSize = (e) => 
+	{
+		const tickerMutate = cloneDeep(ticker);
+		tickerMutate.fontSize = e.target.value;
+		setTicker(tickerMutate);
 	};
 
 	const strDay = formatTime("d", day);
@@ -726,7 +750,7 @@ const CreatePlaylist = props =>
 									)}
 								</div>
 							</div>
-							{screen.length > 0 && (
+							{screen.length > 0 ? (
 								<div className="playlistCreateItemCont spaceBetWeen">
 									<span className="playlistTabHead">Order:</span>
 									<TextField
@@ -745,7 +769,7 @@ const CreatePlaylist = props =>
 										)}
 									</TextField>
 								</div>
-							)}
+							):null}
 							<form id="form" onSubmit={fileUploadHandler}>
 								<div
 									className="spaceBetWeen"
@@ -816,19 +840,19 @@ const CreatePlaylist = props =>
 											<div className="centerByFlex">
 												{uploadFileItem &&
 													uploadFileItem.mimetype.split("/")[0] === "video" && (
-													<>
-														<span>{convertSecondsIntoString(duration)}x</span>
-														<input
-															className="multiply"
-															placeholder="X"
-															type="number"
-															title="X"
-															min="1"
-															onChange={handleMultiply}
-															value={multiply}
-														/>
-													</>
-												)}
+														<>
+															<span>{convertSecondsIntoString(duration)}x</span>
+															<input
+																className="multiply"
+																placeholder="X"
+																type="number"
+																title="X"
+																min="1"
+																onChange={handleMultiply}
+																value={multiply}
+															/>
+														</>
+													)}
 												<input
 													placeholder="day"
 													type="number"
@@ -886,7 +910,6 @@ const CreatePlaylist = props =>
 							<>
 								<div className="allListLinkContainer fileList">
 									<p className="head">File List</p>
-
 									<ol className="list listHeight">
 										{files.length > 0
 											? files.map((file, i) => (
@@ -932,8 +955,8 @@ const CreatePlaylist = props =>
 													</div>
 													<hr />
 												</li>
-											))
-											: null}
+											)) : null
+										}
 									</ol>
 								</div>
 							</>
@@ -941,42 +964,37 @@ const CreatePlaylist = props =>
 					</div>
 				</div>
 			</div>
-			<Button
-				variant="contained"
-				onClick={createHandleClick}
+			<Button variant="contained" onClick={createHandleClick}
 				className={`createButton ${disableCreate ? "buttonDisabled" : ""}`}
-				disabled={disableCreate}
-			>
+				disabled={disableCreate} >
 				{playlist ? "Update" : "Create"}
 			</Button>
-			
-			<Modal open={open} onClose={handleClose} 
-				closeAfterTransition
-				BackdropComponent={Backdrop}
-				BackdropProps={{ timeout: 350 }}
-			>
+
+			<Modal open={open} onClose={handleClose} closeAfterTransition
+				BackdropComponent={Backdrop} BackdropProps={{ timeout: 350 }} >
 				<Fade in={open}>
-					<div
-						style={{
-							position: "absolute",
-							width: 400,
-							backgroundColor: "#fff",
-							border: "2px solid #000",
-							padding: "16px 32px 24px",
-							transform: "translate(-50%,-50%)",
-							left: "50%",
-							top: "50%"
-						}}
-					>
+					<div style={styles.tickerContainer}>
 						<h3>Add Ticker</h3>
 						<textarea
 							ref={textRef}
 							rows="10"
 							cols="44"
-							style={{ resize: "none", border: "1px solid grey" }}
-							defaultValue={ticker}
+							style={styles.textArea}
+							defaultValue={ticker.text}
 						></textarea>
-
+						<div style={styles.chromePickerContainer}>
+							<ChromePicker color={ticker.color} onChangeComplete={handleChangeTickerColor} />
+							<div style={{ width: "calc(100% - 225px)" }}>
+								<select selected={ticker.fontSize} onChange={handleChangeFontSize} style={{ width: 100 }}>
+									<option value={16}>16</option>
+									<option value={24}>24</option>
+									<option value={32}>32</option>
+									<option value={64}>64</option>
+									<option value={128}>128</option>
+								</select>
+								<div style={{ fontSize: `${ticker.fontSize}px`, color: `rgba(${ticker.color.r},${ticker.color.g},${ticker.color.b},${ticker.color.a})` }} className="tarStyle">A</div>
+							</div>
+						</div>
 						<Button style={{ margin: "5px 0" }} onClick={handleSaveTicker}>
 							Save
 						</Button>
@@ -988,3 +1006,23 @@ const CreatePlaylist = props =>
 };
 
 export default withRouter(fadeIn(CreatePlaylist));
+
+const styles = {
+	tickerContainer: {
+		position: "absolute",
+		backgroundColor: "#fff",
+		border: "2px solid #000",
+		padding: "16px 32px 24px",
+		transform: "translate(-50%,-50%)",
+		left: "50%",
+		top: "50%"
+	},
+	textArea: {
+		resize: "none",
+		border: "1px solid grey"
+	},
+	chromePickerContainer: {
+		padding: "0.5rem 0",
+		display: "flex",
+	}
+};
