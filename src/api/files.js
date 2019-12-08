@@ -1,5 +1,5 @@
 import axios from "axios";
-import baseUrl from "./index";
+import { apiURL } from "../env";
 import AlertMe from "../components/ConfirmAlert/AlertMe";
 const CancelToken = axios.CancelToken;
 export let cancel;
@@ -7,7 +7,7 @@ export let cancel;
 export function uploadFile(formData, setUploadFileItem, setUploadPercentage)
 {
 	axios
-		.post(baseUrl + "/upload/", formData, {
+		.post(apiURL + "/upload/", formData, {
 			headers: {
 				"Content-Type": "multipart/form-data"
 			},
@@ -29,7 +29,7 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage)
 			console.log("file", response.data);
 			setUploadFileItem({
 				...response.data,
-				path: baseUrl + "/files/" + response.data.filename
+				path: apiURL + "/files/" + response.data.filename
 			});
 		})
 		.catch(error =>

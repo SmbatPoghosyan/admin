@@ -1,10 +1,10 @@
 import axios from "axios";
-import baseUrl from "./index";
+import { apiURL } from "../env";
 import AlertMe from "../components/ConfirmAlert/AlertMe";
 
 export function getAllBranchePlaylists(branchId, setPlaylists)
 {
-	axios.get(baseUrl + "/playlists/" + branchId, {})
+	axios.get(apiURL + "/playlists/" + branchId, {})
 		.then(response =>
 		{
 			setPlaylists(response.data);
@@ -17,7 +17,7 @@ export function getAllBranchePlaylists(branchId, setPlaylists)
 
 export function getPlaylistById(branchId, paylistId, setPlaylist, setFiles, callBack)
 {
-	axios.get(baseUrl + "/playlists/" + branchId + "/" + paylistId, {})
+	axios.get(apiURL + "/playlists/" + branchId + "/" + paylistId, {})
 		.then(response =>
 		{
 			setPlaylist(response.data.playlist);
@@ -32,7 +32,7 @@ export function getPlaylistById(branchId, paylistId, setPlaylist, setFiles, call
 
 export function createBranchPlaylist(branchId, playlistInfo, setPlaylists)
 {
-	axios.post(baseUrl + "/playlists/" + branchId, {
+	axios.post(apiURL + "/playlists/" + branchId, {
 		...playlistInfo
 	})
 		.then(response =>
@@ -51,7 +51,7 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists)
 export function deletePlaylist(playlistId, branchId, setPlaylists, callBack)
 {
 	axios.delete(
-		baseUrl + "/playlists/" + playlistId)
+		apiURL + "/playlists/" + playlistId)
 		.then(response =>
 		{
 			getAllBranchePlaylists(branchId, setPlaylists);
@@ -69,7 +69,7 @@ export function deletePlaylist(playlistId, branchId, setPlaylists, callBack)
 
 export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists, callBack)
 {
-	axios.put(baseUrl + "/playlists/" + playlistId, {
+	axios.put(apiURL + "/playlists/" + playlistId, {
 		...playlistInfo
 	})
 		.then(response =>

@@ -1,11 +1,11 @@
 import axios from "axios";
-import baseUrl from "./index";
+import { apiURL } from "../env";
 import AlertMe from "../components/ConfirmAlert/AlertMe";
 
 export function getAllBranches(setBranches)
 {
 	axios
-		.get(baseUrl + "/branches/", {})
+		.get(apiURL + "/branches/", {})
 		.then(response =>
 		{
 			setBranches(response.data);
@@ -19,7 +19,7 @@ export function getAllBranches(setBranches)
 export function getBranchById(id, setBranch, setPlaylists, getBack)
 {
 	axios
-		.get(baseUrl + "/branches/" + id, {})
+		.get(apiURL + "/branches/" + id, {})
 		.then(response =>
 		{
 			setBranch(response.data.branch);
@@ -35,7 +35,7 @@ export function getBranchById(id, setBranch, setPlaylists, getBack)
 export function createBranch(name, screens, setBranches, handleClose)
 {
 	axios
-		.post(baseUrl + "/branches/", {
+		.post(apiURL + "/branches/", {
 			name,
 			screens
 		})
@@ -55,7 +55,7 @@ export function createBranch(name, screens, setBranches, handleClose)
 export function deleteBranch(id, setBranches)
 {
 	axios
-		.delete(baseUrl + "/branches/" + id)
+		.delete(apiURL + "/branches/" + id)
 		.then(response =>
 		{
 			getAllBranches(setBranches);
@@ -70,7 +70,7 @@ export function deleteBranch(id, setBranches)
 export function updateBranch(id, name, screens, setBranches)
 {
 	axios
-		.put(baseUrl + "/branches/" + id, {
+		.put(apiURL + "/branches/" + id, {
 			name,
 			screens
 		})
