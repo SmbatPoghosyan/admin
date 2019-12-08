@@ -16,6 +16,7 @@
   font-size: 1.5rem;
   margin: 1rem 0;
   line-height: normal;
+  letter-spacing: 0.1rem;
 }
 .allListLinkContainer > .list {
   text-align: left;

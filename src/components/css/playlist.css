@@ -1,0 +1,11 @@
+.playlistContainer > .head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background: #f99a4e;
+}
+
+.playlistBody {
+  height: calc(100vh - 2rem - 83px);
+}
