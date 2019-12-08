@@ -34,7 +34,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Loader from "./Loader";
 import Confirmation from "./ConfirmAlert/Confirm";
 import AlertMe from "./ConfirmAlert/AlertMe";
-import { ChromePicker } from 'react-color'
+import { ChromePicker } from "react-color";
 
 const CreatePlaylist = props =>
 {
@@ -244,13 +244,10 @@ const CreatePlaylist = props =>
 				name,
 				endDate,
 				startDate,
-				currency: currency,
+				currency,
+				ticker,
 				files: JSON.stringify([...files])
 			};
-			if (ticker.text.length)
-			{
-				playlistObj.ticker = ticker;
-			}
 			if (playlist)
 			{
 				updatePlaylist(
@@ -473,19 +470,11 @@ const CreatePlaylist = props =>
 		setCheck({ ...check, [name]: event.target.checked });
 		if (screenArr.indexOf(parseInt(name.split("")[name.length - 1])) === -1)
 		{
-			setScreen(
-				[...screenArr, parseInt(name.split("")[name.length - 1])].sort(
-					(a, b) => a - b
-				)
-			);
-		} else if (
-			screenArr.indexOf(parseInt(name.split("")[name.length - 1])) !== -1
-		)
+			setScreen([...screenArr, parseInt(name.split("")[name.length - 1])].sort((a, b) => a - b));
+		} 
+		else if ( screenArr.indexOf(parseInt(name.split("")[name.length - 1])) !== -1)
 		{
-			screenArr.splice(
-				screenArr.indexOf(parseInt(name.split("")[name.length - 1])),
-				1
-			);
+			screenArr.splice(screenArr.indexOf(parseInt(name.split("")[name.length - 1])),1);
 			setScreen([...screenArr].sort((a, b) => a - b));
 		}
 	};
@@ -585,12 +574,9 @@ const CreatePlaylist = props =>
 			endDate: new Date(endDate).valueOf(),
 			startDate: new Date(startDate).valueOf(),
 			currency,
+			ticker,
 			files: [...files]
 		};
-		if (ticker.text.length)
-		{
-			obj.ticker = ticker;
-		}
 		localStorage.setItem("copiedPlaylist", JSON.stringify(obj));
 		localStorage.setItem("screens", branchScreens);
 		AlertMe(`Playlist "${name}" copied `);
@@ -627,7 +613,6 @@ const CreatePlaylist = props =>
 	};
 	const handleClose = () =>
 	{
-		setTicker({ text: "", color: "", fontSize: "16" });
 		setOpen(false);
 	};
 
@@ -719,10 +704,7 @@ const CreatePlaylist = props =>
 							</label>
 						</div>
 					</div>
-					<div
-						className="spaceBetWeen"
-						style={{ height: "100%", alignItems: "flex-start" }}
-					>
+					<div style={{ height: "100%",display: "flex" }}>
 						<div className="createFileCont">
 							<span className="head">Create File</span>
 
@@ -840,19 +822,19 @@ const CreatePlaylist = props =>
 											<div className="centerByFlex">
 												{uploadFileItem &&
 													uploadFileItem.mimetype.split("/")[0] === "video" && (
-														<>
-															<span>{convertSecondsIntoString(duration)}x</span>
-															<input
-																className="multiply"
-																placeholder="X"
-																type="number"
-																title="X"
-																min="1"
-																onChange={handleMultiply}
-																value={multiply}
-															/>
-														</>
-													)}
+													<>
+														<span>{convertSecondsIntoString(duration)}x</span>
+														<input
+															className="multiply"
+															placeholder="X"
+															type="number"
+															title="X"
+															min="1"
+															onChange={handleMultiply}
+															value={multiply}
+														/>
+													</>
+												)}
 												<input
 													placeholder="day"
 													type="number"
@@ -985,7 +967,7 @@ const CreatePlaylist = props =>
 						<div style={styles.chromePickerContainer}>
 							<ChromePicker color={ticker.color} onChangeComplete={handleChangeTickerColor} />
 							<div style={{ width: "calc(100% - 225px)" }}>
-								<select selected={ticker.fontSize} onChange={handleChangeFontSize} style={{ width: 100 }}>
+								<select value={ticker.fontSize} onChange={handleChangeFontSize} style={{ width: 100 }}>
 									<option value={16}>16</option>
 									<option value={24}>24</option>
 									<option value={32}>32</option>

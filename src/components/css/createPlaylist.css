@@ -26,7 +26,7 @@
   flex: 1;
   display: flex;
   padding: 0.5rem 0.5rem 0 0.5rem;
-  height: calc(100vh - 3rem - 121px);
+  height: calc(100vh - 3rem - 128px);
 }
 
 .createPlaylistBody .playlistTabHead {
@@ -51,7 +51,6 @@
 }
 
 .playlistFilesContainer {
-  height: calc(100vh - 240px);
   margin-top: 0.5rem;
   flex: 1;
   max-width: 400px;
@@ -76,13 +75,13 @@
 }
 
 .fileContainer {
-  height: 150px;
+  height: 80px;
   width: auto;
 }
 
 .fileContainer img,
 .fileContainer video {
-  height: 150px;
+  height: 80px;
   width: auto;
 }
 
