@@ -30,7 +30,7 @@ export function getPlaylistById(branchId, paylistId, setPlaylist, setFiles, call
 		});
 }
 
-export function createBranchPlaylist(branchId, playlistInfo, setPlaylists)
+export function createBranchPlaylist(branchId, playlistInfo, setPlaylists, callBack)
 {
 	axios.post(apiURL + "/playlists/" + branchId, {
 		...playlistInfo
@@ -45,6 +45,10 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists)
 		.catch(error =>
 		{
 			AlertMe(error.message);
+		})
+		.finally(() =>
+		{
+			callBack();
 		});
 }
 

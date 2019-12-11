@@ -100,7 +100,7 @@ const BranchPage = props =>
 	{
 		let playlistInfo = JSON.parse(localStorage.getItem("copiedPlaylist"));
 		playlistInfo.files = JSON.stringify(playlistInfo.files);
-		createBranchPlaylist(branch._id, playlistInfo, setPlaylists);
+		createBranchPlaylist(branch._id, playlistInfo, setPlaylists, toBranchPage);
 	};
 
 	return branch && branch._id ? (

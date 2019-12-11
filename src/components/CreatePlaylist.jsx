@@ -305,18 +305,18 @@ const CreatePlaylist = props =>
 	};
 	const dateTimeRangePickerChange = value =>
 	{
+		
 		const start = new Date(value.start).valueOf();
 		const end = new Date(value.end).valueOf();
 
 		let minDate = -Infinity;
 		let maxDate = Infinity;
 		let d = dates && dates.current ? dates.current : disabledDates;
-
 		for (let item of d)
 		{
 			const startRange = new Date(item.startDate).valueOf();
 			const endRange = new Date(item.endDate).valueOf();
-			if ((start < startRange) || (start > endRange))
+			if (start < startRange || start > endRange)
 			{
 				if (minDate === -Infinity)
 				{
@@ -326,7 +326,7 @@ const CreatePlaylist = props =>
 				{
 					maxDate = start < startRange ? startRange : maxDate;
 				}
-			} else if ((start >= startRange) && (start <= endRange))
+			} else if (start >= startRange && start <= endRange)
 			{
 				setIsInvalidDate(true);
 				AlertMe(`This date is in used!!! ${new Date(item.startDate).toLocaleString()} - ${new Date(item.endDate).toLocaleString()} try another date.`);
@@ -340,6 +340,9 @@ const CreatePlaylist = props =>
 				setIsInvalidDate(false);
 				setChanged(true);
 				setEndDate(end);
+			}
+			else {
+				AlertMe(`set valid end date`);
 			}
 			setStartDate(start);
 			return;
