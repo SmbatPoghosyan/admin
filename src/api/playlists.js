@@ -40,6 +40,7 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists, callB
 			if (setPlaylists)
 			{
 				getAllBranchePlaylists(branchId, setPlaylists);
+				AlertMe(response.data.message);
 			}
 		})
 		.catch(error =>
