@@ -16,8 +16,10 @@
 }
 .close {
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  min-width: 25px;
+  min-height: 25px;
+  width: 4vh;
+  height: 4vh;
   background: url("../../images/close1.png") no-repeat center;
   background-size: contain;
 }
@@ -51,9 +53,9 @@
 }
 
 .playlistFilesContainer {
-  margin-top: 0.5rem;
-  flex: 1;
-  max-width: 400px;
+	margin-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    max-width: 400px;
 }
 
 .spaceBetWeen {
@@ -145,6 +147,7 @@
 .dateRangeClass {
   padding: 0 1rem;
 }
+
 .createFileButton {
   bottom: 0;
   position: absolute;
@@ -152,13 +155,15 @@
   height: 30px;
 }
 
-.fileList {
+html .fileList {
   margin-left: 0.5rem;
+  width: 350px;
 }
 
 .multiply {
   margin-right: 0.5rem;
 }
+
 .takitox {
   width: 100%;
   display: flex;
@@ -168,6 +173,7 @@
 .copyStyle {
   border-radius: 50%;
   border: 2px solid white;
+  margin-right: 20px;
 }
 .currencyTickerStyle {
   height: 25px;

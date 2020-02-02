@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
 import
 {
 	createBranchPlaylist,
@@ -10,7 +9,6 @@ import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import DatetimeRangePicker from "react-datetime-range-picker";
 import DeleteIcon from "@material-ui/icons/Delete";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
 import IconButton from "@material-ui/core/IconButton";
 import "./css/createPlaylist.css";
 import { uploadFile } from "../api/files";
@@ -34,6 +32,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Loader from "./Loader";
 import Confirmation from "./ConfirmAlert/Confirm";
 import AlertMe from "./ConfirmAlert/AlertMe";
+import PlaylistHeader from "./PlaylistHeader";
 import { ChromePicker } from "react-color";
 
 const CreatePlaylist = props =>
@@ -342,7 +341,7 @@ const CreatePlaylist = props =>
 				setEndDate(end);
 			}
 			else {
-				AlertMe(`set valid end date`);
+				AlertMe("set valid end date");
 			}
 			setStartDate(start);
 			return;
@@ -640,24 +639,13 @@ const CreatePlaylist = props =>
 
 	return branchId ? (
 		<div className="createPlaylist">
-			<div className="head">
-				<span>{playlist ? "Update" : "Create Playlist"}</span>
-				{playlist && (
-					<span className="copyStyle">
-						<IconButton
-							aria-label="Copy"
-							onClick={() => copyHandleClick(playlist)}
-							title="Copy"
-							style={{ padding: "3px" }}
-						>
-							<FileCopyIcon fontSize="small" />
-						</IconButton>
-					</span>
-				)}
-				<Link to={`/branches/${branchId}/`}>
-					<i className="close" />
-				</Link>
-			</div>
+			<PlaylistHeader 
+				playlist={playlist}
+				copyHandleClick={copyHandleClick}
+				branchId={branchId}
+				files={files}
+				ticker={ticker}
+			/>
 			<div className="createPlaylistBody">
 				<div className="playlistTabsContainer">
 					<div>
@@ -707,7 +695,7 @@ const CreatePlaylist = props =>
 							</label>
 						</div>
 					</div>
-					<div style={{ height: "100%",display: "flex" }}>
+					<div style={{ height: "calc(100% - 50px)",display: "flex" }}>
 						<div className="createFileCont">
 							<span className="head">Create File</span>
 
@@ -956,7 +944,7 @@ const CreatePlaylist = props =>
 			</Button>
 
 			<Modal open={open} onClose={handleClose} closeAfterTransition
-				BackdropComponent={Backdrop} BackdropProps={{ timeout: 350 }} >
+				BackdropComponent={Backdrop} BackdropProps={{ timeout: 350 }} style={{ backdropFilter: "blur(2px)" }}>
 				<Fade in={open}>
 					<div style={styles.tickerContainer}>
 						<h3>Add Ticker</h3>

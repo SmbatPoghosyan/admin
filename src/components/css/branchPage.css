@@ -4,12 +4,22 @@
   display: flex;
   flex-direction: column;
 }
+
+.headAndPlaylistcontainer {
+	height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+	width: calc(100% - 300px);
+}
+
 .headAndPlaylistcontainer > .head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.5rem;
+  padding: 0.5rem;
   line-height: 1;
+  min-width: 961px;
 }
 
 .headAndPlaylistcontainer > .head > .hello {
@@ -44,24 +54,16 @@
 .branchPageContainer > .body {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: 100vh;
-  margin: 0.5rem;
+  width: 100vw;
 }
 
 .playlist {
-  margin-left: 0.5rem;
+  margin: 0.5rem;
   box-shadow: 0px 0px 5px 2px #969494;
   height: calc(100% - 50px);
   min-height: 508px;
-}
-
-.headAndPlaylistcontainer {
-  flex: 4;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  min-width: 730px;
+  min-width: 961px;
 }
 
 .selectOrCreate {

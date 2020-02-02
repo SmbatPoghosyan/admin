@@ -1,0 +1,77 @@
+
+.preview > img { 
+	width: 30px;
+	height: auto;
+	transition: box-shadow 0.2s ease;
+	box-shadow: -2px 1px 4px 0px white
+}
+
+.preview > img:hover { 
+	box-shadow: 0px 0px 5px 1px white
+}
+
+.preview > img:active,
+.preview > img:focus { 
+	box-shadow: 0px 0px 1px 0px white
+}
+
+.previewComponent 
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: white;
+	z-index: 10000;
+}
+
+.previewComponentHeader 
+{
+	width: 100%;
+    height: 10%;
+    background: transparent;
+	position: fixed;
+	top: 0;
+	z-index: 1;
+	transition: all 0.2s ease;
+}
+
+.previewComponentHeader > i {
+	position: absolute;
+	right: 0;
+	transform: translate(0%,-50%);
+	top: 50%;
+	opacity: 0;
+	transition: transform 0.35s ease;
+}
+
+.previewComponentHeader:hover {
+	background: #f8f8f8bf;
+}
+
+.previewComponentHeader:hover > i {
+	transform: translate(-200%,-50%);
+	opacity: 1;
+}
+
+.previewComponentBody
+{
+	height: 100%;
+}
+
+.tickerContainer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.MarqueeContent {
+	display: inline-block;
+	line-height: 1.3;
+}
+
+.screenPlaylistcontainer{
+	position: relative;
+	background: black;
+}
