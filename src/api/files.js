@@ -26,7 +26,6 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage)
 		})
 		.then(response =>
 		{
-			console.log("file", response.data);
 			setUploadFileItem({
 				...response.data,
 				path: apiURL + "/files/" + response.data.filename

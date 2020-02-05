@@ -47,7 +47,7 @@ const Branch = props =>
 	{
 		updateBranch(branch._id, name, screens, setBranches);
 		setEdit(false);
-		localStorage.setItem("screens",screens);
+
 	};
 	const onCancel = () =>
 	{

@@ -84,7 +84,6 @@ export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists,
 		})
 		.catch(error =>
 		{
-			console.log(error);
 			AlertMe(error.message);
 		})
 		.finally(() =>

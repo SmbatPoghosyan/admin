@@ -121,3 +121,12 @@ body .react-confirm-alert-overlay .react-confirm-alert .react-confirm-alert-body
     -webkit-border-radius: 16px;
     background-color: #7ebbe0;
 }
+
+.logout {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 110px;
+  height: 50px;
+  z-index: 1000;
+}

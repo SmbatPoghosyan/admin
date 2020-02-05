@@ -14,7 +14,7 @@ function fadeIn(WrappedComponent)
 		{
 			requestAnimationFrame(() =>
 			{
-				if (this._container)
+				if (this._container && this._container.current)
 				{
 					this._container.current.style.opacity = "1";
 				}

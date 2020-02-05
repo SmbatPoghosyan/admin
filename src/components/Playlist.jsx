@@ -6,6 +6,7 @@ const Playlist = props =>
 {
 	const playlistId = props.match.params.id;
 	const { branchId, setPlaylists, disabledDates, branchScreens } = props;
+	localStorage.setItem("screens",branchScreens);
 
 	return (
 		<CreatePlaylist

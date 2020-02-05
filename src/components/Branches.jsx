@@ -46,6 +46,10 @@ const Branches = props =>
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("name");
 	const [screens, setScreens] = useState(1);
+	const user = localStorage.getItem('user');
+	if(!user){
+		props.setUser('')
+	}
 
 	useEffect(() =>
 	{

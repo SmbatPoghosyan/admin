@@ -28,6 +28,10 @@ const BranchPage = props =>
 	const [disabledDates, setDisabledDates] = useState([]);
 	const { params } = props.match;
 	const [letAdd, setLetAdd] = useState(false);
+	const user = localStorage.getItem('user');
+	if(!user){
+		props.setUser(null);
+	}
 
 	useEffect(() =>
 	{
@@ -149,8 +153,8 @@ const BranchPage = props =>
 					<div className="headAndPlaylistcontainer">
 						<div className="head">
 							<span><Link to="/">Home</Link></span>
-							<span className="hello">Hello, {branch.name}</span>
-							<span className="screen">Screen {branch.screens}</span>
+							<span className="hello">{branch.name.toUpperCase()}</span>
+							<span className="hello"> </span>
 						</div>
 
 						<div className="playlist">
