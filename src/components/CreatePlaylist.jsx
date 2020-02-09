@@ -7,7 +7,6 @@ import
 } from "../api/playlists";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
-import DatetimeRangePicker from "react-datetime-range-picker";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import "./css/createPlaylist.css";
@@ -34,6 +33,8 @@ import Confirmation from "./ConfirmAlert/Confirm";
 import AlertMe from "./ConfirmAlert/AlertMe";
 import PlaylistHeader from "./PlaylistHeader";
 import { ChromePicker } from "react-color";
+import Calendar from "./Calendar";
+import moment from "moment";
 
 const CreatePlaylist = props =>
 {
@@ -302,11 +303,15 @@ const CreatePlaylist = props =>
 		setChanged(true);
 		handleClose();
 	};
+
+	const isOutsideRange = () =>
+	{
+
+	};
 	const dateTimeRangePickerChange = value =>
 	{
-		
-		const start = new Date(value.start).valueOf();
-		const end = new Date(value.end).valueOf();
+		const start = new Date(value.startDate).valueOf();
+		const end = new Date(value.endDate).valueOf();
 
 		let minDate = -Infinity;
 		let maxDate = Infinity;
@@ -329,6 +334,8 @@ const CreatePlaylist = props =>
 			{
 				setIsInvalidDate(true);
 				AlertMe(`This date is in used!!! ${new Date(item.startDate).toLocaleString()} - ${new Date(item.endDate).toLocaleString()} try another date.`);
+				setStartDate(null);
+				setEndDate(null);
 				return;
 			}
 		}
@@ -341,12 +348,16 @@ const CreatePlaylist = props =>
 				setEndDate(end);
 			}
 			else {
+				setStartDate(null);
+				setEndDate(null);
 				AlertMe("set valid end date");
 			}
 			setStartDate(start);
 			return;
 		}
 		setIsInvalidDate(true);
+		setStartDate(null);
+		setEndDate(null);
 		AlertMe(`This date is in used!!! try less than ${new Date(maxDate).toLocaleString()} .`);
 	};
 	const handleChangeDay = event =>
@@ -657,18 +668,13 @@ const CreatePlaylist = props =>
 								onChange={handleChangeName}
 								placeholder="Name"
 							/>
-
-							<DatetimeRangePicker
-								inputProps={{
-									className: "margin05",
-									placeholder: "pick date and time"
-								}}
-								timeFormat={"HH:mm"}
-								startDate={startDate ? new Date(startDate) : ""}
-								endDate={endDate ? new Date(endDate) : ""}
-								onChange={dateTimeRangePickerChange}
-								className="centerByFlex dateRangeClass"
+							<Calendar
+								start={startDate ? moment(startDate) : null}
+								end={endDate ? moment(endDate) : null}
+								isOutsideRange={isOutsideRange}
+								onDatesChange={dateTimeRangePickerChange}
 							/>
+
 							<label className="currencyTickerStyle">
 								<span>Currency</span>
 								<input

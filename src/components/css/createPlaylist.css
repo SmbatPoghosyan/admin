@@ -144,8 +144,11 @@
   margin-left: 0.5rem;
 }
 
-.dateRangeClass {
-  padding: 0 1rem;
+html .DateRangePicker {
+  margin: 0px 20px;
+}
+html .DateRangePickerInput_calendarIcon {
+  padding: 4px;
 }
 
 .createFileButton {
@@ -190,4 +193,8 @@ html .fileList {
 	display: flex;
 	align-items: center;
 	justify-content: center
+}
+
+html .DateInput_input {
+  padding: 2px 0px;
 }
