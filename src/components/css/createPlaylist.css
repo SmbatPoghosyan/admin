@@ -1,193 +1,202 @@
 .createPlaylist {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: #f0f8ff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #f0f8ff;
 }
+
 .createPlaylist > .head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-  background: #f99a4e;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background: #f99a4e;
 }
+
 .createPlaylist > .head > span {
-  color: #fff;
+    color: #fff;
 }
+
 .close {
-  display: inline-block;
-  min-width: 25px;
-  min-height: 25px;
-  width: 4vh;
-  height: 4vh;
-  background: url("../../images/close1.png") no-repeat center;
-  background-size: contain;
+    display: inline-block;
+    min-width: 25px;
+    min-height: 25px;
+    width: 3.5vh;
+    height: 3.5vh;
+    background: url("../../images/close1.png") no-repeat center;
+    background-size: contain;
 }
 
 .createPlaylistBody {
-  flex: 1;
-  display: flex;
-  padding: 0.5rem 0.5rem 0 0.5rem;
-  height: calc(100vh - 3rem - 128px);
+    flex: 1;
+    display: flex;
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    height: calc(100vh - 3rem - 128px);
 }
 
 .createPlaylistBody .playlistTabHead {
-  font-size: 1rem;
-  margin-right: 1rem;
-  line-height: 1.2;
-  text-align: left;
-  display: inline-block;
-  color: #fff;
+    font-size: 1rem;
+    margin-right: 1rem;
+    line-height: 1.2;
+    text-align: left;
+    display: inline-block;
+    color: #fff;
 }
 
 .pickDataRange {
-  font-size: 1.5rem;
-  margin-right: 1rem;
-  line-height: normal;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    line-height: normal;
 }
 
 .playlistTabsContainer {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .playlistFilesContainer {
-	margin-top: 0.5rem;
+    margin-top: 0.5rem;
     padding-bottom: 0.5rem;
     max-width: 400px;
 }
 
 .spaceBetWeen {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .createButton {
-  margin: 0.5rem !important;
+    margin: 0.5rem !important;
 }
 
 .playlistCreateItemCont {
-  display: flex;
-  align-items: center;
-  text-align: left;
-  padding: 0.4rem;
-  background: #f99a4e;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: 0.4rem;
+    background: #f99a4e;
 }
 
 .fileContainer {
-  height: 80px;
-  width: auto;
+    height: 80px;
+    width: auto;
 }
 
 .fileContainer img,
 .fileContainer video {
-  height: 80px;
-  width: auto;
+    height: 80px;
+    width: auto;
 }
 
 .showTimeCont {
-  flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 
 .showTimeCont > span {
-  border: 1px solid white;
-  line-height: initial;
-  margin-right: 0.5rem;
-  padding: 0 0.5rem;
-  font-size: 0.9rem;
+    border: 1px solid white;
+    line-height: initial;
+    margin-right: 0.5rem;
+    padding: 0 0.5rem;
+    font-size: 0.9rem;
 }
+
 .showTimeCont > div > input {
-  width: 45px;
-  font-size: 0.85rem;
+    width: 45px;
+    font-size: 0.85rem;
 }
 
 .fileLi {
-  margin-left: 0.5rem;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+    margin-left: 0.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
+
 .fileLi:first-child {
-  margin: 0;
+    margin: 0;
 }
+
 .createFileCont {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 2;
-  border: 1px solid #628ba6;
-  margin-top: 0.5rem;
-  height: 97%;
-  position: relative;
-  font-size: 1rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    border: 1px solid #628ba6;
+    margin-top: 0.5rem;
+    height: 97%;
+    position: relative;
+    font-size: 1rem;
 }
+
 .createFileCont > .head {
-  font-weight: 600;
-  padding: 0.3rem 0 0.2rem;
-  letter-spacing: 0.1rem;
+    font-weight: 600;
+    padding: 0.3rem 0 0.2rem;
+    letter-spacing: 0.1rem;
 }
+
 .marginRight5 {
-  margin-right: 5rem;
+    margin-right: 5rem;
 }
 
 .rdt:first-child::before {
-  content: "Start Date:";
-  color: #fff;
-  margin-left: 0.5rem;
+    content: "Start Date:";
+    color: #fff;
+    margin-left: 0.5rem;
 }
 
 .rdt:last-child::before {
-  content: "End Date:";
-  color: #fff;
-  margin-left: 0.5rem;
+    content: "End Date:";
+    color: #fff;
+    margin-left: 0.5rem;
 }
 
 .dateRangeClass {
-  padding: 0 1rem;
+    padding: 0 1rem;
 }
 
 .createFileButton {
-  bottom: 0;
-  position: absolute;
-  width: 100%;
-  height: 30px;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    height: 30px;
 }
 
 html .fileList {
-  margin-left: 0.5rem;
-  width: 350px;
+    margin-left: 0.5rem;
+    width: 350px;
 }
 
 .multiply {
-  margin-right: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .takitox {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .copyStyle {
-  border-radius: 50%;
-  border: 2px solid white;
-  margin-right: 20px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-right: 20px;
 }
+
 .currencyTickerStyle {
-  height: 25px;
-  color: #fff;
-  padding-left: 10px;
-  border-left: 1px dotted grey;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    height: 25px;
+    color: #fff;
+    padding-left: 10px;
+    border-left: 1px dotted grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .tarStyle {
-	height: calc(100% - 25px);
-	display: flex;
-	align-items: center;
-	justify-content: center
+    height: calc(100% - 25px);
+    display: flex;
+    align-items: center;
+    justify-content: center
 }

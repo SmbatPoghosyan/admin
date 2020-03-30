@@ -1,7 +1,7 @@
-import { confirmAlert } from "react-confirm-alert";
+import {confirmAlert} from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-const Confirmation = ( message, onClickSubmit, submitArgs, onClickNo, noArgs) => 
+const Confirmation = (message, onClickSubmit, submitArgs, onClickNo, noArgs) =>
 {
 	return confirmAlert({
 		title: "Confirm to submit",
@@ -9,16 +9,20 @@ const Confirmation = ( message, onClickSubmit, submitArgs, onClickNo, noArgs) =>
 		buttons: [
 			{
 				label: "Yes",
-				onClick: () => { 
-					if(onClickSubmit) {
+				onClick: () =>
+				{
+					if (onClickSubmit)
+					{
 						return onClickSubmit(...submitArgs);
 					}
 				}
 			},
 			{
 				label: "No",
-				onClick: () =>  { 
-					if(onClickNo) {
+				onClick: () =>
+				{
+					if (onClickNo)
+					{
 						return onClickNo(...noArgs);
 					}
 				}

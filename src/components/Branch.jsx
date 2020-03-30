@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, {useEffect, useState} from "react";
+import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Icon from "@material-ui/core/Icon";
-import { deleteBranch, updateBranch } from "../api/branches";
+import {deleteBranch, updateBranch} from "../api/branches";
 import Input from "@material-ui/core/Input";
 import "./css/branch.css";
 import Button from "@material-ui/core/Button";
-import { TextField } from "@material-ui/core";
+import {TextField} from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
-import { withRouter } from "react-router";
+import {withRouter} from "react-router";
 import Confirmation from "./ConfirmAlert/Confirm";
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 const Branch = props =>
 {
-	const { branch, setBranches } = props;
+	const {branch, setBranches} = props;
 	const classes = useStyles();
 	const [name, setName] = useState(branch.name);
 	const [edit, setEdit] = useState(false);
@@ -37,7 +37,7 @@ const Branch = props =>
 
 	const handleDelete = () =>
 	{
-		Confirmation("Are you sure to delete the branch?",deleteBranch,[branch._id, setBranches]);
+		Confirmation("Are you sure to delete the branch?", deleteBranch, [branch._id, setBranches]);
 	};
 	const handleEdit = () =>
 	{
@@ -68,7 +68,7 @@ const Branch = props =>
 
 	return (
 		<div className={`branchContainer ${edit ? "editModeCont" : ""}`}
-			style={{ border: `1px solid ${edit ? "#236498" : "#969494"}` }}
+			 style={{border: `1px solid ${edit ? "#236498" : "#969494"}`}}
 		>
 			<div className="nameidcont">
 				<div className="branchName">
@@ -96,7 +96,7 @@ const Branch = props =>
 						className={classes.margin}
 						title="Delete"
 					>
-						<DeleteIcon fontSize="small" />
+						<DeleteIcon fontSize="small"/>
 					</IconButton>
 				</div>
 			</div>

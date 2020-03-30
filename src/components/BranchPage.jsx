@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { getBranchById } from "../api/branches";
-import
-{
-	Route,
-	Link,
-	Switch,
-	Redirect
-} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {getBranchById} from "../api/branches";
+import {Link, Redirect, Route, Switch} from "react-router-dom";
 import Playlist from "./Playlist";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -15,8 +9,8 @@ import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
 import "./css/branchPage.css";
 import "./css/branches.css";
 import CreatePlaylist from "./CreatePlaylist";
-import { withRouter } from "react-router";
-import { getAllBranchePlaylists, deletePlaylist, createBranchPlaylist } from "../api/playlists";
+import {withRouter} from "react-router";
+import {createBranchPlaylist, deletePlaylist, getAllBranchePlaylists} from "../api/playlists";
 import fadeIn from "./FadeIn";
 import Loader from "./Loader";
 import Confirmation from "./ConfirmAlert/Confirm";
@@ -26,10 +20,11 @@ const BranchPage = props =>
 	const [branch, setBranch] = useState({});
 	const [playlists, setPlaylists] = useState([]);
 	const [disabledDates, setDisabledDates] = useState([]);
-	const { params } = props.match;
+	const {params} = props.match;
 	const [letAdd, setLetAdd] = useState(false);
-	const user = localStorage.getItem('user');
-	if(!user){
+	const user = localStorage.getItem("user");
+	if (!user)
+	{
 		props.setUser(null);
 	}
 
@@ -65,7 +60,7 @@ const BranchPage = props =>
 				return false;
 			}
 
-			for (let it of disabledDates) 
+			for (let it of disabledDates)
 			{
 				let a = (playlistInfo.startDate >= it.startDate && playlistInfo.startDate <= it.endDate);
 				let b = (it.endDate >= it.startDate && playlistInfo.endDate <= it.endDate);
@@ -92,7 +87,7 @@ const BranchPage = props =>
 
 	const deleteHandleClick = playlistId =>
 	{
-		Confirmation("Are you sure to delete the playlist?",deletePlaylist,[playlistId, branch._id, setPlaylists, toBranchPage]);
+		Confirmation("Are you sure to delete the playlist?", deletePlaylist, [playlistId, branch._id, setPlaylists, toBranchPage]);
 	};
 
 	const toBranchPage = () =>
@@ -114,15 +109,15 @@ const BranchPage = props =>
 					<div className="allListLinkContainer">
 						<p className="head">Playlists</p>
 						{letAdd &&
-							<div className="iconsContainer" style={{ background: "#f99a4e" }}>
-								<IconButton
-									aria-label="Add"
-									onClick={handleAddPlaylist}
-									title="Add Playlist"
-								>
-									<AddToPhotosIcon fontSize="small" />
-								</IconButton>
-							</div>
+						<div className="iconsContainer" style={{background: "#f99a4e"}}>
+							<IconButton
+								aria-label="Add"
+								onClick={handleAddPlaylist}
+								title="Add Playlist"
+							>
+								<AddToPhotosIcon fontSize="small"/>
+							</IconButton>
+						</div>
 						}
 						<ul className="list listHeight">
 							{playlists.length > 0
@@ -137,13 +132,13 @@ const BranchPage = props =>
 													aria-label="Delete"
 													onClick={() => deleteHandleClick(playlist._id)}
 													title="Delete"
-													style={{ padding: "3px" }}
+													style={{padding: "3px"}}
 												>
-													<DeleteIcon fontSize="small" />
+													<DeleteIcon fontSize="small"/>
 												</IconButton>
 											</span>
 										</p>
-										<hr />
+										<hr/>
 									</li>
 								))
 								: null}
@@ -154,7 +149,6 @@ const BranchPage = props =>
 						<div className="head">
 							<span><Link to="/">Home</Link></span>
 							<span className="hello">{branch.name.toUpperCase()}</span>
-							<span className="hello"> </span>
 						</div>
 
 						<div className="playlist">
@@ -189,14 +183,14 @@ const BranchPage = props =>
 									/>
 								)}
 								/>
-								<Redirect to={`${props.match.url}/`} />
+								<Redirect to={`${props.match.url}/`}/>
 							</Switch>
 						</div>
 					</div>
 				</div>
 			</div>
 		</>
-	) : <Loader />;
+	) : <Loader/>;
 };
 
 export default withRouter(fadeIn(BranchPage));

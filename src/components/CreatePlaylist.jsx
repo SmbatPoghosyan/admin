@@ -1,30 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
-import
-{
-	createBranchPlaylist,
-	getPlaylistById,
-	updatePlaylist
-} from "../api/playlists";
+import React, {useEffect, useRef, useState} from "react";
+import {createBranchPlaylist, getPlaylistById, updatePlaylist} from "../api/playlists";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";
 import DatetimeRangePicker from "react-datetime-range-picker";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
 import "./css/createPlaylist.css";
-import { uploadFile } from "../api/files";
-import { cancel } from "../api/files";
-import { TextField } from "@material-ui/core";
+import {cancel, uploadFile} from "../api/files";
+import {TextField} from "@material-ui/core";
 import MenuItem from "@material-ui/core/MenuItem";
-import
-{
-	convertSeconds,
-	formatTime,
-	formatBytes,
-	isEmpty,
-	convertSecondsIntoString
-} from "./Utils";
-import { withRouter } from "react-router";
-import { isEqual, cloneDeep } from "lodash";
+import {convertSeconds, convertSecondsIntoString, formatBytes, formatTime, isEmpty} from "./Utils";
+import {withRouter} from "react-router";
+import {cloneDeep, isEqual} from "lodash-es";
 import Modal from "@material-ui/core/Modal";
 import fadeIn from "./FadeIn";
 import Fade from "@material-ui/core/Fade";
@@ -33,7 +20,7 @@ import Loader from "./Loader";
 import Confirmation from "./ConfirmAlert/Confirm";
 import AlertMe from "./ConfirmAlert/AlertMe";
 import PlaylistHeader from "./PlaylistHeader";
-import { ChromePicker } from "react-color";
+import {ChromePicker} from "react-color";
 
 const CreatePlaylist = props =>
 {
@@ -75,7 +62,7 @@ const CreatePlaylist = props =>
 	const [playlist, setPlaylist] = useState();
 	const [changed, setChanged] = useState(false);
 	const [currency, setCurrency] = useState(false);
-	const [ticker, setTicker] = useState({ text: "", color: "", fontSize: "16" });
+	const [ticker, setTicker] = useState({text: "", color: "", fontSize: "16"});
 	const [multiply, setMultiply] = useState(1);
 	const [duration, setDuration] = useState(0);
 	const [open, setOpen] = React.useState(false);
@@ -99,7 +86,7 @@ const CreatePlaylist = props =>
 					let arr = tempOrder[`order${screen}`];
 					arr.push(file.order);
 
-					setOrder({ ...tempOrder, [`order${screen}`]: [...arr] });
+					setOrder({...tempOrder, [`order${screen}`]: [...arr]});
 				});
 			}
 		}
@@ -223,7 +210,7 @@ const CreatePlaylist = props =>
 	const setShowTimeByMultiply = d =>
 	{
 		const obj = convertSeconds(d);
-		const { days, hrs, mnts, sec } = obj;
+		const {days, hrs, mnts, sec} = obj;
 		setDay(days);
 		setHour(hrs);
 		setMinute(mnts);
@@ -262,7 +249,7 @@ const CreatePlaylist = props =>
 				createBranchPlaylist(branchId, playlistObj, setPlaylists, toBranchPage);
 				setName("");
 				setCurrency(false);
-				setTicker({ text: "", color: "", fontSize: "16" });
+				setTicker({text: "", color: "", fontSize: "16"});
 				setStartDate();
 				setEndDate();
 				setFiles([]);
@@ -297,14 +284,14 @@ const CreatePlaylist = props =>
 			AlertMe("ticker saved");
 		} else
 		{
-			setTicker({ text: "", color: "", fontSize: "16" });
+			setTicker({text: "", color: "", fontSize: "16"});
 		}
 		setChanged(true);
 		handleClose();
 	};
 	const dateTimeRangePickerChange = value =>
 	{
-		
+
 		const start = new Date(value.start).valueOf();
 		const end = new Date(value.end).valueOf();
 
@@ -339,8 +326,8 @@ const CreatePlaylist = props =>
 				setIsInvalidDate(false);
 				setChanged(true);
 				setEndDate(end);
-			}
-			else {
+			} else
+			{
 				AlertMe("set valid end date");
 			}
 			setStartDate(start);
@@ -407,7 +394,7 @@ const CreatePlaylist = props =>
 						arr.splice(i, 1);
 					}
 				}
-				setOrder({ ...order, [`order${scr}`]: [...arr] });
+				setOrder({...order, [`order${scr}`]: [...arr]});
 			});
 			const filesClone = cloneDeep(files);
 			for (let j = 0; j < filesClone.length; j++)
@@ -469,14 +456,13 @@ const CreatePlaylist = props =>
 			return;
 		}
 		let screenArr = screen;
-		setCheck({ ...check, [name]: event.target.checked });
+		setCheck({...check, [name]: event.target.checked});
 		if (screenArr.indexOf(parseInt(name.split("")[name.length - 1])) === -1)
 		{
 			setScreen([...screenArr, parseInt(name.split("")[name.length - 1])].sort((a, b) => a - b));
-		} 
-		else if ( screenArr.indexOf(parseInt(name.split("")[name.length - 1])) !== -1)
+		} else if (screenArr.indexOf(parseInt(name.split("")[name.length - 1])) !== -1)
 		{
-			screenArr.splice(screenArr.indexOf(parseInt(name.split("")[name.length - 1])),1);
+			screenArr.splice(screenArr.indexOf(parseInt(name.split("")[name.length - 1])), 1);
 			setScreen([...screenArr].sort((a, b) => a - b));
 		}
 	};
@@ -509,8 +495,8 @@ const CreatePlaylist = props =>
 				}
 				let arr = order[`order${screen}`];
 				arr.push(o);
-				setOrder({ ...order, [`order${screen}`]: [...arr] });
-				files[i] = { ...file, order: o };
+				setOrder({...order, [`order${screen}`]: [...arr]});
+				files[i] = {...file, order: o};
 			}
 		});
 	};
@@ -522,7 +508,7 @@ const CreatePlaylist = props =>
 			{
 				let arr = order[`order${s}`];
 				arr.push(orderTemp);
-				setOrder({ ...order, [`order${s}`]: [...arr] });
+				setOrder({...order, [`order${s}`]: [...arr]});
 			});
 
 			let tempFiles = files;
@@ -570,7 +556,7 @@ const CreatePlaylist = props =>
 	};
 	const copyHandleClick = p =>
 	{
-		const { name, currency, ticker, startDate, endDate } = p;
+		const {name, currency, ticker, startDate, endDate} = p;
 		const obj = {
 			name,
 			endDate: new Date(endDate).valueOf(),
@@ -618,14 +604,14 @@ const CreatePlaylist = props =>
 		setOpen(false);
 	};
 
-	const handleChangeTickerColor = (color) => 
+	const handleChangeTickerColor = (color) =>
 	{
 		const tickerMutate = cloneDeep(ticker);
 		tickerMutate.color = color.rgb;
 		setTicker(tickerMutate);
 	};
 
-	const handleChangeFontSize = (e) => 
+	const handleChangeFontSize = (e) =>
 	{
 		const tickerMutate = cloneDeep(ticker);
 		tickerMutate.fontSize = e.target.value;
@@ -639,7 +625,7 @@ const CreatePlaylist = props =>
 
 	return branchId ? (
 		<div className="createPlaylist">
-			<PlaylistHeader 
+			<PlaylistHeader
 				playlist={playlist}
 				copyHandleClick={copyHandleClick}
 				branchId={branchId}
@@ -695,13 +681,13 @@ const CreatePlaylist = props =>
 							</label>
 						</div>
 					</div>
-					<div style={{ height: "calc(100% - 50px)",display: "flex" }}>
+					<div style={{height: "calc(100% - 50px)", display: "flex"}}>
 						<div className="createFileCont">
 							<span className="head">Create File</span>
 
 							<div className="playlistCreateItemCont spaceBetWeen">
 								<span className="playlistTabHead">Screen:</span>
-								<div className="backgroundFFF" style={{ padding: "0.5rem" }}>
+								<div className="backgroundFFF" style={{padding: "0.5rem"}}>
 									{[1, 2, 3].map(option =>
 										option <= branchScreens ? (
 											<span key={option}>
@@ -713,8 +699,8 @@ const CreatePlaylist = props =>
 														option === 1
 															? check.checked1
 															: option === 2
-																? check.checked2
-																: check.checked3
+															? check.checked2
+															: check.checked3
 													}
 													onChange={checkBoxHandleChange(`checked${option}`)}
 												/>
@@ -733,7 +719,7 @@ const CreatePlaylist = props =>
 										value={orderTemp}
 										onChange={handleChangeOrder}
 									>
-										{Array.from({ length: maxOrder }, (v, k) => k + 1).map(
+										{Array.from({length: maxOrder}, (v, k) => k + 1).map(
 											(a, i) => (
 												<MenuItem key={a} dense={false} value={a}>
 													{a}
@@ -742,13 +728,13 @@ const CreatePlaylist = props =>
 										)}
 									</TextField>
 								</div>
-							):null}
+							) : null}
 							<form id="form" onSubmit={fileUploadHandler}>
 								<div
 									className="spaceBetWeen"
-									style={{ margin: "0.5rem 0", padding: "0 0.4rem" }}
+									style={{margin: "0.5rem 0", padding: "0 0.4rem"}}
 								>
-									<input type="file" onChange={selectFileHandler} />
+									<input type="file" onChange={selectFileHandler}/>
 									{uploadPercentage ? (
 										<label
 											style={{
@@ -762,7 +748,7 @@ const CreatePlaylist = props =>
 									) : null}
 									<span>
 										<button
-											style={{ width: "66px", height: "22px" }}
+											style={{width: "66px", height: "22px"}}
 											type="submit"
 											disabled={!selectedFile || uploadFileItem}
 											className={
@@ -772,7 +758,7 @@ const CreatePlaylist = props =>
 											Upload
 										</button>
 										<button
-											style={{ width: "66px", height: "22px" }}
+											style={{width: "66px", height: "22px"}}
 											type="reset"
 											onClick={resetForm}
 											disabled={!selectedFile}
@@ -812,7 +798,7 @@ const CreatePlaylist = props =>
 										<div className="showTimeCont centerByFlex">
 											<div className="centerByFlex">
 												{uploadFileItem &&
-													uploadFileItem.mimetype.split("/")[0] === "video" && (
+												uploadFileItem.mimetype.split("/")[0] === "video" && (
 													<>
 														<span>{convertSecondsIntoString(duration)}x</span>
 														<input
@@ -888,7 +874,7 @@ const CreatePlaylist = props =>
 											? files.map((file, i) => (
 												<li className="playlistLink" key={i}>
 													<div>
-														<div style={{ fontWeight: "bold" }}>
+														<div style={{fontWeight: "bold"}}>
 															[{i + 1}]. {file.name}
 														</div>
 														<div className="spaceBetWeen">
@@ -909,7 +895,7 @@ const CreatePlaylist = props =>
 																</span>
 																<span className="fileLi">
 																	Time:{" "}
-																	<span style={{ fontWeight: "bold" }}>
+																	<span style={{fontWeight: "bold"}}>
 																		{convertSecondsIntoString(file.showTime)}
 																	</span>.
 																</span>
@@ -919,14 +905,14 @@ const CreatePlaylist = props =>
 																	aria-label="Delete"
 																	onClick={() => deleteFile(file, i)}
 																	title="Delete"
-																	style={{ padding: "3px" }}
+																	style={{padding: "3px"}}
 																>
-																	<DeleteIcon fontSize="small" />
+																	<DeleteIcon fontSize="small"/>
 																</IconButton>
 															</span>
 														</div>
 													</div>
-													<hr />
+													<hr/>
 												</li>
 											)) : null
 										}
@@ -937,16 +923,23 @@ const CreatePlaylist = props =>
 					</div>
 				</div>
 			</div>
-			<Button variant="contained" onClick={createHandleClick}
-				className={`createButton ${disableCreate ? "buttonDisabled" : ""}`}
-				disabled={disableCreate} >
+			<Button variant="contained"
+					onClick={createHandleClick}
+					className={`createButton ${disableCreate ? "buttonDisabled" : ""}`}
+					disabled={disableCreate}
+			>
 				{playlist ? "Update" : "Create"}
 			</Button>
 
-			<Modal open={open} onClose={handleClose} closeAfterTransition
-				BackdropComponent={Backdrop} BackdropProps={{ timeout: 350 }} style={{ backdropFilter: "blur(2px)" }}>
+			<Modal open={open}
+				   onClose={handleClose}
+				   closeAfterTransition
+				   BackdropComponent={Backdrop}
+				   BackdropProps={{timeout: 350}}
+				   style={{backdropFilter: "blur(2px)"}}
+			>
 				<Fade in={open}>
-					<div style={styles.tickerContainer}>
+					<div style={styles.tickerContain}>
 						<h3>Add Ticker</h3>
 						<textarea
 							ref={textRef}
@@ -954,34 +947,38 @@ const CreatePlaylist = props =>
 							cols="44"
 							style={styles.textArea}
 							defaultValue={ticker.text}
-						></textarea>
+						/>
 						<div style={styles.chromePickerContainer}>
-							<ChromePicker color={ticker.color} onChangeComplete={handleChangeTickerColor} />
-							<div style={{ width: "calc(100% - 225px)" }}>
-								<select value={ticker.fontSize} onChange={handleChangeFontSize} style={{ width: 100 }}>
+							<ChromePicker color={ticker.color} onChangeComplete={handleChangeTickerColor}/>
+							<div style={{width: "calc(100% - 225px)"}}>
+								<select value={ticker.fontSize} onChange={handleChangeFontSize} style={{width: 100}}>
 									<option value={16}>16</option>
 									<option value={24}>24</option>
 									<option value={32}>32</option>
 									<option value={64}>64</option>
 									<option value={128}>128</option>
 								</select>
-								<div style={{ fontSize: `${ticker.fontSize}px`, color: `rgba(${ticker.color.r},${ticker.color.g},${ticker.color.b},${ticker.color.a})` }} className="tarStyle">A</div>
+								<div style={{
+									fontSize: `${ticker.fontSize}px`,
+									color: `rgba(${ticker.color.r},${ticker.color.g},${ticker.color.b},${ticker.color.a})`
+								}} className="tarStyle">A
+								</div>
 							</div>
 						</div>
-						<Button style={{ margin: "5px 0" }} onClick={handleSaveTicker}>
+						<Button style={{margin: "5px 0"}} onClick={handleSaveTicker}>
 							Save
 						</Button>
 					</div>
 				</Fade>
 			</Modal>
 		</div>
-	) : <Loader />;
+	) : <Loader/>;
 };
 
 export default withRouter(fadeIn(CreatePlaylist));
 
 const styles = {
-	tickerContainer: {
+	tickerContain: {
 		position: "absolute",
 		backgroundColor: "#fff",
 		border: "2px solid #000",

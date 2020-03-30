@@ -3,11 +3,11 @@ import "./css/preview.css";
 import StuffAroundTicker from "./preview/StuffAroundTicker";
 import Screen from "./preview/Screen";
 
-const PreviewComponent = ({setOpen,files,ticker}) => 
+const PreviewComponent = ({setOpen, files, ticker}) =>
 {
 	const screens = localStorage.getItem("screens") || 1;
-	const WIDTH = window.innerWidth/screens; // one display width
-	const HEIGHT = 1920/1080*WIDTH; // display height
+	const WIDTH = window.innerWidth / screens;
+	const HEIGHT = window.innerHeight;
 	const list = screens && ticker && files ? modifyData(files) : null;
 
 	return (
@@ -18,11 +18,16 @@ const PreviewComponent = ({setOpen,files,ticker}) =>
 			<div className="previewComponentBody">
 				{
 					screens && ticker && files ? (
-						<div style={{ height: `${HEIGHT}px`, width: `${WIDTH * screens}px`}} className="screenPlaylistcontainer">
+						<div style={{
+							height: `${HEIGHT}px`,
+							width: `${WIDTH * screens}px`,
+							position: "relative",
+							background: "#000"
+						}}>
 							{list}
 							{ticker && ticker.text ?
 								<div className="tickerContainer">
-									<StuffAroundTicker ticker={ticker} />
+									<StuffAroundTicker ticker={ticker}/>
 								</div> : null
 							}
 						</div>
@@ -45,7 +50,7 @@ const PreviewComponent = ({setOpen,files,ticker}) =>
 				}
 			}
 			let sum = 0;
-			for (let k = 0; k < files.length; k++) 
+			for (let k = 0; k < files.length; k++)
 			{
 				if (files[k].screen.indexOf(1) !== -1)
 				{

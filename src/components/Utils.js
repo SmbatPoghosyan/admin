@@ -23,7 +23,7 @@ export const convertSeconds = seconds =>
 export const convertSecondsIntoString = (seconds) =>
 {
 	const obj = convertSeconds(seconds);
-	const { days, hrs, mnts, sec } = obj;
+	const {days, hrs, mnts, sec} = obj;
 	return `[${(days ? days + "d:" : "") + (hrs ? hrs + "h:" : "") + (mnts ? mnts + "m:" : "") + (sec ? sec + "s" : "")}]`;
 };
 
@@ -42,16 +42,11 @@ export const formatTime = (type = "", value) =>
 	if (type)
 	{
 		return `${value ? (value < 10 ? "0" + value : value) : " --"}:${type}`;
-	}
-	else return "type is not valid";
+	} else return "type is not valid";
 };
 
 
 export const isEmpty = (object) =>
 {
-	if (Object.keys(object).length === 0) 
-	{
-		return true;
-	}
-	else return false;
+	return Object.keys(object).length === 0;
 };

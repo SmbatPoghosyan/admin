@@ -1,6 +1,7 @@
 import axios from "axios";
-import { apiURL } from "../env";
+import {apiURL} from "../env";
 import AlertMe from "../components/ConfirmAlert/AlertMe";
+
 const CancelToken = axios.CancelToken;
 export let cancel;
 
@@ -35,7 +36,7 @@ export function uploadFile(formData, setUploadFileItem, setUploadPercentage)
 		{
 			if (axios.isCancel(error))
 			{
-				console.log("Request canceled", error.message);
+				console.error("Request canceled", error.message);
 				AlertMe("Upload canceled");
 				setUploadPercentage("");
 			} else

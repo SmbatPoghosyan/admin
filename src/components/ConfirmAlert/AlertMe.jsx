@@ -1,7 +1,7 @@
-import { confirmAlert } from "react-confirm-alert";
+import {confirmAlert} from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-const AlertMe = ( message ) => 
+const AlertMe = (message) =>
 {
 	return confirmAlert({
 		title: "Alert info",
@@ -9,7 +9,9 @@ const AlertMe = ( message ) =>
 		buttons: [
 			{
 				label: "OK",
-				onClick: () => {}
+				onClick: () =>
+				{
+				}
 			}
 		]
 	});

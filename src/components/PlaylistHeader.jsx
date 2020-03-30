@@ -1,12 +1,11 @@
-import React from "react";
-import { Link, withRouter } from "react-router-dom";
+import React, {useState} from "react";
+import {Link, withRouter} from "react-router-dom";
 import CopyButton from "./CopyButton";
-import { useState } from "react";
 import PreviewComponent from "./PreviewComponent";
 
-const PlaylistHeader = ({playlist,copyHandleClick,branchId,files,ticker}) =>
+const PlaylistHeader = ({playlist, copyHandleClick, branchId, files, ticker}) =>
 {
-	const [open,setOpen] = useState(false);
+	const [open, setOpen] = useState(false);
 
 	return (
 		<>
@@ -14,17 +13,17 @@ const PlaylistHeader = ({playlist,copyHandleClick,branchId,files,ticker}) =>
 				<span>{playlist ? "Update" : "Create Playlist"}</span>
 				<div style={{display: "flex"}}>
 					{playlist ? (
-						<CopyButton onClick={() => copyHandleClick(playlist)} />
+						<CopyButton onClick={() => copyHandleClick(playlist)}/>
 					) : null}
 					<span className="preview">
-						<img 
-							onClick={() => setOpen(true)} 
-							src={require("../images/preview.png")} 
-							alt="Preview" title="Preview" />
+						<img
+							onClick={() => setOpen(true)}
+							src={require("../images/preview.png")}
+							alt="Preview" title="Preview"/>
 					</span>
 				</div>
-				<Link to={`/branches/${branchId}/`}>
-					<i className="close" />
+				<Link to={`/branches/${branchId}/`} style={{display: "inline-flex"}}>
+					<i className="close"/>
 				</Link>
 			</div>
 			{open ? (
@@ -32,7 +31,7 @@ const PlaylistHeader = ({playlist,copyHandleClick,branchId,files,ticker}) =>
 					setOpen={setOpen}
 					files={files}
 					ticker={ticker}
-				/> 
+				/>
 			) : null}
 		</>
 	);

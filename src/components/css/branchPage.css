@@ -1,76 +1,76 @@
 .branchPageContainer {
-  height: 100vh;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+    height: 100vh;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .headAndPlaylistcontainer {
-	height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow: auto;
-	width: calc(100% - 300px);
+    width: calc(100% - 300px);
 }
 
 .headAndPlaylistcontainer > .head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem;
-  line-height: 1;
-  min-width: 961px;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    line-height: 1;
+    min-width: 961px;
 }
 
 .headAndPlaylistcontainer > .head > .hello {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #f88224;
+    font-size: 1.9rem;
+    font-weight: bold;
+    color: #f88224;
+    flex: 1;
+    text-align: center;
 }
 
-.headAndPlaylistcontainer > .head > .screen {
-  font-size: 1.5rem;
-  font-weight: lighter;
-  color: #576886;
-}
 .branchPageContainer > .playlistsContainer {
-  display: inline-block;
-  width: 50%;
-  text-align: center;
-  margin: 10px;
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+    margin: 10px;
 }
+
 .branchPageContainer > .playlistsContainer > .list {
-  overflow-y: auto;
-  max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
 }
+
 .branchPageContainer > .playlistsContainer > .playlistLink {
-  text-align: left;
-  line-height: 2;
+    text-align: left;
+    line-height: 2;
 }
+
 .branchPageContainer > .playlistsContainer > span {
-  line-height: 1;
-  font-size: 1.1rem;
+    line-height: 1;
+    font-size: 1.1rem;
 }
+
 .branchPageContainer > .body {
-  display: flex;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
 }
 
 .playlist {
-  margin: 0.5rem;
-  box-shadow: 0px 0px 5px 2px #969494;
-  height: calc(100% - 50px);
-  min-height: 508px;
-  min-width: 961px;
+    margin: 0.5rem;
+    box-shadow: 0px 0px 5px 2px #969494;
+    height: calc(100% - 50px);
+    min-height: 508px;
+    min-width: 961px;
 }
 
 .selectOrCreate {
-  font-size: 1.5rem;
-  font-weight: bold;
-  height: 100%;
-  color: #000;
-  flex-direction: column;
-  line-height: 2;
+    font-size: 1.5rem;
+    font-weight: bold;
+    height: 100%;
+    color: #000;
+    flex-direction: column;
+    line-height: 2;
 }

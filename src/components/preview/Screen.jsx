@@ -1,9 +1,10 @@
-import React, { createRef } from "react";
-import { isEqual } from "lodash";
-import { apiURL } from "../../env";
+import React, {createRef} from "react";
+import {isEqual} from "lodash-es";
+import {apiURL} from "../../env";
+
 const path = `${apiURL}/files/`;
 
-class Screen extends React.Component 
+class Screen extends React.Component
 {
 	constructor(props)
 	{
@@ -12,7 +13,7 @@ class Screen extends React.Component
 			display: "none"
 		};
 		this.time = 0;
-		this.videoRef = createRef(null);
+		this.videoRef = createRef();
 	}
 
 	toBlock = () =>
@@ -22,18 +23,18 @@ class Screen extends React.Component
 		{
 			this.videoRef.current.play();
 		}
-		this.setState({ display: "block" });
+		this.setState({display: "block"});
 		this.time = setTimeout(this.toNone, this.props.showTime);
-	}
+	};
 
 	toNone = () =>
 	{
 		this.reset();
-		this.setState({ display: "none" });
+		this.setState({display: "none"});
 		this.time = setTimeout(this.toBlock, this.props.interval);
-	}
+	};
 
-	reset = () => 
+	reset = () =>
 	{
 		clearTimeout(this.time);
 		this.time = 0;
@@ -42,19 +43,19 @@ class Screen extends React.Component
 			this.videoRef.current.pause();
 			this.videoRef.current.currentTime = 0;
 		}
-	}
+	};
 
-	componentDidMount() 
+	componentDidMount()
 	{
 		this.reset();
 		this.time = setTimeout(this.toBlock, this.props.startTime);
 	}
 
-	componentDidUpdate(prevProps) 
+	componentDidUpdate(prevProps)
 	{
-		if (!isEqual(prevProps, this.props)) 
+		if (!isEqual(prevProps, this.props))
 		{
-			this.setState({ display: "none" }, () =>
+			this.setState({display: "none"}, () =>
 			{
 				this.reset();
 				this.time = setTimeout(this.toBlock, this.props.startTime);
@@ -62,15 +63,15 @@ class Screen extends React.Component
 		}
 	}
 
-	componentWillUnmount() 
+	componentWillUnmount()
 	{
-		this.setState({ display: "none" });
+		this.setState({display: "none"});
 		this.reset();
 	}
 
 	render()
 	{
-		const { screens, name, type, WIDTH, HEIGHT } = this.props;
+		const {screens, name, type, WIDTH, HEIGHT} = this.props;
 		const styleFile = {
 			position: "absolute",
 			height: HEIGHT + "px",
@@ -84,16 +85,19 @@ class Screen extends React.Component
 				<img
 					style={styleFile}
 					src={`${path + name}`}
-					alt={name} />
+					alt={name}
+				/>
 				:
 				<video
 					loop
 					ref={this.videoRef}
 					style={styleFile}
 					src={`${path + name}`}
-					alt={name} />
+					alt={name}
+				/>
 		) : null;
 	}
 }
+
 export default Screen;
 

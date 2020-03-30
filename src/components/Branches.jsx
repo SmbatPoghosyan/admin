@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { createBranch, getAllBranches } from "../api/branches";
+import React, {useEffect, useState} from "react";
+import {createBranch, getAllBranches} from "../api/branches";
 import "./css/branches.css";
 import Button from "@material-ui/core/Button";
 import Modal from "@material-ui/core/Modal";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
-import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import {makeStyles} from "@material-ui/core/styles";
+import {Link} from "react-router-dom";
 import Branch from "./Branch";
-import { withRouter } from "react-router";
+import {withRouter} from "react-router";
 import Loader from "./Loader";
 import AlertMe from "./ConfirmAlert/AlertMe";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -46,9 +46,10 @@ const Branches = props =>
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("name");
 	const [screens, setScreens] = useState(1);
-	const user = localStorage.getItem('user');
-	if(!user){
-		props.setUser('')
+	const user = localStorage.getItem("user");
+	if (!user)
+	{
+		props.setUser("");
 	}
 
 	useEffect(() =>
@@ -64,7 +65,7 @@ const Branches = props =>
 	{
 		setScreens(event.target.value);
 	};
-	
+
 	const handleOpen = () =>
 	{
 		setOpen(true);
@@ -112,7 +113,7 @@ const Branches = props =>
 							margin="normal"
 							className="mg-16"
 							helperText={"The \"Name\" field is required*"}
-							error={name.length !== 0 ? false : true}
+							error={name.length === 0}
 						/>
 						<TextField
 							id="select-screens"
@@ -136,7 +137,7 @@ const Branches = props =>
 					</div>
 				</Fade>
 			</Modal>
-						
+
 			<>
 				<Button variant="contained" onClick={handleOpen}>
 					Create
@@ -145,15 +146,15 @@ const Branches = props =>
 					<p className="head">Branches</p>
 					<ul className="list">
 						{branches &&
-							branches.map((el, i) => (
-								<li key={i}>
-									<p>
-										<Link to={`/branches/${el._id}`}>{el.name}</Link>
-										<span>{i + 1}</span>
-									</p>
-									<hr />
-								</li>
-							))}
+						branches.map((el, i) => (
+							<li key={i}>
+								<p>
+									<Link to={`/branches/${el._id}`}>{el.name}</Link>
+									<span>{i + 1}</span>
+								</p>
+								<hr/>
+							</li>
+						))}
 					</ul>
 				</div>
 			</>
@@ -166,7 +167,7 @@ const Branches = props =>
 				</div>
 			)}
 		</>
-	) : <Loader />;
+	) : <Loader/>;
 };
 
 export default withRouter(Branches);

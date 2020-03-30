@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiURL } from "../env";
+import {apiURL} from "../env";
 import AlertMe from "../components/ConfirmAlert/AlertMe";
 
 export function getAllBranches(setBranches)
@@ -34,7 +34,7 @@ export function getBranchById(id, setBranch, setPlaylists, getBack)
 
 export function createBranch(name, screens, setBranches, handleClose)
 {
-	const token = localStorage.getItem('token');
+	const token = localStorage.getItem("token");
 	axios
 		.post(apiURL + "/branches/", {
 			name,
@@ -56,9 +56,9 @@ export function createBranch(name, screens, setBranches, handleClose)
 
 export function deleteBranch(id, setBranches)
 {
-	const token = localStorage.getItem('token');
+	const token = localStorage.getItem("token");
 	axios
-		.delete(apiURL + "/branches/" + id + '?token=' + token)
+		.delete(apiURL + "/branches/" + id + "?token=" + token)
 		.then(response =>
 		{
 			getAllBranches(setBranches);
@@ -72,7 +72,7 @@ export function deleteBranch(id, setBranches)
 
 export function updateBranch(id, name, screens, setBranches)
 {
-	const token = localStorage.getItem('token');
+	const token = localStorage.getItem("token");
 	axios
 		.put(apiURL + "/branches/" + id, {
 			name,
@@ -83,10 +83,11 @@ export function updateBranch(id, name, screens, setBranches)
 		{
 			getAllBranches(setBranches);
 			AlertMe(response.data.message);
-			localStorage.setItem("screens",screens);
+			localStorage.setItem("screens", screens);
 		})
 		.catch(error =>
 		{
+			console.log("errrrr", error.message);
 			AlertMe(error.message);
 		});
 }

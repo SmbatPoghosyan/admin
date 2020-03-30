@@ -1,120 +1,124 @@
 body {
-  text-align: center;
-  font-family: "Open Sans", sans-serif;
-  background-color: white;
+    text-align: center;
+    font-family: "Open Sans", sans-serif;
+    background-color: white;
 }
 
 .main-heading {
-  font-size: 40px;
+    font-size: 40px;
 }
+
 .secondary-heading {
-  font-size: 20px;
+    font-size: 20px;
 }
+
 .photo {
-  widows: 300px;
-  height: 300px;
+    widows: 300px;
+    height: 300px;
 }
+
 .paragraph {
-  font-size: 14px;
-  color: black;
+    font-size: 14px;
+    color: black;
 }
 
 .app {
-  display: flex;
-  overflow: hidden;
-  height: 100vh;
+    display: flex;
+    overflow: hidden;
+    height: 100vh;
 }
 
 button {
-  background-color: #f88224 !important;
-  color: #fff !important;
+    background-color: #f88224 !important;
+    color: #fff !important;
 }
 
 button:hover {
-  background-color: #ca5d04 !important;
+    background-color: #ca5d04 !important;
 }
 
 .spaceBetWeen {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .centerByFlex {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .buttonDisabled {
-  opacity: 0.3 !important;
-  border: 1px dashed black !important;
+    opacity: 0.3 !important;
+    border: 1px dashed black !important;
 }
 
 .margin0Auto {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 .margin05 {
-  margin: 0.5rem;
+    margin: 0.5rem;
 }
+
 .padding05 {
-  padding: 0.5rem;
+    padding: 0.5rem;
 }
+
 .backgroundFFF {
-  background-color: #fff !important;
+    background-color: #fff !important;
 }
 
 .spaceEvenly {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 
 .bold {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 body #modal-root {
-  position: relative;
-  z-index: 999;
+    position: relative;
+    z-index: 999;
 }
 
 body .modal {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  backdrop-filter: blur(2px);
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    backdrop-filter: blur(2px);
 }
 
-body .react-confirm-alert-overlay 
-{
-	z-index: 2000;
-	background: rgba(0, 0, 0, 0.5);
+body .react-confirm-alert-overlay {
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.5);
 }
-body .react-confirm-alert-overlay .react-confirm-alert
-{
-	z-index: 2001;
-	box-shadow: rgb(64, 64, 64) -1px 3px 6px 4px;
+
+body .react-confirm-alert-overlay .react-confirm-alert {
+    z-index: 2001;
+    box-shadow: rgb(64, 64, 64) -1px 3px 6px 4px;
 }
-body .react-confirm-alert-overlay .react-confirm-alert .react-confirm-alert-body
-{
-	border-radius: 0;
+
+body .react-confirm-alert-overlay .react-confirm-alert .react-confirm-alert-body {
+    border-radius: 0;
 }
 
 ::-webkit-scrollbar {
     width: 10px;
-	height: 10px;
+    height: 10px;
 }
 
-::-webkit-scrollbar-thumb  {
+::-webkit-scrollbar-thumb {
     height: 40px;
     border: 3px solid rgba(0, 0, 0, 0);
     background-clip: padding-box;
@@ -123,10 +127,11 @@ body .react-confirm-alert-overlay .react-confirm-alert .react-confirm-alert-body
 }
 
 .logout {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 110px;
-  height: 50px;
-  z-index: 1000;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 90px;
+    height: 30px;
+    margin: 0.5rem;
+    z-index: 1000;
 }
