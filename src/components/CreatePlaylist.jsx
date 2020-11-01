@@ -427,6 +427,7 @@ const CreatePlaylist = props =>
 	const fileUploadHandler = event =>
 	{
 		event.preventDefault();
+		console.log(selectedFile);
 		const formData = new FormData();
 		formData.append("file", selectedFile);
 		uploadFile(formData, setUploadFileItem, setUploadPercentage);
@@ -516,7 +517,6 @@ const CreatePlaylist = props =>
 			{
 				ordering(s, tempFiles, orderTemp);
 			});
-
 			setFiles(
 				[
 					...tempFiles,
@@ -525,6 +525,7 @@ const CreatePlaylist = props =>
 						order: orderTemp,
 						screen,
 						name: uploadFileItem.filename,
+						size: uploadFileItem.size,
 						type: uploadFileItem.mimetype,
 						url: uploadFileItem.path
 					}
