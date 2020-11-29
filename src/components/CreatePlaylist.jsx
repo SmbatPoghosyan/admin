@@ -951,7 +951,7 @@ const CreatePlaylist = props =>
 						/>
 						<div style={styles.chromePickerContainer}>
 							<ChromePicker color={ticker.color} onChangeComplete={handleChangeTickerColor}/>
-							<div style={{width: "calc(100% - 225px)"}}>
+							<div style={{width: "calc(100% - 225px)",textAlign: "center" }}>
 								<select value={ticker.fontSize} onChange={handleChangeFontSize} style={{width: 100}}>
 									<option value={16}>16</option>
 									<option value={24}>24</option>
@@ -966,7 +966,7 @@ const CreatePlaylist = props =>
 								</div>
 							</div>
 						</div>
-						<Button style={{margin: "5px 0"}} onClick={handleSaveTicker}>
+						<Button style={{margin: "5px auto",display:"flex"}} onClick={handleSaveTicker}>
 							Save
 						</Button>
 					</div>

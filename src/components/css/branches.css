@@ -1,6 +1,5 @@
 .allBranchesContainer {
     flex: 4;
-    text-align: center;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -12,6 +11,7 @@
     flex-direction: column;
     min-width: 270px;
     width: 300px;
+    text-align: center;
 }
 
 .allListLinkContainer > .head {

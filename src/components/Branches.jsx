@@ -13,6 +13,7 @@ import Loader from "./Loader";
 import AlertMe from "./ConfirmAlert/AlertMe";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
+import ProfileImg from "../images/profile.png";
 
 function getModalStyle()
 {
@@ -131,7 +132,7 @@ const Branches = props =>
 								</MenuItem>
 							))}
 						</TextField>
-						<Button variant="contained" onClick={onCreateBranch}>
+						<Button variant="contained" onClick={onCreateBranch} style={{margin: "0 auto",display: "flex"}}>
 							Save New
 						</Button>
 					</div>
@@ -145,8 +146,7 @@ const Branches = props =>
 				<div className="allListLinkContainer">
 					<p className="head">Branches</p>
 					<ul className="list">
-						{branches &&
-						branches.map((el, i) => (
+						{branches?.map((el, i) => (
 							<li key={i}>
 								<p>
 									<Link to={`/branches/${el._id}`}>{el.name}</Link>
@@ -159,8 +159,16 @@ const Branches = props =>
 				</div>
 			</>
 
-			{branches && branches.length > 0 && (
+			{branches?.length > 0 && (
 				<div className="allBranchesContainer">
+					<div style={{padding: "0.5rem",textAlign: "left"}}>
+						<Link to={"/profile"} style={{textDecoration: "none"}}>
+							<Button variant="contained" style={{height: 30}}>
+								<img src={ProfileImg} alt={"profile"} style={{width: 20, height: 20, marginRight: 8}}/>
+								{user}
+							</Button>
+						</Link>
+					</div>
 					{branches.map((el, i) => (
 						<Branch branch={el} setBranches={setBranches} key={i}/>
 					))}

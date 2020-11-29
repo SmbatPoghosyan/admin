@@ -8,6 +8,7 @@ const NotFound = () =>
 	return (
 		<div
 			style={{
+				textAlign: "center",
 				position: "absolute",
 				left: "50%",
 				top: "40%",
