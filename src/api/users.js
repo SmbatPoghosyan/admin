@@ -2,74 +2,103 @@ import axios from "axios";
 import {apiURL} from "../env";
 import AlertMe from "../components/ConfirmAlert/AlertMe";
 
-export function getAllUsers(setUsers)
+export function getAllUsers(callback)
 {
-  axios
-    .get(apiURL + "/users/", {})
-    .then(response =>
-    {
-      setUsers(response.data);
-    })
-    .catch(error =>
-    {
-      console.error(error.message);
-    });
+    axios
+        .get(apiURL + "/users/", {})
+        .then(json =>
+        {
+            if (callback)
+            {
+                callback("success", json.data);
+            }
+        })
+        .catch(error =>
+        {
+            if (callback)
+            {
+                callback("error");
+            }
+        });
 }
 
-export function createUser(username, password, setUsers, handleClose)
+export function createUser(username, password, callback)
 {
-  const token = localStorage.getItem("token");
-  axios
-    .post(apiURL + "/users/", {
-      username,
-      password,
-      token
-    })
-    .then(response =>
-    {
-      getAllUsers(setUsers);
-      handleClose();
-      AlertMe(response.data.message);
-    })
-    .catch(error =>
-    {
-      AlertMe(error.message);
-    });
+    axios
+        .post(apiURL + "/users/", {
+            username,
+            password,
+            token: localStorage.getItem("token")
+        })
+        .then(response =>
+        {
+            if (callback)
+            {
+                callback("success");
+            }
+            AlertMe(response.data.message);
+        })
+        .catch(error =>
+        {
+            if (callback)
+            {
+                callback("error");
+            }
+            AlertMe(error.response.data.message);
+        });
 }
 
-export function deleteUser(id, setUsers)
+export function deleteUser(id, callback)
 {
-  const token = localStorage.getItem("token");
-  axios
-    .delete(apiURL + "/users/" + id + "?token=" + token)
-    .then(response =>
-    {
-      getAllUsers(setUsers);
-      AlertMe(response.data.message);
-    })
-    .catch(error =>
-    {
-      AlertMe(error.message);
-    });
+    axios
+        .delete(apiURL + "/users/" + id + "?token=" + localStorage.getItem("token"))
+        .then(response =>
+        {
+            if (callback)
+            {
+                callback();
+            }
+            AlertMe(response.data.message);
+        })
+        .catch(error =>
+        {
+            AlertMe(error.response.data.message);
+        });
 }
 
-export function updateUser(id, new_password, old_password, setUsers)
+export function updateUser(id, changeObj, callback)
 {
-  const token = localStorage.getItem("token");
-  axios
-    .put(apiURL + "/users/" + id, {
-      new_password,
-      old_password,
-      token
-    })
-    .then(response =>
+    const {username, password, oldpassword} = changeObj;
+
+    let objToEdit = {};
+
+    if (oldpassword && password)
     {
-      getAllUsers(setUsers);
-      AlertMe(response.data.message);
-    })
-    .catch(error =>
+        objToEdit.oldpassword = oldpassword;
+        objToEdit.password = password;
+    }
+
+    if (username)
     {
-      console.log(error.message);
-      AlertMe(error.message);
-    });
+        objToEdit.username = username;
+    }
+
+    axios
+        .put(apiURL + "/users/" + id, {...objToEdit, token: localStorage.getItem("token")})
+        .then(response =>
+        {
+            if (callback)
+            {
+                callback("success");
+            }
+            AlertMe(response.data.message);
+        })
+        .catch(error =>
+        {
+            if (callback)
+            {
+                callback("error");
+            }
+            AlertMe(error.response.data.message);
+        });
 }

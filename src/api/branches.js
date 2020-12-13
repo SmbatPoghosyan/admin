@@ -12,7 +12,7 @@ export function getAllBranches(setBranches)
 		})
 		.catch(error =>
 		{
-			console.error(error.message);
+			console.error(error.response.data.message);
 		});
 }
 
@@ -27,7 +27,7 @@ export function getBranchById(id, setBranch, setPlaylists, getBack)
 		})
 		.catch(error =>
 		{
-			console.error("Wrong Id " + error.message);
+			console.error("Wrong Id " + error.response.data.message);
 			getBack();
 		});
 }
@@ -50,7 +50,7 @@ export function createBranch(name, screens, setBranches, handleClose)
 		.catch(error =>
 		{
 			handleClose();
-			AlertMe(error.message);
+			AlertMe(error.response.data.message);
 		});
 }
 
@@ -66,7 +66,7 @@ export function deleteBranch(id, setBranches)
 		})
 		.catch(error =>
 		{
-			AlertMe(error.message);
+			AlertMe(error.response.data.message);
 		});
 }
 
@@ -87,7 +87,6 @@ export function updateBranch(id, name, screens, setBranches)
 		})
 		.catch(error =>
 		{
-			console.log("errrrr", error.message);
-			AlertMe(error.message);
+			AlertMe(error.response.data.message);
 		});
 }

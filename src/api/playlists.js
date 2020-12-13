@@ -11,7 +11,7 @@ export function getAllBranchePlaylists(branchId, setPlaylists)
 		})
 		.catch(error =>
 		{
-			console.error(error.message);
+			console.error(error.response.data.message);
 		});
 }
 
@@ -25,7 +25,7 @@ export function getPlaylistById(branchId, paylistId, setPlaylist, setFiles, call
 		})
 		.catch(error =>
 		{
-			console.error(error.message);
+			console.error(error.response.data.message);
 			callBack();
 		});
 }
@@ -45,7 +45,7 @@ export function createBranchPlaylist(branchId, playlistInfo, setPlaylists, callB
 		})
 		.catch(error =>
 		{
-			AlertMe(error.message);
+			AlertMe(error.response.data.message);
 		})
 		.finally(() =>
 		{
@@ -64,7 +64,7 @@ export function deletePlaylist(playlistId, branchId, setPlaylists, callBack)
 		})
 		.catch(error =>
 		{
-			AlertMe(error.message);
+			AlertMe(error.response.data.message);
 		})
 		.finally(() =>
 		{
@@ -84,7 +84,7 @@ export function updatePlaylist(playlistId, branchId, playlistInfo, setPlaylists,
 		})
 		.catch(error =>
 		{
-			AlertMe(error.message);
+			AlertMe(error.response.data.message);
 		})
 		.finally(() =>
 		{
